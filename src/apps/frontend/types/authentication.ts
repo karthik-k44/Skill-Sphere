@@ -24,3 +24,8 @@ export type ApiResponse<T> = {
   message: string;
   data?: T;
 };
+
+export enum AuthType {
+  SIGN_UP = 'SIGN_UP',
+  LOGIN = 'LOGIN',
+}

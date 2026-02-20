@@ -5,8 +5,7 @@ import { Hero } from '../../components/hero';
 import { Features } from '../../components/features';
 import { CTA } from '../../components/cta';
 import { Footer } from '../../components/footer';
-import { AuthModal } from '../../components/auth-model';
-
+import CreateAndLoginForm from './authentication/create-and-login-form';
 
 function LandingPage() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -57,10 +56,7 @@ function LandingPage() {
 
       <Footer />
 
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-      />
+      <CreateAndLoginForm isOpen={isAuthModalOpen} setIsOpen={setIsAuthModalOpen} />
     </div>
   );
 }

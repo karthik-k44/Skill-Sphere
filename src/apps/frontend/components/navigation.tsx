@@ -1,26 +1,17 @@
 import { useState } from 'react';
 import { Moon, Sun, Menu, X } from 'lucide-react';
 import { useTheme } from '../contexts/use-themes';
-import { logout } from '../redux/action';
-import { useAppDispatch, useAppSelector } from '../redux/hook';
 
 interface NavigationProps {
   onLoginClick: () => void;
 }
 
 export function Navigation({ onLoginClick }: NavigationProps) {
-  const dispatch = useAppDispatch();
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleAuthButtonClick = () => {
-    if (isAuthenticated) {
       localStorage.removeItem('authToken');
-      dispatch(logout());
-      return;
-    }
-
     onLoginClick();
   };
 
@@ -69,7 +60,7 @@ export function Navigation({ onLoginClick }: NavigationProps) {
               onClick={handleAuthButtonClick}
               className="hidden md:block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"
             >
-              {isAuthenticated ? 'Sign Out' : 'Sign In'}
+              { 'Sign In'}
             </button>
 
             <button
@@ -104,7 +95,7 @@ export function Navigation({ onLoginClick }: NavigationProps) {
               }}
               className="w-full px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"
             >
-              {isAuthenticated ? 'Sign Out' : 'Sign In'}
+              { 'Sign In'}
             </button>
           </div>
         </div>

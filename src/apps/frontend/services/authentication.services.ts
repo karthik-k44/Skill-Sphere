@@ -24,6 +24,10 @@ export class AuthenticationService extends APIService {
   public static async login(params: LoginParams): Promise<LoginResponse> {
     try {
       const response = await this.instance.apiClient.post<LoginResponse>("/auth/login", params);
+      console.log(response.data);
+      if (response.data.authToken) {
+        localStorage.setItem("authToken", response.data.authToken);
+      }
       return response.data;
     } catch (error) {
       throw this.toReadableError(error);

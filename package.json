@@ -13,6 +13,7 @@
     "server": "tsx watch src/apps/backend/server.ts"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.9",
     "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/vite": "^4.1.13",
     "axios": "^1.13.5",
@@ -29,7 +30,10 @@
     "react-dom": "^19.1.1",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.1",
-    "tailwind": "^2.3.1"
+    "react-toastify": "^11.0.5",
+    "tailwind": "^2.3.1",
+    "toast": "^0.5.4",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
