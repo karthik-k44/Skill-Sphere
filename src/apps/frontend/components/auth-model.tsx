@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { X, Mail, Lock, User } from 'lucide-react';
+import { AuthenticationService } from '../services/authentication.services';
+import { useAppDispatch } from '../redux/hook';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -8,6 +10,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalProps) {
+  const dispatch = useAppDispatch();
   const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,8 +21,9 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    dispatch(clearAuthError());
     setError('');
     setMessage('');
 
@@ -33,29 +37,41 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
       return;
     }
 
-    setLoading(true);
+    if (mode === 'signup' && !name) {
+      setError('Please enter your name');
+      return;
+    }
 
-    setTimeout(() => {
+    setLoading(true);
+    try {
       if (mode === 'signup') {
-        if (!name) {
-          setError('Please enter your name');
-          setLoading(false);
-          return;
-        }
-        setMessage('Account created successfully! You can now log in.');
+        const response = await AuthenticationService.signUp({
+          name,
+          email,
+          password,
+        });
+        setMessage(response.message);
         setMode('login');
         setName('');
         setPassword('');
       } else {
-        setMessage('Logged in successfully!');
+        const response = await AuthenticationService.login({ email, password });
+        localStorage.setItem('authToken', response.authToken);
+        dispatch(loginSuccess({ authToken: response.authToken, user: { email } }));
+        setMessage(response.message);
         setTimeout(() => {
           onClose();
           setEmail('');
           setPassword('');
         }, 800);
       }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Something went wrong';
+      dispatch(setAuthError(message));
+      setError(message);
+    } finally {
       setLoading(false);
-    }, 600);
+    }
   };
 
   return (

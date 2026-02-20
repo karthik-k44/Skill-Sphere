@@ -13,7 +13,9 @@
     "server": "tsx watch src/apps/backend/server.ts"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/vite": "^4.1.13",
+    "axios": "^1.13.5",
     "bcrypt": "^6.0.0",
     "concurrently": "^9.2.1",
     "cors": "^2.8.6",
@@ -25,6 +27,7 @@
     "mongoose": "^9.2.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.1",
     "tailwind": "^2.3.1"
   },

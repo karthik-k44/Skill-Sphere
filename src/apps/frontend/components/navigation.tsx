@@ -1,14 +1,28 @@
 import { useState } from 'react';
 import { Moon, Sun, Menu, X } from 'lucide-react';
 import { useTheme } from '../contexts/use-themes';
+import { logout } from '../redux/action';
+import { useAppDispatch, useAppSelector } from '../redux/hook';
 
 interface NavigationProps {
   onLoginClick: () => void;
 }
 
 export function Navigation({ onLoginClick }: NavigationProps) {
+  const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleAuthButtonClick = () => {
+    if (isAuthenticated) {
+      localStorage.removeItem('authToken');
+      dispatch(logout());
+      return;
+    }
+
+    onLoginClick();
+  };
 
   return (
     <nav className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-40 border-b border-gray-200 dark:border-gray-800">
@@ -52,10 +66,10 @@ export function Navigation({ onLoginClick }: NavigationProps) {
             </button>
 
             <button
-              onClick={onLoginClick}
+              onClick={handleAuthButtonClick}
               className="hidden md:block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"
             >
-              Sign In
+              {isAuthenticated ? 'Sign Out' : 'Sign In'}
             </button>
 
             <button
@@ -85,12 +99,12 @@ export function Navigation({ onLoginClick }: NavigationProps) {
             </a>
             <button
               onClick={() => {
-                onLoginClick();
+                handleAuthButtonClick();
                 setIsMenuOpen(false);
               }}
               className="w-full px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"
             >
-              Sign In
+              {isAuthenticated ? 'Sign Out' : 'Sign In'}
             </button>
           </div>
         </div>
