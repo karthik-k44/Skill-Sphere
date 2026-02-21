@@ -7,6 +7,7 @@ import type {
 } from "../types";
 import axios from "axios";
 import APIService from "./api.service";
+import type { UserType } from "../types/authentication";
 
 
 export class AuthenticationService extends APIService {
@@ -15,8 +16,8 @@ export class AuthenticationService extends APIService {
   public static async signUp(params: SignUpParams): Promise<SignUpResponse> {
     try {
       const response = await this.instance.apiClient.post<SignUpResponse>("/auth/signup", params);
-      if (response.data.authToken) {
-        localStorage.setItem("authToken", response.data.authToken);
+      if (response.data.data?.authToken) {
+        localStorage.setItem("authToken", response.data.data.authToken);
       }
       return response.data;
     } catch (error) {
@@ -49,23 +50,21 @@ export class AuthenticationService extends APIService {
     _id: string;
     name: string;
     email: string;
-    role?: "user" | "admin";
+    role?: UserType;
   }>> {
     try {
       const response = await this.instance.apiClient.get<ApiResponse<{
         _id: string;
         name: string;
         email: string;
-        role?: "user" | "admin";
-      }>>("/auth/me");
+        role?: UserType;
+      }>>("/auth/current-user");
       return response.data;
     } catch (error) {
       throw this.toReadableError(error);
     }
   }
-}
 
-export class AuthService extends APIService {
   public async refreshToken(): Promise<ApiResponse<string>> {
     try {
       const response = await this.apiClient.get<ApiResponse<string>>("/auth/refresh-token");

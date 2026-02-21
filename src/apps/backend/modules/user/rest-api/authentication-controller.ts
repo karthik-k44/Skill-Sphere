@@ -70,7 +70,7 @@ export class AuthenticationController {
     }
   };
 
-  public static me = async (req: Request, res: Response) => {
+  public static getCurrentUser = async (req: Request, res: Response) => {
     try {
       const request = req as AuthenticatedRequest;
 
