@@ -24,19 +24,25 @@ const Text: React.FC<PropsWithChildren<TextProps>> = ({
   textAlign = 'left',
   width,
   isTruncated,
-}) => (
-  <div
-    className={`${clsx([
-      textStyles.font[font],
-      tabletFont && textStyles.tabletFont[tabletFont],
-      desktopFont && textStyles.desktopFont[desktopFont],
-      textStyles.textAlign[textAlign],
-      width && styles.width[width as keyof typeof styles.width],
-      color,
-    ])}  ${isTruncated && 'truncate'}`}
-  >
-    {children}
-  </div>
-);
+}) => {
+  const hasBlackText = /\btext-black(?:\/\d{1,3})?\b/.test(color);
+  const hasDarkTextOverride = /\bdark:text-[^\s]+\b/.test(color);
+  const resolvedColor = hasBlackText && !hasDarkTextOverride ? `${color} dark:text-white` : color;
+
+  return (
+    <div
+      className={`${clsx([
+        textStyles.font[font],
+        tabletFont && textStyles.tabletFont[tabletFont],
+        desktopFont && textStyles.desktopFont[desktopFont],
+        textStyles.textAlign[textAlign],
+        width && styles.width[width as keyof typeof styles.width],
+        resolvedColor,
+      ])} ${isTruncated && 'truncate'}`}
+    >
+      {children}
+    </div>
+  );
+};
 
 export default Text;

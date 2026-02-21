@@ -1,13 +1,30 @@
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-import type { User } from '../modules/user/types';
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import { UserType, type User } from "../modules/user/types";
+
 dotenv.config();
 
-interface generateTokenParams {
- user: User
-}
-const generateToken: React.FC<generateTokenParams> = (user) => {
-  return jwt.sign({ userId: user.user._id }, process.env.JWT_SECRET as string, { expiresIn: "1h" });
+export type AuthTokenPayload = {
+  userId: string;
+  email: string;
+  role: UserType;
 };
 
-export default generateToken
+const generateToken = (user: User): string => {
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    throw new Error("JWT_SECRET is not configured");
+  }
+
+  return jwt.sign(
+    {
+      userId: user._id,
+      email: user.email,
+      role: user.role || UserType.USER,
+    },
+    jwtSecret,
+    { expiresIn: "1h" },
+  );
+};
+
+export default generateToken;

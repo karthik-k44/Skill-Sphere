@@ -1,9 +1,12 @@
-import express from "express"
-import { AuthenticationController } from "./authentication-controller"
+import express from "express";
+import { authMiddleware } from "../../../middlewares/auth-middleware";
+import { AuthenticationController } from "./authentication-controller";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post("/signup", AuthenticationController.signUp)
-router.post("/login", AuthenticationController.login)
+router.post("/signup", AuthenticationController.signUp);
+router.post("/login", AuthenticationController.login);
+router.get("/me", authMiddleware, AuthenticationController.me);
+router.get("/refresh-token", authMiddleware, AuthenticationController.refreshToken);
 
-export default router
+export default router;

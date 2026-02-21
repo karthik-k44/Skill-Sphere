@@ -10,3 +10,5 @@ export type {
   SignUpParams,
   SignUpResponse,
 } from "./authentication";
+
+export { AuthType } from "./authentication";

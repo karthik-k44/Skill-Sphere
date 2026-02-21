@@ -1,8 +1,8 @@
 import generateToken from "../../utils/auth-token.util";
 import { createUserModel } from "./internal/authentication-schema";
 import AuthenticationWriter from "./internal/authentication-writer";
-import type { CreateUserParams, LoginParams, User } from "./types";
-import bcrypt from  'bcrypt'
+import { UserType, type CreateUserParams, type LoginParams, type User } from "./types";
+import bcrypt from "bcrypt";
 
 export default class AuthenticationService {
   public static async createUser(
@@ -22,6 +22,7 @@ export default class AuthenticationService {
       _id: String(user._id),
       name: String(user.name),
       email: String(user.email),
+      role: (user.role as UserType | undefined) ?? UserType.USER,
     };
   }
 
@@ -33,13 +34,36 @@ export default class AuthenticationService {
       throw new Error("User not found");
     }
 
-    const ismatch= await bcrypt.compare(params.password, user.password as string)
-    if (!ismatch) {
+    const isMatch = await bcrypt.compare(params.password, user.password as string);
+    if (!isMatch) {
       throw new Error("Invalid password");
     }
 
-    const token = generateToken({ user: user as unknown as User });
+    const token = generateToken({
+      _id: String(user._id),
+      name: String(user.name),
+      email: String(user.email),
+      role: (user.role as UserType | undefined) ?? UserType.USER,
+    });
 
-    return token as string;
+    return token;
+  }
+
+  public static async getCurrentUser(userId: string): Promise<User> {
+    const user = await createUserModel.findById(userId).select("_id name email role");
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return {
+      _id: String(user._id),
+      name: String(user.name),
+      email: String(user.email),
+      role: (user.role as UserType | undefined) ?? UserType.USER,
+    };
+  }
+
+  public static issueToken(user: User): string {
+    return generateToken(user);
   }
 }

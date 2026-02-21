@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Navigation } from '../../components/navigation';
 import { SkeletonCard, SkeletonHero } from '../../components/skeleton';
-import { Hero } from '../../components/hero';
-import { Features } from '../../components/features';
-import { CTA } from '../../components/cta';
+import { Hero } from './hero';
+import { Features } from './features';
+import { CTA } from './cta';
 import { Footer } from '../../components/footer';
 import CreateAndLoginForm from './authentication/create-and-login-form';
+import Navbar from '../../components/navbar';
+import { NavType } from '../../types/navbar';
 
 function LandingPage() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -20,8 +21,8 @@ function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
-      <Navigation onLoginClick={() => setIsAuthModalOpen(true)} />
+    <div className="min-h-screen bg-white dark:bg-black transition-colors">
+      <Navbar navType={NavType.PUBLIC} onLoginClick={() => setIsAuthModalOpen(true)} />
 
       <main>
         {isLoading ? (
@@ -32,7 +33,7 @@ function LandingPage() {
               </div>
             </section>
 
-            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800/50">
+            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-primary-50 dark:bg-black">
               <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   <SkeletonCard />

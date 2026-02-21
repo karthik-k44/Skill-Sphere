@@ -4,13 +4,16 @@ import { AuthType } from "../../../types/authentication";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 interface CreateAndLoginFormProps {
-  formType: AuthType
+  formType: AuthType;
+  onLoginSuccess: () => void;
 }
 
-const CreateAndLoginFormHook = ({ formType }: CreateAndLoginFormProps) => {
+const CreateAndLoginFormHook = ({ formType, onLoginSuccess }: CreateAndLoginFormProps) => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -23,27 +26,30 @@ const CreateAndLoginFormHook = ({ formType }: CreateAndLoginFormProps) => {
             email: Yup.string().email('Invalid email address').required('Email is required'),
             password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
         }),
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             if (formType === AuthType.SIGN_UP) {
-                dispatch(createUser(values))
-                .then(() => {
+                try {
+                    await dispatch(createUser(values)).unwrap();
                     formik.resetForm();
+                    onLoginSuccess();
                     toast.success('User created successfully');
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-                console.log('Signing up with:', values);
+                    navigate('/dashboard');
+                } catch (error) {
+                    toast.error(error instanceof Error ? error.message : 'Unable to create user');
+                }
             } else {
-                dispatch(loginUser(values))
-                .then(() => {
+                try {
+                    await dispatch(loginUser({
+                        email: values.email,
+                        password: values.password,
+                    })).unwrap();
                     formik.resetForm();
+                    onLoginSuccess();
                     toast.success('User logged in successfully');
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-                console.log('Logging in with:', values);
+                    navigate('/dashboard');
+                } catch (error) {
+                    toast.error(error instanceof Error ? error.message : 'Unable to login');
+                }
             }
         },
     });

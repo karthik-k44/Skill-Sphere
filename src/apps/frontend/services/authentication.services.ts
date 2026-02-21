@@ -15,6 +15,9 @@ export class AuthenticationService extends APIService {
   public static async signUp(params: SignUpParams): Promise<SignUpResponse> {
     try {
       const response = await this.instance.apiClient.post<SignUpResponse>("/auth/signup", params);
+      if (response.data.authToken) {
+        localStorage.setItem("authToken", response.data.authToken);
+      }
       return response.data;
     } catch (error) {
       throw this.toReadableError(error);
@@ -24,7 +27,6 @@ export class AuthenticationService extends APIService {
   public static async login(params: LoginParams): Promise<LoginResponse> {
     try {
       const response = await this.instance.apiClient.post<LoginResponse>("/auth/login", params);
-      console.log(response.data);
       if (response.data.authToken) {
         localStorage.setItem("authToken", response.data.authToken);
       }
@@ -41,6 +43,25 @@ export class AuthenticationService extends APIService {
     }
 
     return error instanceof Error ? error : new Error("Request failed");
+  }
+
+  public static async getCurrentUser(): Promise<ApiResponse<{
+    _id: string;
+    name: string;
+    email: string;
+    role?: "user" | "admin";
+  }>> {
+    try {
+      const response = await this.instance.apiClient.get<ApiResponse<{
+        _id: string;
+        name: string;
+        email: string;
+        role?: "user" | "admin";
+      }>>("/auth/me");
+      return response.data;
+    } catch (error) {
+      throw this.toReadableError(error);
+    }
   }
 }
 

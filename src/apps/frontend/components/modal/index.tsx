@@ -59,7 +59,7 @@ const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/25" />
+          <div className="fixed inset-0 bg-black/50" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -73,17 +73,15 @@ const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className={`relative mb-[10vh] mt-[20vh] w-full ${panelWidthClass} rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all md:m-0`}>
+              <Dialog.Panel className={`relative mb-[10vh] mt-[20vh] w-full ${panelWidthClass} rounded-2xl bg-white dark:bg-black border border-primary-200 dark:border-primary-900 p-6 text-left align-middle shadow-xl transition-all md:m-0`}>
                 <Dialog.Title
                   as="h3"
                   className={`flex justify-between ${
                     isBorderBottomTitle && 'border-b-[1px] border-grey250'
                   } pb-1`}
                 >
-                  <Text font='LabelMedium' tabletFont='LabelMedium' desktopFont="LabelLarge" color="text-grey250">
-                  <div className={`${isBoldTitle ? 'font-bold' : ''}`}>
+                  <Text font={isBoldTitle ? 'LabelMedium' : 'ParagraphMedium'} tabletFont={isBoldTitle ? 'LabelLarge' : 'ParagraphLarge'}>
                     {title}
-                  </div>
                   </Text>
                   {closeIcon && (
                     <button

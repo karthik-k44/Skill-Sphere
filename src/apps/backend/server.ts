@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import connectDb from "./database/db";
+import dashboardRouter from "./modules/dashboard/rest-api/dashboard-router";
 import authenticationRouter from "./modules/user/rest-api/authetication-router";
 
 dotenv.config();
@@ -18,6 +19,7 @@ const __dirname = path.dirname(__filename);
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authenticationRouter);
+app.use("/api/dashboard", dashboardRouter);
 
 const serverBoot = async () => {
   if (process.env.DBURL) {

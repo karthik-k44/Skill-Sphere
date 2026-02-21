@@ -9,10 +9,17 @@ export type LoginParams = {
   password: string;
 };
 
+export enum UserType {
+  USER = 'user',
+  ADMIN = 'admin',
+}
+
 export type SignUpResponse = ApiResponse<{
-  id: string;
+  _id: string;
   name: string;
   email: string;
+  role?: UserType;
+  authToken?: string;
 }>;
 
 export type LoginResponse = ApiResponse<null> & {
