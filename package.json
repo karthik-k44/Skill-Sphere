@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "tsx watch src/apps/backend/server.ts",
-    "start:backend": "tsx src/apps/backend/server.ts"
+    "start:backend": "tsx src/apps/backend/server.ts",
+    "start": "npm run start:backend"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
