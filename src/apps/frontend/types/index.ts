@@ -12,3 +12,5 @@ export type {
 } from "./authentication";
 
 export { AuthType } from "./authentication";
+
+export { FeaturesData } from "./navbar";

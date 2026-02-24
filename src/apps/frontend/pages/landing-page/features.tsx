@@ -1,41 +1,8 @@
-import { Zap, Shield, Users, Smartphone, Cloud, BarChart } from 'lucide-react';
+import { FeaturesData } from "../../types";
 
-const features = [
-  {
-    icon: Zap,
-    title: 'Lightning Fast',
-    description: 'Experience blazing-fast performance with our optimized infrastructure and global CDN.',
-  },
-  {
-    icon: Shield,
-    title: 'Secure by Default',
-    description: 'Enterprise-grade security with end-to-end encryption and compliance certifications.',
-  },
-  {
-    icon: Users,
-    title: 'Team Collaboration',
-    description: 'Work seamlessly with your team with real-time collaboration and shared workspaces.',
-  },
-  {
-    icon: Smartphone,
-    title: 'Mobile Ready',
-    description: 'Fully responsive design that works perfectly on all devices and screen sizes.',
-  },
-  {
-    icon: Cloud,
-    title: 'Cloud Powered',
-    description: 'Reliable cloud infrastructure with 99.9% uptime and automatic backups.',
-  },
-  {
-    icon: BarChart,
-    title: 'Analytics Dashboard',
-    description: 'Get insights with detailed analytics and reporting tools to track your progress.',
-  },
-];
-
-export function Features() {
+const Features = () => {
   return (
-    <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-primary-50 dark:bg-black">
+      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-primary-50 dark:bg-black">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-black dark:text-primary-100 mb-4">
@@ -47,7 +14,7 @@ export function Features() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => {
+          {FeaturesData.map((feature, index) => {
             const Icon = feature.icon;
             return (
               <div
@@ -69,5 +36,7 @@ export function Features() {
         </div>
       </div>
     </section>
-  );
+  )
 }
+
+export default Features

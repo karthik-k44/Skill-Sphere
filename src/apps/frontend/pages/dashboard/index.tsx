@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DashboardService, type DashboardData } from "../../services/dashboard.service";
+import { Navbar } from "../../components";
+import { NavType } from "../../types/navbar";
+import { ProtectedNavbar } from "../../constants/navbar";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -47,7 +50,12 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div>
+      <Navbar
+        navType={NavType.PROTECTED}
+        onLoginClick={handleLogout}
+        navbarItems={ProtectedNavbar}
+      />
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>

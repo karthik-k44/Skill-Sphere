@@ -1,10 +1,11 @@
 import { ArrowRight, Play } from 'lucide-react';
+import type React from 'react';
 
 interface HeroProps {
   onGetStarted: () => void;
 }
 
-export function Hero({ onGetStarted }: HeroProps) {
+const Home: React.FC<HeroProps> = ({ onGetStarted }) => {
   return (
     <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -61,5 +62,7 @@ export function Hero({ onGetStarted }: HeroProps) {
         </div>
       </div>
     </section>
-  );
+  )
 }
+
+export default Home
