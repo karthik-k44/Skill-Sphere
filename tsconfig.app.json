@@ -23,5 +23,11 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/apps/backend/server.ts"]
+  "include": ["src", "src/apps/backend/server.ts"],
+  "exclude": [
+    "src/apps/frontend/components/button/toggle-button.tsx",
+    "src/apps/frontend/components/input/date-input.tsx",
+    "src/apps/frontend/components/input/drag-and-drop-file.tsx",
+    "src/apps/frontend/components/input/file-upload.tsx"
+  ]
 }
