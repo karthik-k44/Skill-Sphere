@@ -9,14 +9,14 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route element={<PublicRoute />}>
-        <Route path={ROUTES.LANDING} element={<LandingPage />} />
+        <Route path={ROUTES.DASHBOARD} element={<LandingPage />} />
       </Route>
 
       <Route element={<ProtectedRoute />}>
-        <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
+        <Route path={ROUTES.PORTAL} element={<DashboardPage />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
     </Routes>
   );
 };

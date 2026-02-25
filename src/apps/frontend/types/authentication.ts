@@ -19,8 +19,9 @@ export type SignUpResponse = ApiResponse<{
   name: string;
   email: string;
   role?: UserType;
+}> & {
   authToken?: string;
-}>;
+};
 
 export type LoginResponse = ApiResponse<null> & {
   authToken: string;

@@ -9,6 +9,7 @@ interface NavbarProps {
   navType: NavType;
   onLoginClick: () => void;
   navbarItems: NavbarItem[];
+  isActiveNavItem?: NavbarItemsEnum;
   setIsActiveNavItem?: (value: NavbarItemsEnum) => void;
 }
 
@@ -17,6 +18,7 @@ const Navbar: React.FC<NavbarProps> = ({
   onLoginClick,
   navbarItems,
   setIsActiveNavItem,
+  isActiveNavItem,
 }) => {
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,7 +36,6 @@ const Navbar: React.FC<NavbarProps> = ({
             <div className="flex-shrink-0">
               <h1
                 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent hover:cursor-pointer"
-                onClick={() => setIsActiveNavItem?.(NavbarItemsEnum.HOME)}
               >
                 Skill Sphere
               </h1>
@@ -48,7 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({
                     }}
                     className="hover:cursor-pointer"
                   >
-                    <Text font="LabelSmall" tabletFont="LabelMedium">
+                    <Text font="LabelSmall" tabletFont="LabelMedium" color={isActiveNavItem === item.value ? "text-primary" : undefined}>
                       {item.label}
                     </Text>
                   </div>

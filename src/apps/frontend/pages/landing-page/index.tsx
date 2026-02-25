@@ -8,7 +8,7 @@ import { NavbarItemsEnum, NavType } from '../../types/navbar';
 import { PublicNavbar } from '../../constants/navbar';
 import Contact from './contact';
 import About from './about';
-import { Footer } from '../../components';
+import { Footer } from '../../components';;
 
 function LandingPage() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -30,6 +30,7 @@ function LandingPage() {
         navbarItems={PublicNavbar} 
         onLoginClick={() => setIsAuthModalOpen(true)} 
         setIsActiveNavItem={setIsActiveNavItem}
+        isActiveNavItem={isActiveNavItem}
       />
 
       <main>

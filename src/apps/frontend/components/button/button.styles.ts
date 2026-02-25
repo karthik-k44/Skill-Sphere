@@ -3,6 +3,7 @@ const styles = {
     primary: {
       base: `
         border
+        border-primary
         flex
         font-medium
         items-center
@@ -15,8 +16,8 @@ const styles = {
         transition
         size-fit
       `,
-      disableState: 'cursor-not-allowed bg-blue-300',
-      enableState: 'hover:bg-blue-400 cursor-pointer bg-primary active:bg-blue-600',
+      disableState: 'cursor-not-allowed bg-primary-300',
+      enableState: 'hover:bg-primary-700 cursor-pointer bg-primary active:bg-primary-600',
     },
     discard: {
       base: `
@@ -39,7 +40,7 @@ const styles = {
       border-primary
       `,
       disableState: 'cursor-not-allowed text-slate-500',
-      enableState: 'hover:bg-blue-50 cursor-pointer',
+      enableState: 'hover:bg-primary-100 cursor-pointer',
     },
     miniDiscard: {
       base: `
@@ -61,7 +62,7 @@ const styles = {
       border-current
       `,
       disableState: 'cursor-not-allowed text-slate-500',
-      enableState: 'hover:bg-blue-50 cursor-pointer',
+      enableState: 'hover:bg-primary-100 cursor-pointer',
     },
     miniPrimary: {
       base: `
@@ -78,8 +79,8 @@ const styles = {
         transition
         size-fit
       `,
-      disableState: 'cursor-not-allowed bg-blue-300',
-      enableState: 'hover:bg-blue-400 cursor-pointer bg-primary active:bg-blue-600',
+      disableState: 'cursor-not-allowed bg-primary-300',
+      enableState: 'hover:bg-primary-700 cursor-pointer bg-primary active:bg-primary-600',
     },
     delete: {
       base: `

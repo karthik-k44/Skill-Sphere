@@ -3,8 +3,9 @@ import { useAppDispatch } from "../../../redux/hook";
 import { AuthType } from "../../../types/authentication";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../routes/types";
 
 interface CreateAndLoginFormProps {
   formType: AuthType;
@@ -33,7 +34,7 @@ const CreateAndLoginFormHook = ({ formType, onLoginSuccess }: CreateAndLoginForm
                     formik.resetForm();
                     onLoginSuccess();
                     toast.success('User created successfully');
-                    navigate('/dashboard');
+                    navigate(ROUTES.PORTAL);
                 } catch (error) {
                     toast.error(error instanceof Error ? error.message : 'Unable to create user');
                 }
@@ -46,7 +47,7 @@ const CreateAndLoginFormHook = ({ formType, onLoginSuccess }: CreateAndLoginForm
                     formik.resetForm();
                     onLoginSuccess();
                     toast.success('User logged in successfully');
-                    navigate('/dashboard');
+                    navigate(ROUTES.PORTAL);
                 } catch (error) {
                     toast.error(error instanceof Error ? error.message : 'Unable to login');
                 }

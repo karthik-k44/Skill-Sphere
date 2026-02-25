@@ -20,6 +20,8 @@ export enum NavbarItemsEnum {
     DASHBOARD = 'DASHBOARD',
     PROFILE = 'PROFILE',
     SETTINGS = 'SETTINGS',
+    RESUME_BUILDER = 'RESUME_BUILDER',
+    AI_ANALYZER = 'AI_ANALYZER',
     
 }
 

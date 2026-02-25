@@ -28,9 +28,9 @@
     "mongoose": "^9.2.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-hot-toast": "^2.6.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.1",
-    "react-toastify": "^11.0.5",
     "tailwind": "^2.3.1",
     "toast": "^0.5.4",
     "yup": "^1.7.1"

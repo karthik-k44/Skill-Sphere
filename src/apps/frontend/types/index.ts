@@ -11,6 +11,18 @@ export type {
   SignUpResponse,
 } from "./authentication";
 
+export type { 
+  CreateUserProfileParams,
+  UserEducation,
+  UserExperience,
+  UserProjects,
+  UserCertifications,
+  UserLanguages,
+  UserInterests,
+  UserProfile,
+  UserProfileResponse,
+} from "./user-profile";
+
 export { AuthType } from "./authentication";
 
 export { FeaturesData } from "./navbar";

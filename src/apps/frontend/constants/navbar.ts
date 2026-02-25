@@ -2,6 +2,10 @@ import { NavbarItemsEnum, type NavbarItem } from "../types/navbar";
 
 export const PublicNavbar : NavbarItem[] = [
     {
+        label: 'Home',
+        value: NavbarItemsEnum.HOME 
+    },
+    {
         label: 'Features',
         value: NavbarItemsEnum.FEATURES
     },
@@ -19,8 +23,16 @@ export const PublicNavbar : NavbarItem[] = [
 
 export const ProtectedNavbar : NavbarItem[] = [
     {
-        label: 'Dashboard',
-        value: NavbarItemsEnum.DASHBOARD
+        label: 'Home',
+        value: NavbarItemsEnum.HOME 
+    },
+    {
+        label: 'AI Analyzer',
+        value: NavbarItemsEnum.AI_ANALYZER
+    },
+    {
+        label: 'Resume Builder',
+        value: NavbarItemsEnum.RESUME_BUILDER
     },
     {
         label: 'Profile',

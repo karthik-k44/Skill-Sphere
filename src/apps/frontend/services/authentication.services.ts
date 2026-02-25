@@ -8,6 +8,7 @@ import type {
 import axios from "axios";
 import APIService from "./api.service";
 import type { UserType } from "../types/authentication";
+import CommonService from "./common.service";
 
 
 export class AuthenticationService extends APIService {
@@ -16,12 +17,13 @@ export class AuthenticationService extends APIService {
   public static async signUp(params: SignUpParams): Promise<SignUpResponse> {
     try {
       const response = await this.instance.apiClient.post<SignUpResponse>("/auth/signup", params);
-      if (response.data.data?.authToken) {
-        localStorage.setItem("authToken", response.data.data.authToken);
+      const authToken = response.data.authToken;
+      if (authToken) {
+        localStorage.setItem("authToken", authToken);
       }
       return response.data;
     } catch (error) {
-      throw this.toReadableError(error);
+      throw CommonService.toReadableError(error);
     }
   }
 
@@ -33,17 +35,8 @@ export class AuthenticationService extends APIService {
       }
       return response.data;
     } catch (error) {
-      throw this.toReadableError(error);
+      throw CommonService.toReadableError(error);;
     }
-  }
-
-  private static toReadableError(error: unknown): Error {
-    if (axios.isAxiosError(error)) {
-      const message = (error.response?.data as { message?: string } | undefined)?.message;
-      return new Error(message ?? "Request failed");
-    }
-
-    return error instanceof Error ? error : new Error("Request failed");
   }
 
   public static async getCurrentUser(): Promise<ApiResponse<{
@@ -61,7 +54,7 @@ export class AuthenticationService extends APIService {
       }>>("/auth/current-user");
       return response.data;
     } catch (error) {
-      throw this.toReadableError(error);
+      throw CommonService.toReadableError(error);;
     }
   }
 

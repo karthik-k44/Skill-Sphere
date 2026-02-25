@@ -3,10 +3,12 @@ import { createUserModel } from "./authentication-schema";
 
 export default class AuthenticationWriter {
   public static async createUser(params: CreateUserParams) {
-    return createUserModel.create({
-      name: params.name,
-      email: params.email,
-      password: params.password,
-    });
+    try {
+      const user = await createUserModel.create(params);
+      return user;
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
+    }
   }
 }

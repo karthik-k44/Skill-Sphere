@@ -40,9 +40,9 @@ export class AuthenticationController {
     }
   };
 
-  public static login = async (_req: Request, res: Response) => {
+  public static login = async (req: Request, res: Response) => {
     try {
-      const { email, password } = _req.body as LoginParams;
+      const { email, password } = req.body as LoginParams;
 
       if (!email || !password) {
         return res.status(400).json({
