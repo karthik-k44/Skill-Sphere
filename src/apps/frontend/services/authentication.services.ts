@@ -17,9 +17,13 @@ export class AuthenticationService extends APIService {
   public static async signUp(params: SignUpParams): Promise<SignUpResponse> {
     try {
       const response = await this.instance.apiClient.post<SignUpResponse>("/auth/signup", params);
-      const authToken = response.data.authToken;
+      const authToken = response.data.data?.authToken;
       if (authToken) {
         localStorage.setItem("authToken", authToken);
+        const userId = response.data.data?._id;
+        if (userId) {
+          localStorage.setItem("userId", userId);
+        }
       }
       return response.data;
     } catch (error) {
@@ -30,8 +34,12 @@ export class AuthenticationService extends APIService {
   public static async login(params: LoginParams): Promise<LoginResponse> {
     try {
       const response = await this.instance.apiClient.post<LoginResponse>("/auth/login", params);
-      if (response.data.authToken) {
-        localStorage.setItem("authToken", response.data.authToken);
+      if (response.data.data?.authToken) {
+        localStorage.setItem("authToken", response.data.data?.authToken);
+        const userId = response.data.data?._id;
+        if (userId) {
+          localStorage.setItem("userId", userId);
+        }
       }
       return response.data;
     } catch (error) {

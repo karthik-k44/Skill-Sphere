@@ -13,9 +13,15 @@ export type User = {
   name: string;
   email: string;
   role?: UserType;
+  authToken?: string;
 };
 
 export type LoginParams = {
   email: string;
   password: string;
+};
+
+export type LoginResponse = {
+  authToken: string;
+  _id: string;
 };

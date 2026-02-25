@@ -20,14 +20,13 @@ export class AuthenticationController {
         email,
         password,
       });
-      const authToken = AuthenticationService.issueToken(user);
-
+    
       return res.status(201).json({
         success: true,
         message: "User created successfully",
         data: user,
-        authToken,
       });
+  
     } catch (error) {
       const message = (error as Error).message;
       const isConflict = message === "User already exists";
@@ -51,12 +50,12 @@ export class AuthenticationController {
         });
       }
 
-      const token = await AuthenticationService.loginService({ email, password });
+      const user = await AuthenticationService.loginService({ email, password });
 
       return res.status(200).json({
         success: true,
         message: "Login successful",
-        authToken: token,
+        data: user,
       });
     } catch (error) {
       const message = (error as Error).message;

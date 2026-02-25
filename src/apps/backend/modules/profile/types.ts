@@ -12,6 +12,8 @@ export type UserExperience = {
     role: string;
     startDate: Date;
     endDate: Date;
+    skillAchieved: string[];
+    domainsWorked: string[];
 }
 
 export type UserProjects = {
@@ -34,11 +36,25 @@ export type UserInterests = {
     name: string;
 }
 
+export type UserAddress = {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+}
+
+export type Skills = {
+    name: string;
+    level: string;
+    rating: string;
+}
+
+
 export type CreateUserProfileParams={
     userId: string;
     phoneNumber: string;
-    address: string;
-    skills: string[];
+    address: UserAddress;
+    skills: Skills[];
     experience: UserExperience[];
     education: UserEducation[];
     projects: UserProjects[];

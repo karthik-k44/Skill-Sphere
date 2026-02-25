@@ -14,7 +14,7 @@ const styles = {
         rounded-xl
         text-white
         transition
-        size-fit
+        w-full
       `,
       disableState: 'cursor-not-allowed bg-primary-300',
       enableState: 'hover:bg-primary-700 cursor-pointer bg-primary active:bg-primary-600',
@@ -34,7 +34,7 @@ const styles = {
       rounded-xl
       text-primary
       transition
-      size-fit
+      w-full
       outline-none
       border-1
       border-primary

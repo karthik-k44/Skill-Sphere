@@ -1,9 +1,33 @@
 import mongoose from "mongoose";
 
+const AddressSchema = new mongoose.Schema(
+  {
+    street: String,
+    city: String,
+    state: String,
+    zipCode: String,
+  },
+  {
+    _id: false,
+    id: false,
+  }
+)
+
+const SkillSchema = new mongoose.Schema(
+  {
+    name: String,
+    level: String,
+    rating: String,
+  },
+  { _id: false, id: false },
+);
+
 const ExperienceSchema = new mongoose.Schema(
   {
     company: String,
     role: String,
+    skillAchieved: [String],
+    domainsWorked: [String],
     startDate: Date,
     endDate: Date,
   },
@@ -59,17 +83,9 @@ const UserProfileSchema = new mongoose.Schema({
         ref: 'users',
         required: true,
     },
-    phoneNumber:{
-        type: String,
-        required: true,
-    },
-    address: {
-        type: String,
-        required: true,
-    },
-    skills: [{
-        type: String,
-    }],
+    phoneNumber:{ type: String },
+    address: { type: AddressSchema, default:[]},
+    skills: { type: [SkillSchema], default: [] },
     experience: { type: [ExperienceSchema], default: [] },
     education: { type: [EducationSchema], default: [] },
     projects: { type: [ProjectSchema], default: [] },
@@ -81,4 +97,3 @@ const UserProfileSchema = new mongoose.Schema({
 const UserProfileModel = mongoose.model('UserProfile', UserProfileSchema);
 
 export default UserProfileModel;
-

@@ -4,6 +4,10 @@ import LandingPage from "../pages/landing-page";
 import ProtectedRoute from "./protected-route";
 import PublicRoute from "./public-route";
 import { ROUTES } from "./types";
+import ResumeBuilder from "../pages/dashboard/resume-builder";
+import Home from "../pages/dashboard/home";
+import AIAnalyzer from "../pages/dashboard/ai-analyzer";
+import Profile from "../pages/dashboard/profile";
 
 const AppRouter = () => {
   return (
@@ -13,7 +17,12 @@ const AppRouter = () => {
       </Route>
 
       <Route element={<ProtectedRoute />}>
-        <Route path={ROUTES.PORTAL} element={<DashboardPage />} />
+        <Route path={ROUTES.PORTAL} element={<DashboardPage />}>
+          <Route index element={<Home />} />
+          <Route path={ROUTES.RESUME_BUILDER} element={<ResumeBuilder />} />
+          <Route path={ROUTES.AI_ANALYZER} element={<AIAnalyzer />} />
+          <Route path={ROUTES.PROFILE} element={<Profile />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<Navigate to={ROUTES.DASHBOARD} replace />} />

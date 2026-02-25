@@ -5,13 +5,11 @@ import UserProfileModel from "./user-profile-schema";
 export default class UserProfileWriter {
     public static createUserProfile = async (params: CreateUserProfileParams) => {
         try {
-            const profileData = params;
-            const profile = await UserProfileModel.create(profileData);
+            const profile = await UserProfileModel.create(params);
             return profile;
         } catch (error) {
             console.error("Error creating user profile:", error);
             throw error;
         }
     };
-
 }
