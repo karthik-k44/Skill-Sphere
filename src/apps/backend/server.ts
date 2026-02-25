@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import cors from "cors";
@@ -32,10 +33,16 @@ const serverBoot = async () => {
 
   if (isProd) {
     const distPath = path.resolve(__dirname, "../../../dist");
-    app.use(express.static(distPath));
-    app.get("*", (_req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
+    const indexPath = path.join(distPath, "index.html");
+
+    if (fs.existsSync(indexPath)) {
+      app.use(express.static(distPath));
+      app.get("*", (_req, res) => {
+        res.sendFile(indexPath);
+      });
+    } else {
+      console.warn("dist/index.html not found. Serving API-only mode in production.");
+    }
   } else {
     const { createServer } = await import("vite");
     const vite = await createServer({
