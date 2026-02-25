@@ -6,6 +6,7 @@ import express from "express";
 import connectDb from "./database/db";
 import dashboardRouter from "./modules/dashboard/rest-api/dashboard-router";
 import authenticationRouter from "./modules/user/rest-api/authetication-router";
+import { AuthenticationController } from "./modules/user/rest-api/authentication-controller";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authenticationRouter);
 app.use("/api/dashboard", dashboardRouter);
+app.get("/api/health", AuthenticationController.HealthCheck);
 
 const serverBoot = async () => {
   if (process.env.DBURL) {
