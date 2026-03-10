@@ -21,7 +21,7 @@ const AppRouter = () => {
           <Route index element={<Home />} />
           <Route path={ROUTES.RESUME_BUILDER} element={<ResumeBuilder />} />
           <Route path={ROUTES.AI_ANALYZER} element={<AIAnalyzer />} />
-          <Route path={ROUTES.PROFILE} element={<Profile />} />
+          <Route path={`${ROUTES.PROFILE}/:type`} element={<Profile />} />
         </Route>
       </Route>
 

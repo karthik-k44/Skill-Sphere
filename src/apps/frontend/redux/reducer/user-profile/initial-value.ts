@@ -3,17 +3,17 @@ import type { AsyncError, UserProfile, UserProfileResponse } from "../../../type
 export type userProfileSliceInitialState = {
     createUserProfileError: AsyncError,
     createUserProfileLoading: boolean,
-    createUserProfileSuccess?: UserProfileResponse,
+    createUserProfileData?: UserProfileResponse,
     getUserProfileError: AsyncError,
     getUserProfileLoading: boolean,
-    getUserProfileSuccess?: UserProfile,
+    getUserProfileData?: UserProfile,
 }
 
 export const initialUserProfileState: userProfileSliceInitialState ={
     createUserProfileError: { code: "", message: "" },
     createUserProfileLoading: false,
-    createUserProfileSuccess: undefined,
+    createUserProfileData: undefined,
     getUserProfileError: { code: "", message: "" },
     getUserProfileLoading: false,
-    getUserProfileSuccess: undefined,
+    getUserProfileData: undefined,
 }

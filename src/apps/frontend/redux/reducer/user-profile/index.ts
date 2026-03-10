@@ -13,7 +13,7 @@ const userProfileSlice = createSlice({
         });
         builder.addCase(CreateUserProfile.fulfilled, (state, action) => {
             state.createUserProfileLoading = false;
-            state.createUserProfileSuccess = action.payload;
+            state.createUserProfileData = action.payload;
         });
         builder.addCase(CreateUserProfile.rejected, (state, action) => {
             state.createUserProfileLoading = false;
@@ -27,7 +27,7 @@ const userProfileSlice = createSlice({
         });
         builder.addCase(GetUserProfile.fulfilled, (state, action) => {
             state.getUserProfileLoading = false;
-            state.getUserProfileSuccess = action.payload;
+            state.getUserProfileData = action.payload;
         });
         builder.addCase(GetUserProfile.rejected, (state, action) => {
             state.getUserProfileLoading = false;

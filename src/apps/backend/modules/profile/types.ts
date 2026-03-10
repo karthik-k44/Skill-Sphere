@@ -69,8 +69,11 @@ export type UserProfileResponse = CreateUserProfileParams & {
     updatedAt: Date;
 }
 
-export type UserProfile = UserProfileResponse & {
-    name: string;
-    email: string;
-    role: string;
+export type UserProfile = {
+    userProfile:UserProfileResponse
+    user:{
+        name: string;
+        email: string;
+        role: string;
+    }
 }

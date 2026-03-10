@@ -26,3 +26,14 @@ export type {
 export { AuthType } from "./authentication";
 
 export { FeaturesData } from "./navbar";
+
+export type {
+  SetupUiStepsType,
+  StepType,
+} from "./stepper";
+
+export type {
+  ButtonKind,
+  ButtonOperationType,
+  ButtonType,
+} from "./button";

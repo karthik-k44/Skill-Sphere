@@ -4,6 +4,7 @@ import { Navbar } from "../../components";
 import { NavbarItemsEnum, NavType } from "../../types/navbar";
 import { ProtectedNavbar } from "../../constants/navbar"
 import { ROUTES } from "../../routes/types";
+import { UserProfileFormType } from "../../types/user-profile";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const DashboardPage = () => {
         navigate(ROUTES.AI_ANALYZER);
         break;
       case NavbarItemsEnum.PROFILE:
-        navigate(ROUTES.PROFILE);
+        navigate(`${ROUTES.PROFILE}/${UserProfileFormType.UPDATE}`);
         break;
       case NavbarItemsEnum.HOME:
       default:

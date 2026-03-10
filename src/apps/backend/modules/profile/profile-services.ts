@@ -11,6 +11,10 @@ export default class UserProfileService {
       if (!user) {
         throw new Error("User not found");
       }
+      const existingProfile = await UserProfileReader.getUserProfileByUserId(params.userId);
+      if (existingProfile) {
+        throw new Error("User profile already exists");
+      }
       const profile = await UserProfileWriter.createUserProfile(params);
       return profile;
     } catch (error) {
@@ -26,11 +30,6 @@ export default class UserProfileService {
         throw new Error("User not found");
       }
       const profile = await UserProfileReader.getUserProfileByUserId(userId);
-
-      if (!profile) {
-        throw new Error("Profile not found");
-      }
-
       return serializeUserProfileAsJSON(profile, user);
     } catch (error) {
       console.error("Error fetching user profile:", error);
