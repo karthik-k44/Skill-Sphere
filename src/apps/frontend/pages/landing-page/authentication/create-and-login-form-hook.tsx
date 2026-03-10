@@ -3,8 +3,9 @@ import { useAppDispatch } from "../../../redux/hook";
 import { AuthType } from "../../../types/authentication";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../routes/types";
 
 interface CreateAndLoginFormProps {
   formType: AuthType;
@@ -28,28 +29,34 @@ const CreateAndLoginFormHook = ({ formType, onLoginSuccess }: CreateAndLoginForm
         }),
         onSubmit: async (values) => {
             if (formType === AuthType.SIGN_UP) {
-                try {
-                    await dispatch(createUser(values)).unwrap();
+                dispatch(createUser(values))
+                .then()
+                .catch(()=> {
+                    toast.error('Unable to create user');
+                })
+                .finally(() => {
                     formik.resetForm();
                     onLoginSuccess();
                     toast.success('User created successfully');
-                    navigate('/dashboard');
-                } catch (error) {
-                    toast.error(error instanceof Error ? error.message : 'Unable to create user');
-                }
+                    navigate(ROUTES.PORTAL);
+                  }
+                );
             } else {
-                try {
-                    await dispatch(loginUser({
-                        email: values.email,
-                        password: values.password,
-                    })).unwrap();
+                 dispatch(loginUser({
+                    email: values.email,
+                    password: values.password,
+                }))
+                .then()
+                .catch(()=> {
+                    toast.error('Unable to login')
+                })
+                .finally(() => {
                     formik.resetForm();
                     onLoginSuccess();
                     toast.success('User logged in successfully');
-                    navigate('/dashboard');
-                } catch (error) {
-                    toast.error(error instanceof Error ? error.message : 'Unable to login');
-                }
+                    navigate(ROUTES.PORTAL);
+                  }
+                );
             }
         },
     });

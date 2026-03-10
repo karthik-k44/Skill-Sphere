@@ -8,5 +8,6 @@ router.post("/signup", AuthenticationController.signUp);
 router.post("/login", AuthenticationController.login);
 router.get("/current-user", authMiddleware, AuthenticationController.getCurrentUser);
 router.get("/refresh-token", authMiddleware, AuthenticationController.refreshToken);
+router.get("/health", AuthenticationController.HealthCheck);
 
 export default router;

@@ -1,7 +1,7 @@
 import generateToken from "../../utils/auth-token.util";
 import { createUserModel } from "./internal/authentication-schema";
 import AuthenticationWriter from "./internal/authentication-writer";
-import { UserType, type CreateUserParams, type LoginParams, type User } from "./types";
+import { UserType, type CreateUserParams, type LoginParams, type LoginResponse, type User } from "./types";
 import bcrypt from "bcrypt";
 
 export default class AuthenticationService {
@@ -18,17 +18,25 @@ export default class AuthenticationService {
       password: params.password,
     });
 
+    const authToken =AuthenticationService.issueToken({
+      _id: String(user._id),
+      name: String(user.name),
+      email: String(user.email),
+      role: (user.role as UserType) || UserType.USER,
+    });
+  
     return {
       _id: String(user._id),
       name: String(user.name),
       email: String(user.email),
-      role: (user.role as UserType | undefined) ?? UserType.USER,
+      role: (user.role as UserType) ||  UserType.USER,
+      authToken: authToken,
     };
   }
 
   public static async loginService(
     params: LoginParams
-  ): Promise<string> {
+  ): Promise<LoginResponse> {
     const user = await createUserModel.findOne({ email: params.email });
     if (!user) {
       throw new Error("User not found");
@@ -46,7 +54,10 @@ export default class AuthenticationService {
       role: (user.role as UserType | undefined) ?? UserType.USER,
     });
 
-    return token;
+    return {
+      _id: String(user._id),
+      authToken: token,
+    };
   }
 
   public static async getCurrentUser(userId: string): Promise<User> {

@@ -23,7 +23,7 @@ const generateToken = (user: User): string => {
       role: user.role || UserType.USER,
     },
     jwtSecret,
-    { expiresIn: "1h" },
+    { expiresIn: "6d" },
   );
 };
 

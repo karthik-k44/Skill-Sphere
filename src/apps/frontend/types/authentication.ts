@@ -1,3 +1,8 @@
+export type ApiResponse<T> = {
+  success: boolean;
+  message: string;
+  data?: T;
+};
 export type SignUpParams = {
   name: string;
   email: string;
@@ -15,22 +20,18 @@ export enum UserType {
 }
 
 export type SignUpResponse = ApiResponse<{
-  _id: string;
-  name: string;
-  email: string;
-  role?: UserType;
-  authToken?: string;
+   _id: string;
+    name: string;
+    email: string;
+    role?: UserType;
+    authToken?: string;
 }>;
 
-export type LoginResponse = ApiResponse<null> & {
+export type LoginResponse = ApiResponse<{
+  _id: string;
   authToken: string;
-};
+}> 
 
-export type ApiResponse<T> = {
-  success: boolean;
-  message: string;
-  data?: T;
-};
 
 export enum AuthType {
   SIGN_UP = 'SIGN_UP',

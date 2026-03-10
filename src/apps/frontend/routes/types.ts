@@ -1,4 +1,7 @@
 export enum  ROUTES {
-  LANDING = '/',
   DASHBOARD = '/dashboard',
+  PORTAL='/',
+  RESUME_BUILDER='/resume-builder',
+  AI_ANALYZER='/ai-analyzer',
+  PROFILE='/profile',
 }

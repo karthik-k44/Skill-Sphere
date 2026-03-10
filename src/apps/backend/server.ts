@@ -5,9 +5,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import connectDb from "./database/db";
-import dashboardRouter from "./modules/dashboard/rest-api/dashboard-router";
-import authenticationRouter from "./modules/user/rest-api/authetication-router";
-import { AuthenticationController } from "./modules/user/rest-api/authentication-controller";
+import authenticationRouter from "./modules/user/rest-api/authentication-router";
+import userProfileRouter from "./modules/profile/res-api/profile-routers";
 
 dotenv.config();
 
@@ -21,8 +20,7 @@ const __dirname = path.dirname(__filename);
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authenticationRouter);
-app.use("/api/dashboard", dashboardRouter);
-app.get("/api/health", AuthenticationController.HealthCheck);
+app.use("/api/user-profile", userProfileRouter);
 
 const serverBoot = async () => {
   if (process.env.DBURL) {

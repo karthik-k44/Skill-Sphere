@@ -7,6 +7,8 @@ import Text from '../../../components/typography/text';
 import CreateAndLoginFormHook from './create-and-login-form-hook';
 import Button from '../../../components/button';
 import { ButtonKind, ButtonType } from '../../../types/button';
+import type { RootState } from '../../../redux/store';
+import { useSelector } from 'react-redux';
  
 interface CreateAndLoginFormProps {
   isOpen: boolean;
@@ -15,6 +17,7 @@ interface CreateAndLoginFormProps {
 
 const CreateAndLoginForm: React.FC<CreateAndLoginFormProps> = ({ isOpen, setIsOpen }) => {
   const [authType, setAuthType] = useState<AuthType>(AuthType.LOGIN);
+    const {isLoggingLoading, isSignUpLoading} = useSelector((state: RootState) => state.auth);
 
   const { formik } = CreateAndLoginFormHook({
     formType: authType,
@@ -23,6 +26,7 @@ const CreateAndLoginForm: React.FC<CreateAndLoginFormProps> = ({ isOpen, setIsOp
 
   useEffect(() => {
     setAuthType(AuthType.LOGIN);
+    formik.resetForm();
   }, [isOpen]);
 
   useEffect(() => {
@@ -78,6 +82,7 @@ const CreateAndLoginForm: React.FC<CreateAndLoginFormProps> = ({ isOpen, setIsOp
           <Button
             kind={ButtonKind.PRIMARY}
             type={ButtonType.SUBMIT}
+            isLoading={authType === AuthType.SIGN_UP ? isSignUpLoading : isLoggingLoading}
           >
             {authType === AuthType.SIGN_UP ? 'Sign Up' : 'Login'}
           </Button>
