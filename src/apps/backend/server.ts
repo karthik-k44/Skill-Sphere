@@ -21,7 +21,6 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authenticationRouter);
 app.use("/api/user-profile", userProfileRouter);
-app.get("/api/health", AuthenticationController.HealthCheck);
 
 const serverBoot = async () => {
   if (process.env.DBURL) {
