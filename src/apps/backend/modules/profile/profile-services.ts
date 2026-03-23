@@ -36,4 +36,18 @@ export default class UserProfileService {
       throw error;
     }
   };
+
+  public static updateUserProfile = async (userId: string, params: CreateUserProfileParams) => {
+    try {
+      const user = await AuthenticationService.getCurrentUser(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+      const response = await UserProfileWriter.updateUserProfile(userId, params);
+      return response;
+    } catch (error) {
+      console.error("Error updating user profile:", error);
+      throw error;
+    }
+  }
 }

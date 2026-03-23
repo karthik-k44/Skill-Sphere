@@ -48,4 +48,14 @@ export class UserProfileController {
         }
     };
 
-}
+    public static updateUserProfile = async (req: Request, res: Response) => {
+        const { userId } = req.params;
+        const body = (req.body) as CreateUserProfileParams;
+        try {
+            const profile = await UserProfileService.updateUserProfile(userId, body);
+            return res.status(200).json(profile);
+        } catch (error) {
+           return res.status(500).json({ error: (error as Error).message });
+        }
+    }
+}   

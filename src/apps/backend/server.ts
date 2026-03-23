@@ -7,6 +7,7 @@ import express from "express";
 import connectDb from "./database/db";
 import authenticationRouter from "./modules/user/rest-api/authentication-router";
 import userProfileRouter from "./modules/profile/res-api/profile-routers";
+import aiAnalyzerRouter from "./modules/ai-analyzer/res-api/ai-analyzer-router"
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authenticationRouter);
 app.use("/api/user-profile", userProfileRouter);
+app.use("/api/ai-analyzer", aiAnalyzerRouter);
 
 const serverBoot = async () => {
   if (process.env.DBURL) {
