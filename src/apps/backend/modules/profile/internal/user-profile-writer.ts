@@ -12,4 +12,15 @@ export default class UserProfileWriter {
             throw error;
         }
     };
+
+    public static updateUserProfile = async (userId: string, params: CreateUserProfileParams) => {
+        try {
+            const profile = await UserProfileModel.findOneAndUpdate({ userId }, params, { new: true });
+            return profile;
+        } catch (error) {
+            console.error("Error updating user profile:", error);
+            throw error;
+        }
+    }
+    
 }

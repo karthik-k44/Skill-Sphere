@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post('/', authMiddleware, UserProfileController.createUserProfile);
 router.get('/:userId', authMiddleware, UserProfileController.getUserProfileByUserId);
+router.patch('/:userId', authMiddleware, UserProfileController.updateUserProfile)
 
 export default router;

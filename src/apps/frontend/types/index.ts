@@ -11,7 +11,7 @@ export type {
   SignUpResponse,
 } from "./authentication";
 
-export type { 
+export type {
   CreateUserProfileParams,
   UserEducation,
   UserExperience,
@@ -22,6 +22,8 @@ export type {
   UserProfile,
   UserProfileResponse,
 } from "./user-profile";
+
+export type { AIAnalyzerResult } from "./ai-analyzer";
 
 export { AuthType } from "./authentication";
 
