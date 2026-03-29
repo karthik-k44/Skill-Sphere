@@ -44,6 +44,7 @@ const Navbar: React.FC<NavbarProps> = ({
               <div className="flex items-center space-x-8">
                 {navbarItems.map((item) => (
                   <div
+                    key={item.value}
                     onClick={() => {
                       setIsActiveNavItem?.(item.value);
                     }}

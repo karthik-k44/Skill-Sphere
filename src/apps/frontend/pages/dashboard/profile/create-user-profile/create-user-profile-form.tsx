@@ -16,6 +16,7 @@ import {
   type UserInterests,
   type UserLanguages,
   type UserProjects,
+  type UserProfileResponse,
 } from "../../../../types/user-profile";
 import toast from "react-hot-toast";
 import {
@@ -32,14 +33,19 @@ import {
   profileSectionHeaderClass,
   profileStepContainerClass,
 } from "./create-user-profile-ui";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../../routes/types";
 
 interface CreateUserProfileFormProps {
   formType: UserProfileFormType;
+  userProfileData?: UserProfileResponse;
 }
 
 const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
   formType,
+  userProfileData
 }) => {
+  const navigate = useNavigate();
   const [expandedExperienceIndices, setExpandedExperienceIndices] = useState<number[]>([]);
   const [expandedEducationIndices, setExpandedEducationIndices] = useState<number[]>([]);
   const [expandedProjectIndices, setExpandedProjectIndices] = useState<number[]>([]);
@@ -93,6 +99,7 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
   const [currentStep, setCurrentStep] = useState<StepType>(
     SETUP_UI_STEPS[0],
   );
+
   const handleNavigation = (value: SetupUiStepsType) => {
     const step = SETUP_UI_STEPS.find((step) => step.value === value);
     if (step) {
@@ -100,9 +107,119 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
     }
   };
 
+  const userProfileIsEmpty = !userProfileData || Object.keys(userProfileData || {}).length === 0
+
+  const formSuccess = () => {
+    if (formType === UserProfileFormType.CREATE) {
+      setSkills([{ name: "", level: "", rating: "" }]);
+      setExperiences([
+        { company: "", role: "", startDate: new Date(), endDate: new Date(), skillAchieved: [], domainsWorked: [] },
+      ]);
+      setEducations([
+        { institution: "", degree: "", fieldOfStudy: "", startDate: new Date(), endDate: new Date() },
+      ]);
+      setProjects([{ title: "", description: "", link: "" }]);
+      setCertifications([{ name: "", link: "" }]);
+      setLanguages([{ name: "", proficiency: "" }]);
+      setInterests([{ name: "" }]);
+      navigate(ROUTES.DASHBOARD);
+                
+    }
+    if (formType === UserProfileFormType.UPDATE) {
+      navigate(ROUTES.DASHBOARD);
+    }
+  }
+
   const formik = CreateUserFormHook({
     formType,
+    userProfileData,
+    formSuccess,
   });
+
+  const showFieldError = (
+    fieldName: "phoneNumber" | "streetAddress" | "city" | "state" | "country",
+  ) => {
+    const error = formik.errors[fieldName];
+    const touched = formik.touched[fieldName];
+
+    return touched && typeof error === "string" ? error : "";
+  };
+
+  const handleFinalSubmit = async () => {
+    const errors = await formik.validateForm();
+
+    await formik.setTouched({
+      phoneNumber: true,
+      streetAddress: true,
+      city: true,
+      state: true,
+      country: true,
+      zipCode: true,
+    });
+
+    const hasContactErrors = Boolean(
+      errors.phoneNumber ||
+      errors.streetAddress ||
+      errors.city ||
+      errors.state ||
+      errors.country ||
+      errors.zipCode,
+    );
+
+    if (hasContactErrors) {
+      handleNavigation(SetupUiStepsType.CONTACT_ADDRESS);
+      toast.error("Please complete the Contact & Address step before submitting.");
+      return;
+    }
+
+    await formik.submitForm();
+  };
+
+  useEffect(() => {
+    if (formType === UserProfileFormType.UPDATE && !userProfileIsEmpty) {
+      setSkills(
+        (userProfileData?.skills || []).map((skill) => ({
+          ...skill,
+        })),
+      );
+      setExperiences(
+        (userProfileData?.experience || []).map((experience) => ({
+          ...experience,
+          startDate: experience?.startDate ? new Date(experience.startDate) : new Date(),
+          endDate: experience?.endDate ? new Date(experience.endDate) : new Date(),
+          skillAchieved: [...(experience?.skillAchieved || [])],
+          domainsWorked: [...(experience?.domainsWorked || [])],
+        })),
+      );
+      setEducations(
+        (userProfileData?.education || []).map((education) => ({
+          ...education,
+          startDate: education?.startDate ? new Date(education.startDate) : new Date(),
+          endDate: education?.endDate ? new Date(education.endDate) : new Date(),
+        })),
+      );
+      setProjects(
+        (userProfileData?.projects || []).map((project) => ({
+          ...project,
+        })),
+      );
+      setCertifications(
+        (userProfileData?.certifications || []).map((certification) => ({
+          ...certification,
+        })),
+      );
+      setLanguages(
+        (userProfileData?.languages || []).map((language) => ({
+          ...language,
+        })),
+      );
+      setInterests(
+        (userProfileData?.interests || []).map((interest) => ({
+          ...interest,
+        })),
+      );
+    }
+  }, [formType, userProfileData, userProfileIsEmpty]);
 
   useEffect(() => {
     formik.setFieldValue("skills", skills).catch(() => {});
@@ -394,18 +511,18 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <FormControl
                   label="Phone Number"
-                  error={
-                    formik.errors.phoneNumber && formik.touched.phoneNumber
-                      ? formik.errors.phoneNumber
-                      : ""
-                  }
+                  error={showFieldError("phoneNumber")}
                 >
                   <Input
                     name="phoneNumber"
                     placeholder="9875213456"
-                    type="number"
+                    type="tel"
+                    inputMode="numeric"
                     value={formik.values.phoneNumber}
-                    onChange={formik.handleChange("phoneNumber")}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, "").slice(0, 10);
+                      formik.setFieldValue("phoneNumber", value).catch(() => {});
+                    }}
                     onBlur={formik.handleBlur}
                     onKeyDown={(e) => {
                       if (["e", "E", "+", "-"].includes(e.key)) {
@@ -416,11 +533,7 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
                 </FormControl>
                 <FormControl
                   label="Street Address"
-                  error={
-                    formik.errors.streetAddress && formik.touched.streetAddress
-                      ? formik.errors.streetAddress
-                      : ""
-                  }
+                  error={showFieldError("streetAddress")}
                 >
                   <Input
                     name="streetAddress"
@@ -432,11 +545,7 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
                 </FormControl>
                 <FormControl
                   label="City"
-                  error={
-                    formik.errors.city && formik.touched.city
-                      ? formik.errors.city
-                      : ""
-                  }
+                  error={showFieldError("city")}
                 >
                   <Input
                     name="city"
@@ -448,11 +557,7 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
                 </FormControl>
                 <FormControl
                   label="State"
-                  error={
-                    formik.errors.state && formik.touched.state
-                      ? formik.errors.state
-                      : ""
-                  }
+                  error={showFieldError("state")}
                 >
                   <Input
                     name="state"
@@ -464,11 +569,7 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
                 </FormControl>
                 <FormControl
                   label="Country"
-                  error={
-                    formik.errors.country && formik.touched.country
-                      ? formik.errors.country
-                      : ""
-                  }
+                  error={showFieldError("country")}
                 >
                   <Input
                     name="country"
@@ -552,7 +653,14 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
               </Button>
             </div>
             <div className="w-fit">
-              <Button type={ButtonType.SUBMIT}>Save Profile</Button>
+              <Button
+                type={ButtonType.BUTTON}
+                onClick={() => {
+                  handleFinalSubmit().catch(() => {});
+                }}
+              >
+                {formType === UserProfileFormType.CREATE ? "Create Profile" : "Update Profile"}
+              </Button>
             </div>
           </div>
         )}

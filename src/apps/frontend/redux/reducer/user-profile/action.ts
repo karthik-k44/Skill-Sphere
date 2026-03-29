@@ -12,4 +12,8 @@ const GetUserProfile = createAsyncThunk(
     async(userId: string): Promise<UserProfile> => UserProfileService.getUserProfileByUserId(userId),
 )
 
-export { CreateUserProfile, GetUserProfile };
+const UpdateUserProfile = createAsyncThunk(
+    'UpdateUserProfile',
+    async({userId, params}: {userId: string, params: Partial<CreateUserProfileParams>}): Promise<UserProfile> => UserProfileService.updateUserProfile(userId, params),
+)
+export { CreateUserProfile, GetUserProfile, UpdateUserProfile };

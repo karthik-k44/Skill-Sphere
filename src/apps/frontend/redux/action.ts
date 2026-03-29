@@ -1,5 +1,5 @@
 import { createUser, loginUser } from "./reducer/authentication/action";
-import { CreateUserProfile, GetUserProfile } from "./reducer/user-profile/action";
+import { CreateUserProfile, GetUserProfile, UpdateUserProfile } from "./reducer/user-profile/action";
 import { GetAiAnalyzedData } from "./reducer/ai-analyzer/action";
 
 export { 
@@ -7,5 +7,6 @@ export {
     loginUser,
     CreateUserProfile,
     GetUserProfile,
+    UpdateUserProfile,
     GetAiAnalyzedData,
 };

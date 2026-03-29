@@ -1,32 +1,35 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { UserProfileFormType } from '../../../../types/user-profile'
+import { UserProfileFormType, type UserProfileResponse } from '../../../../types/user-profile'
 import { useAppDispatch } from '../../../../redux/hook'
-import { CreateUserProfile, GetUserProfile } from '../../../../redux/action'
+import { CreateUserProfile, GetUserProfile, UpdateUserProfile } from '../../../../redux/action'
 import toast from 'react-hot-toast'
 
 interface CreateUserFormHookProps {
   formType: UserProfileFormType
+  userProfileData?: UserProfileResponse
+  formSuccess?: () => void
 }
-const CreateUserFormHook = ({ formType }: CreateUserFormHookProps) => {
+const CreateUserFormHook = ({ formType, userProfileData, formSuccess }: CreateUserFormHookProps) => {
   const dispatch = useAppDispatch()
   const userId = localStorage.getItem('userId')
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues:{
-      phoneNumber: '',
-      streetAddress: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      country: '',
-      skills: [],
-      experience: [],
-      education: [],
-      projects: [],
-      certifications: [],
-      languages: [],
-      interests: [],
+      phoneNumber: userProfileData?.phoneNumber || '',
+      streetAddress: userProfileData?.address?.street || '',
+      city: userProfileData?.address?.city || '',
+      state: userProfileData?.address?.state || '',
+      zipCode: userProfileData?.address?.zipCode || '',
+      country: userProfileData?.address?.country || '',
+      skills: userProfileData?.skills || [],
+      experience: userProfileData?.experience || [],
+      education: userProfileData?.education || [],
+      projects: userProfileData?.projects || [],
+      certifications: userProfileData?.certifications || [],
+      languages: userProfileData?.languages || [],
+      interests: userProfileData?.interests || [],
     },
     validationSchema: Yup.object({
       phoneNumber: Yup.string()
@@ -39,11 +42,16 @@ const CreateUserFormHook = ({ formType }: CreateUserFormHookProps) => {
       zipCode: Yup.string(),
       country: Yup.string().required('Enter your country name'),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      if (!userId) {
+        toast.error('User not found')
+        return
+      }
+
       const { streetAddress, city, state, zipCode, country, ...rest } = values
       const params = {
         ...rest,
-        userId: userId || '',
+        userId,
         address: {
           street: streetAddress,
           city,
@@ -53,18 +61,24 @@ const CreateUserFormHook = ({ formType }: CreateUserFormHookProps) => {
         }
       }
     
-      if(formType === UserProfileFormType.CREATE)
-      {
-        dispatch(CreateUserProfile(params))
-        .then(()=>{})
-        .catch((err)=>{
-          console.log(err)
-        })
-        .finally(()=>{
+      try {
+        if (formType === UserProfileFormType.CREATE) {
+          await dispatch(CreateUserProfile(params)).unwrap()
           toast.success('Profile created successfully')
           formik.resetForm()
-          dispatch(GetUserProfile(userId || '')).catch(()=>{})
-        })
+          formSuccess?.()
+        } else if(formType === UserProfileFormType.UPDATE) {
+          console.log(params, 'Update params')
+          await dispatch(UpdateUserProfile({ userId, params })).unwrap()
+          toast.success('Profile updated successfully')
+          formSuccess?.()
+        }
+
+        await dispatch(GetUserProfile(userId)).unwrap()
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : `Failed to ${formType === UserProfileFormType.CREATE ? 'create' : 'update'} profile`
+        toast.error(message)
       }
     }
   })

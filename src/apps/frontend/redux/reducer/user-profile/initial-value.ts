@@ -7,6 +7,9 @@ export type userProfileSliceInitialState = {
     getUserProfileError: AsyncError,
     getUserProfileLoading: boolean,
     getUserProfileData?: UserProfile,
+    updateUserProfileError: AsyncError,
+    updateUserProfileLoading: boolean,
+    updateUserProfileData?: UserProfile,
 }
 
 export const initialUserProfileState: userProfileSliceInitialState ={
@@ -16,4 +19,7 @@ export const initialUserProfileState: userProfileSliceInitialState ={
     getUserProfileError: { code: "", message: "" },
     getUserProfileLoading: false,
     getUserProfileData: undefined,
+    updateUserProfileError: { code: "", message: "" },
+    updateUserProfileLoading: false,
+    updateUserProfileData: undefined,
 }

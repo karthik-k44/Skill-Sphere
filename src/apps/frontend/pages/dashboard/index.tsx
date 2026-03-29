@@ -5,11 +5,26 @@ import { NavbarItemsEnum, NavType } from "../../types/navbar";
 import { ProtectedNavbar } from "../../constants/navbar"
 import { ROUTES } from "../../routes/types";
 import { UserProfileFormType } from "../../types/user-profile";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { GetUserProfile } from "../../redux/action";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const userId = localStorage.getItem("userId");
+  const dispatch = useAppDispatch();
+ 
+  const { getUserProfileData } = useAppSelector((state) => state.userProfile);
+  
   const [isActiveNavItem, setIsActiveNavItem] = useState<NavbarItemsEnum>(NavbarItemsEnum.HOME);
+  
+  const isUserProfileEmpty =
+    !getUserProfileData?.userProfile ||
+    Object.keys(getUserProfileData?.userProfile || {}).length === 0;
+
+  useEffect(() => {
+    if (userId) dispatch(GetUserProfile(userId)).catch(() => {});
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -39,7 +54,11 @@ const DashboardPage = () => {
         navigate(ROUTES.AI_ANALYZER);
         break;
       case NavbarItemsEnum.PROFILE:
-        navigate(`${ROUTES.PROFILE}/${UserProfileFormType.UPDATE}`);
+        if (isUserProfileEmpty) {
+          navigate(`${ROUTES.PROFILE}/${UserProfileFormType.CREATE}`);
+        } else {
+          navigate(`${ROUTES.PROFILE}/${UserProfileFormType.UPDATE}`);
+        }
         break;
       case NavbarItemsEnum.HOME:
       default:

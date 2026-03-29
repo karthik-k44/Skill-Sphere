@@ -22,4 +22,14 @@ export class UserProfileService extends APIService {
             throw CommonService.toReadableError(error);;
         }
     }
+
+    public static updateUserProfile = async (userId: string, params: Partial<CreateUserProfileParams>) => {
+        try {
+            const response = await this.instance.apiClient.patch(`/user-profile/${userId}`, params);
+            return response.data;
+        } catch (error) {
+            throw CommonService.toReadableError(error);;
+        }
+    }
+
 }
