@@ -1,4 +1,4 @@
-import { BarChart, Cloud, Shield, Smartphone, Users, Zap } from "lucide-react";
+import { BarChart, Bot, Briefcase, FileText, Shield, User } from "lucide-react";
 
 export enum NavType {
     PUBLIC = 'PUBLIC',
@@ -27,33 +27,33 @@ export enum NavbarItemsEnum {
 
 export const FeaturesData = [
   {
-    icon: Zap,
-    title: 'Lightning Fast',
-    description: 'Experience blazing-fast performance with our optimized infrastructure and global CDN.',
-  },
-  {
     icon: Shield,
-    title: 'Secure by Default',
-    description: 'Enterprise-grade security with end-to-end encryption and compliance certifications.',
+    title: 'Secure Authentication',
+    description: 'Create an account and sign in to access your private Skill Sphere workspace.',
   },
   {
-    icon: Users,
-    title: 'Team Collaboration',
-    description: 'Work seamlessly with your team with real-time collaboration and shared workspaces.',
+    icon: User,
+    title: 'Personal Profile Builder',
+    description: 'Add your personal details, role, skills, and other professional information in one structured flow.',
   },
   {
-    icon: Smartphone,
-    title: 'Mobile Ready',
-    description: 'Fully responsive design that works perfectly on all devices and screen sizes.',
+    icon: Briefcase,
+    title: 'Experience and Projects',
+    description: 'Document your work history, domains worked, and real projects so your profile reflects actual experience.',
   },
   {
-    icon: Cloud,
-    title: 'Cloud Powered',
-    description: 'Reliable cloud infrastructure with 99.9% uptime and automatic backups.',
+    icon: FileText,
+    title: 'Education and Credentials',
+    description: 'Organize education, certifications, languages, and interests to create a more complete professional story.',
+  },
+  {
+    icon: Bot,
+    title: 'AI Profile Analyzer',
+    description: 'Generate a summary of your strengths, focus areas, and action items based on the profile you build.',
   },
   {
     icon: BarChart,
-    title: 'Analytics Dashboard',
-    description: 'Get insights with detailed analytics and reporting tools to track your progress.',
+    title: 'Growth Dashboard',
+    description: 'Keep your career data in one place so you can review progress and improve your profile over time.',
   },
 ];

@@ -57,9 +57,19 @@ function LandingPage() {
           </>
         ) : (
           <>
-            {isActiveNavItem === NavbarItemsEnum.HOME && <Home onGetStarted={() => setIsAuthModalOpen(true)} />}
+            {isActiveNavItem === NavbarItemsEnum.HOME && (
+              <Home
+                onGetStarted={() => setIsAuthModalOpen(true)}
+                onExploreFeatures={() => setIsActiveNavItem(NavbarItemsEnum.FEATURES)}
+              />
+            )}
             {isActiveNavItem === NavbarItemsEnum.FEATURES && <Features />}
-            {isActiveNavItem === NavbarItemsEnum.ABOUT && <About onGetStarted={() => setIsAuthModalOpen(true)} />}
+            {isActiveNavItem === NavbarItemsEnum.ABOUT && (
+              <About
+                onGetStarted={() => setIsAuthModalOpen(true)}
+                onContactClick={() => setIsActiveNavItem(NavbarItemsEnum.CONTACT)}
+              />
+            )}
             {isActiveNavItem === NavbarItemsEnum.CONTACT && <Contact />}
 
           </>

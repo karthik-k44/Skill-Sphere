@@ -1,7 +1,18 @@
-import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const platformHighlights = ['Profile Builder', 'AI Analyzer', 'Career Growth'];
+  const gettingStarted = [
+    'Create your account',
+    'Complete your profile',
+    'Review AI insights',
+    'Keep your data updated',
+  ];
+  const builtFor = [
+    'Students',
+    'Job seekers',
+    'Career switchers',
+    'Growing professionals',
+  ];
 
   return (
     <footer className="bg-primary-50 dark:bg-black border-t border-primary-200 dark:border-primary-900">
@@ -9,56 +20,55 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="col-span-1 md:col-span-2">
             <h3 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-4">
-              BrandName
+              Skill Sphere
             </h3>
             <p className="text-primary-700 dark:text-primary-300 mb-4 max-w-md">
-              Building the future of digital experiences with powerful tools and seamless collaboration.
+              Skill Sphere helps users build professional profiles, organize skills and experience,
+              and use AI guidance to identify the next step in their career growth.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="p-2 bg-white dark:bg-primary-950/30 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/40 transition-colors border border-primary-200 dark:border-primary-900">
-                <Twitter size={20} className="text-primary-700 dark:text-primary-300" />
-              </a>
-              <a href="#" className="p-2 bg-white dark:bg-primary-950/30 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/40 transition-colors border border-primary-200 dark:border-primary-900">
-                <Github size={20} className="text-primary-700 dark:text-primary-300" />
-              </a>
-              <a href="#" className="p-2 bg-white dark:bg-primary-950/30 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/40 transition-colors border border-primary-200 dark:border-primary-900">
-                <Linkedin size={20} className="text-primary-700 dark:text-primary-300" />
-              </a>
-              <a href="#" className="p-2 bg-white dark:bg-primary-950/30 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/40 transition-colors border border-primary-200 dark:border-primary-900">
-                <Mail size={20} className="text-primary-700 dark:text-primary-300" />
-              </a>
+            <div className="flex flex-wrap gap-3">
+              {platformHighlights.map((item) => (
+                <span
+                  key={item}
+                  className="px-3 py-2 text-sm bg-white dark:bg-primary-950/30 rounded-lg border border-primary-200 dark:border-primary-900 text-primary-700 dark:text-primary-300"
+                >
+                  {item}
+                </span>
+              ))}
             </div>
           </div>
 
           <div>
-            <h4 className="font-semibold text-black dark:text-primary-100 mb-4">Product</h4>
+            <h4 className="font-semibold text-black dark:text-primary-100 mb-4">Getting Started</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Features</a></li>
-              <li><a href="#" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Pricing</a></li>
-              <li><a href="#" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Security</a></li>
-              <li><a href="#" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Roadmap</a></li>
+              {gettingStarted.map((item) => (
+                <li key={item} className="text-primary-700 dark:text-primary-300">
+                  {item}
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold text-black dark:text-primary-100 mb-4">Company</h4>
+            <h4 className="font-semibold text-black dark:text-primary-100 mb-4">Built For</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">About</a></li>
-              <li><a href="#" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Blog</a></li>
-              <li><a href="#" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Careers</a></li>
-              <li><a href="#" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Contact</a></li>
+              {builtFor.map((item) => (
+                <li key={item} className="text-primary-700 dark:text-primary-300">
+                  {item}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
         <div className="pt-8 border-t border-primary-200 dark:border-primary-900 flex flex-col md:flex-row justify-between items-center">
           <p className="text-primary-700 dark:text-primary-300 text-sm mb-4 md:mb-0">
-            {currentYear} BrandName. All rights reserved.
+            {currentYear} Skill Sphere. Profile building and AI-guided career growth in one workspace.
           </p>
           <div className="flex space-x-6 text-sm">
-            <a href="#" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Privacy Policy</a>
-            <a href="#" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Terms of Service</a>
-            <a href="#" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Cookie Policy</a>
+            <span className="text-primary-700 dark:text-primary-300">Profile-first</span>
+            <span className="text-primary-700 dark:text-primary-300">AI-guided</span>
+            <span className="text-primary-700 dark:text-primary-300">Career-focused</span>
           </div>
         </div>
       </div>

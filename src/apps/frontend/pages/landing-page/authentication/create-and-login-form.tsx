@@ -64,7 +64,7 @@ const CreateAndLoginForm: React.FC<CreateAndLoginFormProps> = ({ isOpen, setIsOp
           />
         </FormControl>
 
-        <Text>
+        <Text font='ParagraphSmall'>
           {authType === AuthType.SIGN_UP ? 'Already have an account? ' : "Don't have an account? "}
           <button type='button' onClick={() => setAuthType(authType === AuthType.SIGN_UP ? AuthType.LOGIN : AuthType.SIGN_UP)} className='text-primary-600 hover:text-primary-700 hover:underline'>
             {authType === AuthType.SIGN_UP ? 'Login' : 'Sign Up'}

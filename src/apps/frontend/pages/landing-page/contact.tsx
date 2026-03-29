@@ -1,26 +1,7 @@
 import type { FormEvent } from 'react';
-import { Clock3, Mail, MapPin, PhoneCall, Send } from 'lucide-react';
-
-const contactMethods = [
-  {
-    icon: Mail,
-    title: 'Email Us',
-    value: 'hello@skillsphere.dev',
-    caption: 'We usually respond within 24 hours.',
-  },
-  {
-    icon: PhoneCall,
-    title: 'Call Us',
-    value: '+1 (555) 743-1009',
-    caption: 'Mon to Fri, 9:00 AM to 6:00 PM PST.',
-  },
-  {
-    icon: MapPin,
-    title: 'Visit Us',
-    value: '221 Market St, San Francisco, CA',
-    caption: 'Come by for product demos and onboarding.',
-  },
-];
+import { Clock3, Send } from 'lucide-react';
+import { ContactMethods } from '../../constants';
+import { Button } from '../../components';
 
 const Contact = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -28,20 +9,25 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-primary-50 dark:bg-black">
+    <section
+      id="contact"
+      className="py-20 px-4 sm:px-6 lg:px-8 bg-primary-50 dark:bg-black"
+    >
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-black dark:text-primary-100 mb-4">
-            Let&apos;s Build Together
+            Need Help Getting Started?
           </h2>
           <p className="text-xl text-primary-700 dark:text-primary-300 max-w-2xl mx-auto">
-            Tell us what you&apos;re building and we&apos;ll help you get started with the right plan.
+            Share your goal, the role you are targeting, or the part of Skill
+            Sphere you want help with while building your profile and reviewing
+            your AI insights.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-2 space-y-4">
-            {contactMethods.map((method) => {
+            {ContactMethods.map((method) => {
               const Icon = method.icon;
               return (
                 <div
@@ -72,9 +58,11 @@ const Contact = () => {
               <div className="flex items-start gap-3">
                 <Clock3 size={20} className="mt-1" />
                 <div>
-                  <p className="font-semibold">Priority Support Window</p>
+                  <p className="font-semibold">Best Results Tip</p>
                   <p className="text-primary-100 text-sm">
-                    Enterprise customers can request implementation calls with our solutions team.
+                    Complete your profile with skills, experience, projects, and
+                    certifications before running the AI analyzer for more
+                    useful feedback.
                   </p>
                 </div>
               </div>
@@ -95,22 +83,22 @@ const Contact = () => {
                     id="fullName"
                     type="text"
                     required
-                    placeholder="Jane Cooper"
+                    placeholder="Your Name"
                     className="w-full rounded-xl border border-primary-200 dark:border-primary-900 bg-white dark:bg-primary-950/30 px-4 py-3 text-black dark:text-primary-100 placeholder:text-primary-500 dark:placeholder:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
                 <div>
                   <label
-                    htmlFor="workEmail"
+                    htmlFor="email"
                     className="block text-sm font-medium text-black dark:text-primary-100 mb-2"
                   >
-                    Work Email
+                    Email Address
                   </label>
                   <input
-                    id="workEmail"
+                    id="email"
                     type="email"
                     required
-                    placeholder="jane@company.com"
+                    placeholder="you@example.com"
                     className="w-full rounded-xl border border-primary-200 dark:border-primary-900 bg-white dark:bg-primary-950/30 px-4 py-3 text-black dark:text-primary-100 placeholder:text-primary-500 dark:placeholder:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
@@ -119,34 +107,34 @@ const Contact = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label
-                    htmlFor="company"
+                    htmlFor="currentRole"
                     className="block text-sm font-medium text-black dark:text-primary-100 mb-2"
                   >
-                    Company
+                    Current Role
                   </label>
                   <input
-                    id="company"
+                    id="currentRole"
                     type="text"
-                    placeholder="SkillSphere Inc."
+                    placeholder="Frontend Developer"
                     className="w-full rounded-xl border border-primary-200 dark:border-primary-900 bg-white dark:bg-primary-950/30 px-4 py-3 text-black dark:text-primary-100 placeholder:text-primary-500 dark:placeholder:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
                 <div>
                   <label
-                    htmlFor="teamSize"
+                    htmlFor="helpTopic"
                     className="block text-sm font-medium text-black dark:text-primary-100 mb-2"
                   >
-                    Team Size
+                    What Do You Need Help With?
                   </label>
                   <select
-                    id="teamSize"
+                    id="helpTopic"
                     className="w-full rounded-xl border border-primary-200 dark:border-primary-900 bg-white dark:bg-primary-950/30 px-4 py-3 text-black dark:text-primary-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
                   >
-                    <option>1-10</option>
-                    <option>11-50</option>
-                    <option>51-200</option>
-                    <option>201-1000</option>
-                    <option>1000+</option>
+                    <option>Creating my profile</option>
+                    <option>Updating skills and experience</option>
+                    <option>Understanding skill gaps</option>
+                    <option>Using the AI analyzer</option>
+                    <option>General question</option>
                   </select>
                 </div>
               </div>
@@ -156,24 +144,27 @@ const Contact = () => {
                   htmlFor="message"
                   className="block text-sm font-medium text-black dark:text-primary-100 mb-2"
                 >
-                  How can we help?
+                  What Is Your Goal?
                 </label>
                 <textarea
                   id="message"
                   rows={6}
                   required
-                  placeholder="Tell us about your use case, goals, and timeline."
+                  placeholder="Tell us the role you are targeting, what part of your profile is incomplete, or what kind of AI feedback you want."
                   className="w-full rounded-xl border border-primary-200 dark:border-primary-900 bg-white dark:bg-primary-950/30 px-4 py-3 text-black dark:text-primary-100 placeholder:text-primary-500 dark:placeholder:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full md:w-auto px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl transition-colors font-medium inline-flex items-center justify-center gap-2"
-              >
-                Send Message
-                <Send size={18} />
-              </button>
+              <div className='w-full justify-end flex'>
+                <div className="w-fit">
+                  <Button>
+                    <div className="flex items-center gap-2 justify-center">
+                      Submit Request
+                      <Send size={18} />
+                    </div>
+                  </Button>
+                </div>
+              </div>
             </form>
           </div>
         </div>

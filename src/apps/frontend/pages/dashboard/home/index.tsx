@@ -17,7 +17,7 @@ const Home = () => {
   }, [])
 
   const isDataEmpty = !getUserProfileData || Object.keys(getUserProfileData || {}).length === 0;
-  const isUserProfile = !getUserProfileData?.userProfile || Object.keys(getUserProfileData?.userProfile || {}).length === 0;
+  const isUserProfileEmpty = !getUserProfileData?.userProfile || Object.keys(getUserProfileData?.userProfile || {}).length === 0;
 
   if (getUserProfileLoading) {
     return <Skeleton />
@@ -40,21 +40,21 @@ const Home = () => {
   return (
     <>
       <div className="py-20 px-4 min-h-screen sm:px-6 lg:px-20 bg-gray-50 dark:bg-black">
-        <UserHead 
+        <UserHead
           email={getUserProfileData.user?.email}
           phone={getUserProfileData.userProfile?.phoneNumber}
           name={getUserProfileData.user?.name}
           role={getUserProfileData.user?.role}
           address={getUserProfileData.userProfile?.address}
         />
-        { isUserProfile ? (
-          <NoUserProfileCard/>
+        {isUserProfileEmpty ? (
+          <NoUserProfileCard />
         ) : (
           <HomePage userData={getUserProfileData.userProfile} />
         )}
       </div>
     </>
-  )
+  );
 }
 
 export default Home
