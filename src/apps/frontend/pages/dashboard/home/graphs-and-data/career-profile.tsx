@@ -86,7 +86,7 @@ const CareerProfile:React.FC<CareerProfileProps> = ({
 
   return (
     <div>
-      <section className="relative overflow-hidden rounded-[2rem] border border-slate-200/70 bg-gradient-to-r from-primary-700 via-primary-900 to-primary-900 p-6 text-white shadow-xl shadow-slate-200/80 sm:p-8">
+      <section className="relative overflow-hidden rounded-[2rem] border border-slate-200/70 bg-gradient-to-r from-primary via-primary-900 to-primary-900 p-6 text-white shadow-xl shadow-slate-200/80 sm:p-8">
         <div className="relative grid gap-6 xl:grid-cols-[1.2fr_0.85fr]">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-slate-100">

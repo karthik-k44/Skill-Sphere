@@ -7,6 +7,7 @@ import { ROUTES } from "../../routes/types";
 import { UserProfileFormType } from "../../types/user-profile";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { GetUserProfile } from "../../redux/action";
+import { resetAiAnalyzerState } from "../../redux/reducer/ai-analyzer";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -28,6 +29,8 @@ const DashboardPage = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("userId");
+    dispatch(resetAiAnalyzerState());
     navigate(ROUTES.DASHBOARD);
   };
 

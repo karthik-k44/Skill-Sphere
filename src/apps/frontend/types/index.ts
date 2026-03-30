@@ -23,8 +23,6 @@ export type {
   UserProfileResponse,
 } from "./user-profile";
 
-export type { AIAnalyzerResult } from "./ai-analyzer";
-
 export { AuthType } from "./authentication";
 
 export { FeaturesData } from "./navbar";
@@ -45,3 +43,5 @@ export type {
   LaunchPhaseState,
   FeaturePreview,
 } from "./resume-builder";
+
+export type { AiAnalyzerResponse } from "./ai-analyzer";
