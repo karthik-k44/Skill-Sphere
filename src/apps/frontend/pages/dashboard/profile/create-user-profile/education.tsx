@@ -1,15 +1,20 @@
-import { ChevronDown, Plus, Trash2 } from "lucide-react";
-import { Button, FormControl, Input, Text } from "../../../../components";
-import type { UserEducation } from "../../../../types";
+import { ChevronDown, GraduationCap, Plus, Sparkles, Trash2 } from "lucide-react";
 import {
-  profileDeleteIconButtonClass,
-  profileIconButtonClass,
-  profileItemCardClass,
-  profileItemHeaderClass,
-  profileSectionClass,
-  profileSectionHeaderClass,
-  profileStepContainerClass,
-} from "./create-user-profile-ui";
+  Button,
+  FormControl,
+  Input,
+  ProfileDeleteIconButton,
+  ProfileIconButton,
+  ProfileItemCard,
+  ProfileItemHeader,
+  ProfileSection,
+  ProfileSectionHeader,
+  ProfileSectionHint,
+  ProfileStepLayout,
+  Text,
+} from "../../../../components";
+import { ButtonType } from "../../../../types/button";
+import type { UserEducation } from "../../../../types";
 
 interface EducationProps {
   handleAddNewEducation: () => void;
@@ -32,48 +37,63 @@ const Education: React.FC<EducationProps> = ({
   educations,
 }) => {
   return (
-    <div className={profileStepContainerClass}>
-      <section className={profileSectionClass}>
-        <div className={profileSectionHeaderClass}>
-          <Text font="ParagraphLarge">Education</Text>
-          <div className="w-fit">
-            <Button onClick={handleAddNewEducation}>
+    <ProfileStepLayout>
+      <ProfileSection>
+        <ProfileSectionHeader
+          badge={
+            <>
+              <GraduationCap size={14} />
+              Academic Path
+            </>
+          }
+          title={<Text font="ParagraphLarge">Education</Text>}
+          description="Keep your academic background clear and structured so your profile shows both practical and educational depth."
+          stat={
+            <>
+              <Sparkles size={16} />
+              {educations.length} Added
+            </>
+          }
+          action={
+            <Button type={ButtonType.BUTTON} onClick={handleAddNewEducation}>
               <Plus size={16} className="mr-1" /> Add Education
             </Button>
-          </div>
-        </div>
+          }
+        />
+        <ProfileSectionHint>
+          Include the institution, degree, and field of study first. Expand the
+          card to complete the timeline for each education entry.
+        </ProfileSectionHint>
         {educations.map((education, index) => (
-          <div key={`education-${index}`} className={profileItemCardClass}>
-            <div className={profileItemHeaderClass}>
-              <Text font="LabelLarge">Education {index + 1}</Text>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => toggleEducation(index)}
-                  className={profileIconButtonClass}
-                  aria-label={`Toggle education ${index + 1}`}
-                >
-                  <ChevronDown
-                    size={20}
-                    className={`transition-transform duration-300 ${
-                      expandedEducationIndices.includes(index)
-                        ? "rotate-180"
-                        : ""
-                    }`}
-                  />
-                </button>
-                <button
-                  type="button"
-                  className={profileDeleteIconButtonClass}
-                  onClick={() => {
-                    handleDeleteEducation(index);
-                  }}
-                  aria-label={`Delete education ${index + 1}`}
-                >
-                  <Trash2 size={20} />
-                </button>
-              </div>
-            </div>
+          <ProfileItemCard key={`education-${index}`}>
+            <ProfileItemHeader
+              title={`Education ${index + 1}`}
+              actions={
+                <div className="flex items-center gap-2">
+                  <ProfileIconButton
+                    onClick={() => toggleEducation(index)}
+                    aria-label={`Toggle education ${index + 1}`}
+                  >
+                    <ChevronDown
+                      size={20}
+                      className={`transition-transform duration-300 ${
+                        expandedEducationIndices.includes(index)
+                          ? "rotate-180"
+                          : ""
+                      }`}
+                    />
+                  </ProfileIconButton>
+                  <ProfileDeleteIconButton
+                    onClick={() => {
+                      handleDeleteEducation(index);
+                    }}
+                    aria-label={`Delete education ${index + 1}`}
+                  >
+                    <Trash2 size={20} />
+                  </ProfileDeleteIconButton>
+                </div>
+              }
+            />
             <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
               <FormControl label="Institution" error="">
                 <Input
@@ -101,7 +121,7 @@ const Education: React.FC<EducationProps> = ({
             <div
               className={`overflow-hidden transition-all duration-300 ease-in-out ${
                 expandedEducationIndices.includes(index)
-                  ? "max-h-[700px] border-t border-slate-200 pt-5 dark:border-gray-700"
+                  ? "max-h-[700px] border-t border-primary-100 pt-5"
                   : "max-h-0"
               }`}
             >
@@ -153,10 +173,10 @@ const Education: React.FC<EducationProps> = ({
                 </div>
               </div>
             </div>
-          </div>
+          </ProfileItemCard>
         ))}
-      </section>
-    </div>
+      </ProfileSection>
+    </ProfileStepLayout>
   );
 };
 

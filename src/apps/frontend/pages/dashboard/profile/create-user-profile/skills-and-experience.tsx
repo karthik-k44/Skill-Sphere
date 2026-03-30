@@ -1,15 +1,20 @@
-import { ChevronDown, Plus, Trash2 } from "lucide-react";
-import { Button, FormControl, Input, Text } from "../../../../components";
-import type { Skills, UserExperience, UserProjects } from "../../../../types/user-profile";
+import { Briefcase, ChevronDown, Code, Plus, Sparkles, Trash2 } from "lucide-react";
 import {
-  profileDeleteIconButtonClass,
-  profileIconButtonClass,
-  profileItemCardClass,
-  profileItemHeaderClass,
-  profileSectionClass,
-  profileSectionHeaderClass,
-  profileStepContainerClass,
-} from "./create-user-profile-ui";
+  Button,
+  FormControl,
+  Input,
+  ProfileDeleteIconButton,
+  ProfileIconButton,
+  ProfileItemCard,
+  ProfileItemHeader,
+  ProfileSection,
+  ProfileSectionHeader,
+  ProfileSectionHint,
+  ProfileStepLayout,
+  Text,
+} from "../../../../components";
+import { ButtonType } from "../../../../types/button";
+import type { Skills, UserExperience, UserProjects } from "../../../../types/user-profile";
 
 interface SkillsAndExperienceProps {
   skills: Skills[];
@@ -71,29 +76,46 @@ const SkillsAndExperience: React.FC<SkillsAndExperienceProps> = ({
       .filter(Boolean);
 
   return (
-    <div className={profileStepContainerClass}>
-      <section className={profileSectionClass}>
-        <div className={profileSectionHeaderClass}>
-          <Text font="ParagraphLarge">Skills</Text>
-          <div className="w-fit">
-            <Button onClick={handleAddNewSkills}>
+    <ProfileStepLayout>
+      <ProfileSection>
+        <ProfileSectionHeader
+          badge={
+            <>
+              <Code size={14} />
+              Capability Stack
+            </>
+          }
+          title={<Text font="ParagraphLarge">Skills</Text>}
+          description="Highlight your strongest technologies and rate them clearly so the profile instantly communicates your strengths."
+          stat={
+            <>
+              <Sparkles size={16} />
+              {skills.length} Added
+            </>
+          }
+          action={
+            <Button type={ButtonType.BUTTON} onClick={handleAddNewSkills}>
               <Plus size={16} className="mr-1" /> Add Skill
             </Button>
-          </div>
-        </div>
+          }
+        />
+        <ProfileSectionHint>
+          Use a simple level like Beginner, Intermediate, Advanced, or Expert and
+          keep ratings between 1 and 5 for a cleaner profile summary.
+        </ProfileSectionHint>
         {skills.map((skill, index) => (
-          <div key={`skill-${index}`} className={profileItemCardClass}>
-            <div className={profileItemHeaderClass}>
-              <Text font="LabelLarge">Skill {index + 1}</Text>
-              <button
-                type="button"
-                className={profileDeleteIconButtonClass}
-                onClick={() => handleDeleteSkill(index)}
-                aria-label={`Delete skill ${index + 1}`}
-              >
-                <Trash2 size={20} />
-              </button>
-            </div>
+          <ProfileItemCard key={`skill-${index}`}>
+            <ProfileItemHeader
+              title={`Skill ${index + 1}`}
+              actions={
+                <ProfileDeleteIconButton
+                  onClick={() => handleDeleteSkill(index)}
+                  aria-label={`Delete skill ${index + 1}`}
+                >
+                  <Trash2 size={20} />
+                </ProfileDeleteIconButton>
+              }
+            />
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <FormControl label="Skill Name" error="">
                 <Input
@@ -126,48 +148,63 @@ const SkillsAndExperience: React.FC<SkillsAndExperienceProps> = ({
                 />
               </FormControl>
             </div>
-          </div>
+          </ProfileItemCard>
         ))}
-      </section>
-      <section className={profileSectionClass}>
-        <div className={profileSectionHeaderClass}>
-          <Text font="ParagraphLarge">Experience</Text>
-          <div className="w-fit">
-            <Button onClick={handleAddNewExperience}>
+      </ProfileSection>
+      <ProfileSection>
+        <ProfileSectionHeader
+          badge={
+            <>
+              <Briefcase size={14} />
+              Work History
+            </>
+          }
+          title={<Text font="ParagraphLarge">Experience</Text>}
+          description="Keep your experience cards concise on top, then expand them to add dates, achieved skills, and domains worked."
+          stat={
+            <>
+              <Sparkles size={16} />
+              {experiences.length} Added
+            </>
+          }
+          action={
+            <Button type={ButtonType.BUTTON} onClick={handleAddNewExperience}>
               <Plus size={16} className="mr-1" /> Add Experience
             </Button>
-          </div>
-        </div>
+          }
+        />
+        <ProfileSectionHint>
+          Expand each experience card to fill in dates, skills achieved, and domain
+          keywords that make the profile more searchable and informative.
+        </ProfileSectionHint>
         {experiences.map((experience, index) => (
-          <div key={`experience-${index}`} className={profileItemCardClass}>
-            <div className={profileItemHeaderClass}>
-              <Text font="LabelLarge">Experience {index + 1}</Text>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => toggleExperience(index)}
-                  className={profileIconButtonClass}
-                  aria-label={`Toggle experience ${index + 1}`}
-                >
-                  <ChevronDown
-                    size={20}
-                    className={`transition-transform duration-300 ${
-                      expandedExperienceIndices.includes(index)
-                        ? "rotate-180"
-                        : ""
-                    }`}
-                  />
-                </button>
-                <button
-                  type="button"
-                  className={profileDeleteIconButtonClass}
-                  onClick={() => handleDeleteExperience(index)}
-                  aria-label={`Delete experience ${index + 1}`}
-                >
-                  <Trash2 size={20} />
-                </button>
-              </div>
-            </div>
+          <ProfileItemCard key={`experience-${index}`}>
+            <ProfileItemHeader
+              title={`Experience ${index + 1}`}
+              actions={
+                <div className="flex items-center gap-2">
+                  <ProfileIconButton
+                    onClick={() => toggleExperience(index)}
+                    aria-label={`Toggle experience ${index + 1}`}
+                  >
+                    <ChevronDown
+                      size={20}
+                      className={`transition-transform duration-300 ${
+                        expandedExperienceIndices.includes(index)
+                          ? "rotate-180"
+                          : ""
+                      }`}
+                    />
+                  </ProfileIconButton>
+                  <ProfileDeleteIconButton
+                    onClick={() => handleDeleteExperience(index)}
+                    aria-label={`Delete experience ${index + 1}`}
+                  >
+                    <Trash2 size={20} />
+                  </ProfileDeleteIconButton>
+                </div>
+              }
+            />
             <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
               <FormControl label="Company" error="">
                 <Input
@@ -191,7 +228,7 @@ const SkillsAndExperience: React.FC<SkillsAndExperienceProps> = ({
             <div
               className={`overflow-hidden transition-all duration-300 ease-in-out ${
                 expandedExperienceIndices.includes(index)
-                  ? "max-h-[900px] border-t border-slate-200 pt-5 dark:border-gray-700"
+                  ? "max-h-[900px] border-t border-primary-100 pt-5"
                   : "max-h-0"
               }`}
             >
@@ -286,47 +323,62 @@ const SkillsAndExperience: React.FC<SkillsAndExperienceProps> = ({
                 </div>
               </div>
             </div>
-          </div>
+          </ProfileItemCard>
         ))}
-      </section>
+      </ProfileSection>
 
-      <section className={profileSectionClass}>
-        <div className={profileSectionHeaderClass}>
-          <Text font="ParagraphLarge">Projects</Text>
-          <div className="w-fit">
-            <Button onClick={handleAddNewProject}>
+      <ProfileSection>
+        <ProfileSectionHeader
+          badge={
+            <>
+              <Sparkles size={14} />
+              Showcase Work
+            </>
+          }
+          title={<Text font="ParagraphLarge">Projects</Text>}
+          description="Add project titles, a short explanation, and a clean public link so your work is easy to review."
+          stat={
+            <>
+              <Sparkles size={16} />
+              {projects.length} Added
+            </>
+          }
+          action={
+            <Button type={ButtonType.BUTTON} onClick={handleAddNewProject}>
               <Plus size={16} className="mr-1" /> Add Project
             </Button>
-          </div>
-        </div>
+          }
+        />
+        <ProfileSectionHint>
+          Strong project cards usually have a clear title, outcome-focused
+          description, and a working link.
+        </ProfileSectionHint>
         {projects.map((project, index) => (
-          <div key={`project-${index}`} className={profileItemCardClass}>
-            <div className={profileItemHeaderClass}>
-              <Text font="LabelLarge">Project {index + 1}</Text>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => toggleProject(index)}
-                  className={profileIconButtonClass}
-                  aria-label={`Toggle project ${index + 1}`}
-                >
-                  <ChevronDown
-                    size={20}
-                    className={`transition-transform duration-300 ${
-                      expandedProjectIndices.includes(index) ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDeleteProject(index)}
-                  className={profileDeleteIconButtonClass}
-                  aria-label={`Delete project ${index + 1}`}
-                >
-                  <Trash2 size={20} />
-                </button>
-              </div>
-            </div>
+          <ProfileItemCard key={`project-${index}`}>
+            <ProfileItemHeader
+              title={`Project ${index + 1}`}
+              actions={
+                <div className="flex items-center gap-2">
+                  <ProfileIconButton
+                    onClick={() => toggleProject(index)}
+                    aria-label={`Toggle project ${index + 1}`}
+                  >
+                    <ChevronDown
+                      size={20}
+                      className={`transition-transform duration-300 ${
+                        expandedProjectIndices.includes(index) ? "rotate-180" : ""
+                      }`}
+                    />
+                  </ProfileIconButton>
+                  <ProfileDeleteIconButton
+                    onClick={() => handleDeleteProject(index)}
+                    aria-label={`Delete project ${index + 1}`}
+                  >
+                    <Trash2 size={20} />
+                  </ProfileDeleteIconButton>
+                </div>
+              }
+            />
             <FormControl label="Project Title" error="">
               <Input
                 placeholder="Skill Sphere"
@@ -339,7 +391,7 @@ const SkillsAndExperience: React.FC<SkillsAndExperienceProps> = ({
             <div
               className={`overflow-hidden transition-all duration-300 ease-in-out ${
                 expandedProjectIndices.includes(index)
-                  ? "max-h-[700px] border-t border-slate-200 pt-5 dark:border-gray-700"
+                  ? "max-h-[700px] border-t border-primary-100 pt-5"
                   : "max-h-0"
               }`}
             >
@@ -364,10 +416,10 @@ const SkillsAndExperience: React.FC<SkillsAndExperienceProps> = ({
                 </FormControl>
               </div>
             </div>
-          </div>
+          </ProfileItemCard>
         ))}
-      </section>
-    </div>
+      </ProfileSection>
+    </ProfileStepLayout>
   );
 };
 

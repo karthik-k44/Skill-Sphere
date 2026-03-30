@@ -3,9 +3,9 @@ import { Skeleton } from "../../../components/skeleton"
 import { useAppDispatch, useAppSelector } from "../../../redux/hook"
 import { GetUserProfile } from "../../../redux/action"
 import { Text } from "../../../components"
-import HomePage from "./home"
 import UserHead from "./userHead"
 import NoUserProfileCard from "./no-user-profile-card"
+import HomePage from "./home"
 
 const Home = () => {
   const dispatch = useAppDispatch()
@@ -39,7 +39,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="py-20 px-4 min-h-screen sm:px-6 lg:px-20 bg-gray-50 dark:bg-black">
+      <div className="py-20 px-4 min-h-screen sm:px-6 lg:px-20 bg-primary-50 dark:bg-black">
         <UserHead
           email={getUserProfileData.user?.email}
           phone={getUserProfileData.userProfile?.phoneNumber}

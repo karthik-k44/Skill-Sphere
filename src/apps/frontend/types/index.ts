@@ -39,3 +39,9 @@ export type {
   ButtonOperationType,
   ButtonType,
 } from "./button";
+
+export type {
+  LaunchPhase,
+  LaunchPhaseState,
+  FeaturePreview,
+} from "./resume-builder";

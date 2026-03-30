@@ -6,6 +6,8 @@ export enum ButtonType {
 
 export enum ButtonKind {
   PRIMARY = 'primary',
+  PRIMARY_DARK = 'primaryDark',
+  DISCARD_DARK = 'discardDark',
   DISCARD = 'discard',
   DELETE = 'delete',
   MINI_DISCARD = 'miniDiscard',

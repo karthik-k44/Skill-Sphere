@@ -44,58 +44,67 @@ const Stepper: React.FC<PropsWithChildren<StepperProps>> = ({
   const activeStepIndex = steps.findIndex((step) => step.id === activeStepId);
 
   return (
-    <div className="flex w-full flex-col items-center gap-7 px-3 py-4 sm:px-6">
-      <div className="mx-auto flex h-14 w-full max-w-4xl items-center px-2 sm:px-6">
+    <div className="flex w-full flex-col gap-8">
+      <div className="grid w-full gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {steps.map((step, index) => (
-          <React.Fragment key={step.id}>
-            <button
-              type="button"
-              className={`relative flex shrink-0 cursor-pointer items-center justify-center rounded-full border transition-all duration-200 ${
+          <button
+            key={step.id}
+            type="button"
+            className={`group relative hover:cursor-pointer flex min-h-28 w-full items-start gap-4 rounded-[1.5rem] border p-4 text-left transition-all duration-200 ${
+              activeStepIndex > index
+                ? "border-primary bg-primary text-white shadow-[0_18px_40px_-24px_rgba(37,99,235,0.75)]"
+                : activeStepIndex === index
+                ? "border-primary bg-white shadow-[0_0_0_3px_rgba(37,99,235,0.14)]"
+                : "border-primary-100 bg-white text-black hover:border-primary-200 hover:bg-primary-50/50"
+            }`}
+            onClick={() => handleNavigation(step.id)}
+            aria-current={activeStepIndex === index ? "step" : undefined}
+          >
+            <div
+              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border text-sm font-semibold transition-all ${
                 activeStepIndex > index
-                  ? "h-8 w-8 border-primary bg-primary text-white"
+                  ? "border-white/20 bg-white/15 text-white"
                   : activeStepIndex === index
-                    ? "h-8 w-8 border-primary bg-white shadow-[0_0_0_3px_rgba(36,99,235,0.14)]"
-                    : "h-7 w-7 border-grey50 bg-white"
+                  ? "border-primary bg-primary text-white"
+                  : "border-primary-100 bg-primary-50 text-primary-700"
               }`}
-              onClick={() => handleNavigation(step.id)}
-              aria-current={activeStepIndex === index ? "step" : undefined}
             >
-              {activeStepIndex > index ? (
-                <Check size={16} />
-              ) : (
-                <span
-                  className={`rounded-full ${
-                    activeStepIndex === index
-                      ? "h-3 w-3 bg-primary"
-                      : "h-2 w-2 bg-grey50"
-                  }`}
-                />
-              )}
+              {activeStepIndex > index ? <Check size={18} /> : index + 1}
+            </div>
 
-              <div className="absolute left-1/2 top-[calc(100%+8px)] -translate-x-1/2 whitespace-nowrap">
-                <Text
-                  font="LabelSmall"
-                  color={
-                    activeStepIndex >= index ? "text-primary" : "text-grey50"
-                  }
-                  textAlign="center"
-                >
-                  {step.label}
-                </Text>
-              </div>
-            </button>
-
-            {index !== steps.length - 1 && (
-              <div
-                className={`mx-2 mt-[1px] h-[2px] flex-1 rounded-full ${
-                  activeStepIndex > index ? "bg-primary" : "bg-grey50"
+            <div className="min-w-0 space-y-2">
+              <p
+                className={`text-[11px] font-semibold uppercase tracking-[0.24em] ${
+                  activeStepIndex > index
+                    ? "text-primary-100"
+                    : activeStepIndex === index
+                    ? "text-primary-600"
+                    : "text-primary-500"
                 }`}
-              />
+              >
+                Step {index + 1}
+              </p>
+              <Text
+                font="LabelMedium"
+                color={
+                  activeStepIndex > index
+                    ? "text-white"
+                    : activeStepIndex === index
+                    ? "text-primary"
+                    : undefined
+                }
+              >
+                {step.label}
+              </Text>
+            </div>
+
+            {activeStepIndex === index && (
+              <span className="absolute right-4 top-4 h-2.5 w-2.5 rounded-full bg-primary" />
             )}
-          </React.Fragment>
+          </button>
         ))}
       </div>
-      <div className="w-full pt-3">{children}</div>
+      <div className="w-full">{children}</div>
     </div>
   );
 };
