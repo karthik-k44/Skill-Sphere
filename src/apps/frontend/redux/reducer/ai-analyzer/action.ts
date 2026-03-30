@@ -1,17 +1,24 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { AIAnalyzerResult } from "../../../types";
 import { AIAnalyzerService } from "../../../services";
+import type { AiAnalyzerResponse } from "../../../types";
 
 
 const GetAiAnalyzedData = createAsyncThunk(
     'GetAiAnalyzedData',
-    async (): Promise<AIAnalyzerResult> => {
-        const response = await AIAnalyzerService.analyzeProfile();
-        if (!response.data) {
-            throw new Error("No data received from AI Analyzer");
-        }
-        return response.data as AIAnalyzerResult;
+    async (): Promise<AiAnalyzerResponse | null> => {
+        const response = await AIAnalyzerService.GetAIGeneratedInsights();
+        return (response.data ?? null) as AiAnalyzerResponse | null;
     },
 )
 
-export { GetAiAnalyzedData };
+const CreateAIGeneratedInsights = createAsyncThunk(
+    'CreateAIGeneratedInsights',
+    async (): Promise<AiAnalyzerResponse> => {
+        const response = await AIAnalyzerService.CreateAIGeneratedInsights();
+        if (!response.data) {
+            throw new Error("No data received from AI Analyzer");
+        }
+        return response.data as AiAnalyzerResponse;
+    },
+)
+export { GetAiAnalyzedData, CreateAIGeneratedInsights };
