@@ -43,7 +43,7 @@ const AIAnalyzer = () => {
 
   return (
     <div className="py-20 px-4 min-h-screen sm:px-6 lg:px-20 bg-gradient-to-br from-slate-50 via-primary-50 to-slate-100">
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="w-full mx-auto space-y-6">
         <div className="bg-white rounded-2xl shadow-xl p-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
