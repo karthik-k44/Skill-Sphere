@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
+  MapPin,
+  Phone,
+} from "lucide-react";
+import {
   FormControl,
   Input,
   Button,
+  ProfileSection,
+  ProfileSectionHeader,
+  ProfileSectionHint,
+  ProfileStepLayout,
   Text,
 } from "../../../../components";
 import { ButtonKind, ButtonType } from "../../../../types/button";
@@ -28,11 +36,6 @@ import Stepper from "../../../../components/stepper";
 import SkillsAndExperience from "./skills-and-experience";
 import Education from "./education";
 import CertificatesAndLanguages from "./certificates-and-languages";
-import {
-  profileSectionClass,
-  profileSectionHeaderClass,
-  profileStepContainerClass,
-} from "./create-user-profile-ui";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../../routes/types";
 
@@ -145,6 +148,90 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
     return touched && typeof error === "string" ? error : "";
   };
 
+  const hasText = (value?: string) => Boolean(value?.trim());
+
+  const shouldValidateSkills =
+    skills.length > 1 || skills.some((skill) => hasText(skill.name) || hasText(skill.level) || hasText(skill.rating));
+  const hasIncompleteSkills =
+    shouldValidateSkills &&
+    skills.some((skill) => !hasText(skill.name) || !hasText(skill.level) || !hasText(skill.rating));
+
+  const shouldValidateExperiences =
+    experiences.length > 1 ||
+    experiences.some(
+      (experience) =>
+        hasText(experience.company) ||
+        hasText(experience.role) ||
+        (experience.skillAchieved || []).length > 0 ||
+        (experience.domainsWorked || []).length > 0,
+    );
+  const hasIncompleteExperiences =
+    shouldValidateExperiences &&
+    experiences.some((experience) => !hasText(experience.company) || !hasText(experience.role));
+
+  const shouldValidateEducation =
+    educations.length > 1 ||
+    educations.some(
+      (education) =>
+        hasText(education.institution) ||
+        hasText(education.degree) ||
+        hasText(education.fieldOfStudy),
+    );
+  const hasIncompleteEducation =
+    shouldValidateEducation &&
+    educations.some(
+      (education) =>
+        !hasText(education.institution) ||
+        !hasText(education.degree) ||
+        !hasText(education.fieldOfStudy),
+    );
+
+  const shouldValidateProjects =
+    projects.length > 1 ||
+    projects.some(
+      (project) =>
+        hasText(project.title) || hasText(project.description) || hasText(project.link),
+    );
+  const hasIncompleteProjects =
+    shouldValidateProjects &&
+    projects.some(
+      (project) =>
+        !hasText(project.title) || !hasText(project.description) || !hasText(project.link),
+    );
+
+  const shouldValidateCertifications =
+    certifications.length > 1 ||
+    certifications.some(
+      (certification) =>
+        hasText(certification.name) || hasText(certification.link),
+    );
+  const hasIncompleteCertifications =
+    shouldValidateCertifications &&
+    certifications.some(
+      (certification) =>
+        !hasText(certification.name) || !hasText(certification.link),
+    );
+
+  const shouldValidateLanguages =
+    languages.length > 1 ||
+    languages.some(
+      (language) =>
+        hasText(language.name) || hasText(language.proficiency),
+    );
+  const hasIncompleteLanguages =
+    shouldValidateLanguages &&
+    languages.some(
+      (language) =>
+        !hasText(language.name) || !hasText(language.proficiency),
+    );
+
+  const shouldValidateInterests =
+    interests.length > 1 ||
+    interests.some((interest) => hasText(interest.name));
+  const hasIncompleteInterests =
+    shouldValidateInterests &&
+    interests.some((interest) => !hasText(interest.name));
+
   const handleFinalSubmit = async () => {
     const errors = await formik.validateForm();
 
@@ -169,6 +256,48 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
     if (hasContactErrors) {
       handleNavigation(SetupUiStepsType.CONTACT_ADDRESS);
       toast.error("Please complete the Contact & Address step before submitting.");
+      return;
+    }
+
+    if (hasIncompleteSkills) {
+      handleNavigation(SetupUiStepsType.SKILLS_EXPERIENCE);
+      toast.error("Please complete all added skill fields before submitting.");
+      return;
+    }
+
+    if (hasIncompleteExperiences) {
+      handleNavigation(SetupUiStepsType.SKILLS_EXPERIENCE);
+      toast.error("Please complete all added experience fields before submitting.");
+      return;
+    }
+
+    if (hasIncompleteProjects) {
+      handleNavigation(SetupUiStepsType.SKILLS_EXPERIENCE);
+      toast.error("Please complete all added project fields before submitting.");
+      return;
+    }
+
+    if (hasIncompleteEducation) {
+      handleNavigation(SetupUiStepsType.EDUCATION);
+      toast.error("Please complete all added education fields before submitting.");
+      return;
+    }
+
+    if (hasIncompleteCertifications) {
+      handleNavigation(SetupUiStepsType.CERTIFICATES_LANGUAGES);
+      toast.error("Please complete all added certification fields before submitting.");
+      return;
+    }
+
+    if (hasIncompleteLanguages) {
+      handleNavigation(SetupUiStepsType.CERTIFICATES_LANGUAGES);
+      toast.error("Please complete all added language fields before submitting.");
+      return;
+    }
+
+    if (hasIncompleteInterests) {
+      handleNavigation(SetupUiStepsType.CERTIFICATES_LANGUAGES);
+      toast.error("Please complete all added interest fields before submitting.");
       return;
     }
 
@@ -494,177 +623,227 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
 
   return (
     <form
-      className="w-full flex flex-col gap-6 overflow-y-auto"
+      className="mx-auto flex w-full flex-col gap-8 overflow-y-auto"
       onSubmit={formik.handleSubmit}
     >
-      <Stepper
-        steps={SETUP_UI_STEPS}
-        currentStep={currentStep}
-        handleChangeStep={handleNavigation}
-      >
-        {currentStep.value === SetupUiStepsType.CONTACT_ADDRESS && (
-          <div className={profileStepContainerClass}>
-            <section className={profileSectionClass}>
-              <div className={profileSectionHeaderClass}>
-                <Text font="ParagraphLarge">Contact & Address</Text>
+      <div className="rounded-[2rem] border border-primary-100 bg-white/80 p-4 shadow-[0_22px_60px_-36px_rgba(37,99,235,0.32)] backdrop-blur sm:p-6">
+        <Stepper
+          steps={SETUP_UI_STEPS}
+          currentStep={currentStep}
+          handleChangeStep={handleNavigation}
+        >
+          {currentStep.value === SetupUiStepsType.CONTACT_ADDRESS && (
+            <ProfileStepLayout>
+              <ProfileSection>
+                <ProfileSectionHeader
+                  badge={
+                    <>
+                      <Phone size={14} />
+                      Essential Details
+                    </>
+                  }
+                  title={<Text font="ParagraphLarge">Contact & Address</Text>}
+                  description="Add the profile details that power your dashboard, resume, and future analysis features."
+                  stat={
+                    <>
+                      <MapPin size={16} />
+                      Required Step
+                    </>
+                  }
+                />
+
+                <ProfileSectionHint>
+                  A valid phone number and accurate address make the profile feel
+                  complete and help keep future profile exports consistent.
+                </ProfileSectionHint>
+
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-6">
+                  <div className="xl:col-span-2">
+                    <FormControl
+                      label="Phone Number"
+                      error={showFieldError("phoneNumber")}
+                    >
+                      <Input
+                        name="phoneNumber"
+                        placeholder="9875213456"
+                        type="tel"
+                        inputMode="numeric"
+                        value={formik.values.phoneNumber}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, "").slice(0, 10);
+                          formik.setFieldValue("phoneNumber", value).catch(() => {});
+                        }}
+                        onBlur={formik.handleBlur}
+                        onKeyDown={(e) => {
+                          if (["e", "E", "+", "-"].includes(e.key)) {
+                            e.preventDefault();
+                          }
+                        }}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="xl:col-span-4">
+                    <FormControl
+                      label="Street Address"
+                      error={showFieldError("streetAddress")}
+                    >
+                      <Input
+                        name="streetAddress"
+                        placeholder="123 Main St"
+                        value={formik.values.streetAddress}
+                        onChange={formik.handleChange("streetAddress")}
+                        onBlur={formik.handleBlur}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="xl:col-span-2">
+                    <FormControl
+                      label="City"
+                      error={showFieldError("city")}
+                    >
+                      <Input
+                        name="city"
+                        placeholder="San Francisco"
+                        value={formik.values.city}
+                        onChange={formik.handleChange("city")}
+                        onBlur={formik.handleBlur}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="xl:col-span-1">
+                    <FormControl
+                      label="State"
+                      error={showFieldError("state")}
+                    >
+                      <Input
+                        name="state"
+                        placeholder="CA"
+                        value={formik.values.state}
+                        onChange={formik.handleChange("state")}
+                        onBlur={formik.handleBlur}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="xl:col-span-2">
+                    <FormControl
+                      label="Country"
+                      error={showFieldError("country")}
+                    >
+                      <Input
+                        name="country"
+                        placeholder="India"
+                        value={formik.values.country}
+                        onChange={formik.handleChange("country")}
+                        onBlur={formik.handleBlur}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="xl:col-span-1">
+                    <FormControl label="Zip Code" error="">
+                      <Input
+                        name="zipCode"
+                        placeholder="94105"
+                        value={formik.values.zipCode}
+                        onChange={formik.handleChange("zipCode")}
+                        onBlur={formik.handleBlur}
+                      />
+                    </FormControl>
+                  </div>
+                </div>
+              </ProfileSection>
+            </ProfileStepLayout>
+          )}
+
+          {currentStep.value === SetupUiStepsType.SKILLS_EXPERIENCE && (
+            <SkillsAndExperience
+              skills={skills}
+              handleAddNewSkills={handleAddNewSkills}
+              handleUpdateSkill={handleUpdateSkill}
+              handleDeleteSkill={handleDeleteSkill}
+              handleAddNewExperience={handleAddNewExperience}
+              handleUpdateExperience={handleUpdateExperience}
+              handleDeleteExperience={handleDeleteExperience}
+              toggleExperience={toggleExperience}
+              expandedExperienceIndices={expandedExperienceIndices}
+              experiences={experiences}
+              handleAddNewProject={handleAddNewProject}
+              handleUpdateProject={handleUpdateProject}
+              handleDeleteProject={handleDeleteProject}
+              toggleProject={toggleProject}
+              expandedProjectIndices={expandedProjectIndices}
+              projects={projects}
+            />
+          )}
+
+          {currentStep.value === SetupUiStepsType.EDUCATION && (
+            <Education
+              handleAddNewEducation={handleAddNewEducation}
+              handleUpdateEducation={handleUpdateEducation}
+              handleDeleteEducation={handleDeleteEducation}
+              toggleEducation={toggleEducation}
+              expandedEducationIndices={expandedEducationIndices}
+              educations={educations}
+            />
+          )}
+
+          {currentStep.value === SetupUiStepsType.CERTIFICATES_LANGUAGES && (
+            <CertificatesAndLanguages
+              handleAddNewCertification={handleAddNewCertification}
+              handleUpdateCertification={handleUpdateCertification}
+              handleDeleteCertification={handleDeleteCertification}
+              handleAddNewLanguage={handleAddNewLanguage}
+              handleUpdateLanguage={handleUpdateLanguage}
+              handleDeleteLanguage={handleDeleteLanguage}
+              handleAddNewInterest={handleAddNewInterest}
+              handleUpdateInterest={handleUpdateInterest}
+              handleDeleteInterest={handleDeleteInterest}
+              certifications={certifications}
+              languages={languages}
+              interests={interests}
+            />
+          )}
+
+          {currentStep.value === SetupUiStepsType.CERTIFICATES_LANGUAGES && (
+            <div className="mt-4 flex flex-col gap-4 rounded-[1.75rem] border border-primary-100 bg-gradient-to-r from-white to-primary-50 p-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-primary-700">
+                  Final review
+                </p>
+                <p className="text-sm text-primary-600">
+                  Everything works the same as before. This action will keep all
+                  your current create/update behavior and validations.
+                </p>
               </div>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <FormControl
-                  label="Phone Number"
-                  error={showFieldError("phoneNumber")}
-                >
-                  <Input
-                    name="phoneNumber"
-                    placeholder="9875213456"
-                    type="tel"
-                    inputMode="numeric"
-                    value={formik.values.phoneNumber}
-                    onChange={(e) => {
-                      const value = e.target.value.replace(/\D/g, "").slice(0, 10);
-                      formik.setFieldValue("phoneNumber", value).catch(() => {});
+              <div className="flex flex-wrap justify-end gap-3">
+                <div className="w-fit">
+                  <Button
+                    kind={ButtonKind.DISCARD}
+                    onClick={() =>{ 
+                      if(formType === UserProfileFormType.CREATE)
+                      {
+                        formik.resetForm();
+                      } 
+                      navigate(ROUTES.DASHBOARD); 
                     }}
-                    onBlur={formik.handleBlur}
-                    onKeyDown={(e) => {
-                      if (["e", "E", "+", "-"].includes(e.key)) {
-                        e.preventDefault();
-                      }
+                  >
+                    Cancel
+                  </Button>
+                </div>
+                <div className="w-fit">
+                  <Button
+                    type={ButtonType.BUTTON}
+                    onClick={() => {
+                      handleFinalSubmit().catch(() => {});
                     }}
-                  />
-                </FormControl>
-                <FormControl
-                  label="Street Address"
-                  error={showFieldError("streetAddress")}
-                >
-                  <Input
-                    name="streetAddress"
-                    placeholder="123 Main St"
-                    value={formik.values.streetAddress}
-                    onChange={formik.handleChange("streetAddress")}
-                    onBlur={formik.handleBlur}
-                  />
-                </FormControl>
-                <FormControl
-                  label="City"
-                  error={showFieldError("city")}
-                >
-                  <Input
-                    name="city"
-                    placeholder="San Francisco"
-                    value={formik.values.city}
-                    onChange={formik.handleChange("city")}
-                    onBlur={formik.handleBlur}
-                  />
-                </FormControl>
-                <FormControl
-                  label="State"
-                  error={showFieldError("state")}
-                >
-                  <Input
-                    name="state"
-                    placeholder="CA"
-                    value={formik.values.state}
-                    onChange={formik.handleChange("state")}
-                    onBlur={formik.handleBlur}
-                  />
-                </FormControl>
-                <FormControl
-                  label="Country"
-                  error={showFieldError("country")}
-                >
-                  <Input
-                    name="country"
-                    placeholder="India"
-                    value={formik.values.country}
-                    onChange={formik.handleChange("country")}
-                    onBlur={formik.handleBlur}
-                  />
-                </FormControl>
-                <FormControl label="Zip Code" error="">
-                  <Input
-                    name="zipCode"
-                    placeholder="94105"
-                    value={formik.values.zipCode}
-                    onChange={formik.handleChange("zipCode")}
-                    onBlur={formik.handleBlur}
-                  />
-                </FormControl>
+                  >
+                    {formType === UserProfileFormType.CREATE ? "Create Profile" : "Update Profile"}
+                  </Button>
+                </div>
               </div>
-            </section>
-          </div>
-        )}
-
-        {currentStep.value === SetupUiStepsType.SKILLS_EXPERIENCE && (
-          <SkillsAndExperience
-            skills={skills}
-            handleAddNewSkills={handleAddNewSkills}
-            handleUpdateSkill={handleUpdateSkill}
-            handleDeleteSkill={handleDeleteSkill}
-            handleAddNewExperience={handleAddNewExperience}
-            handleUpdateExperience={handleUpdateExperience}
-            handleDeleteExperience={handleDeleteExperience}
-            toggleExperience={toggleExperience}
-            expandedExperienceIndices={expandedExperienceIndices}
-            experiences={experiences}
-            handleAddNewProject={handleAddNewProject}
-            handleUpdateProject={handleUpdateProject}
-            handleDeleteProject={handleDeleteProject}
-            toggleProject={toggleProject}
-            expandedProjectIndices={expandedProjectIndices}
-            projects={projects}
-          />
-        )}
-
-        {currentStep.value === SetupUiStepsType.EDUCATION && (
-          <Education
-            handleAddNewEducation={handleAddNewEducation}
-            handleUpdateEducation={handleUpdateEducation}
-            handleDeleteEducation={handleDeleteEducation}
-            toggleEducation={toggleEducation}
-            expandedEducationIndices={expandedEducationIndices}
-            educations={educations}
-          />
-        )}
-
-        {currentStep.value === SetupUiStepsType.CERTIFICATES_LANGUAGES && (
-          <CertificatesAndLanguages
-            handleAddNewCertification={handleAddNewCertification}
-            handleUpdateCertification={handleUpdateCertification}
-            handleDeleteCertification={handleDeleteCertification}
-            handleAddNewLanguage={handleAddNewLanguage}
-            handleUpdateLanguage={handleUpdateLanguage}
-            handleDeleteLanguage={handleDeleteLanguage}
-            handleAddNewInterest={handleAddNewInterest}
-            handleUpdateInterest={handleUpdateInterest}
-            handleDeleteInterest={handleDeleteInterest}
-            certifications={certifications}
-            languages={languages}
-            interests={interests}
-          />
-        )}
-
-        {currentStep.value === SetupUiStepsType.CERTIFICATES_LANGUAGES && (
-          <div className="mt-2 flex justify-end gap-4 border-t border-slate-200 pt-6 dark:border-gray-700">
-            <div className="w-fit">
-              <Button
-                kind={ButtonKind.DISCARD}
-                onClick={() => formik.resetForm()}
-              >
-                Cancel
-              </Button>
             </div>
-            <div className="w-fit">
-              <Button
-                type={ButtonType.BUTTON}
-                onClick={() => {
-                  handleFinalSubmit().catch(() => {});
-                }}
-              >
-                {formType === UserProfileFormType.CREATE ? "Create Profile" : "Update Profile"}
-              </Button>
-            </div>
-          </div>
-        )}
-      </Stepper>
+          )}
+        </Stepper>
+      </div>
     </form>
   );
 };

@@ -19,6 +19,48 @@ const styles = {
       disableState: 'cursor-not-allowed bg-primary-300',
       enableState: 'hover:bg-primary-700 cursor-pointer bg-primary active:bg-primary-600',
     },
+    primaryDark: {
+      base: `
+        border
+        border-primary-900
+        flex
+        font-medium
+        items-center
+        justify-center
+        py-2
+        md:py-2
+        px-3
+        rounded-xl
+        text-white
+        transition
+        w-full
+      `,
+      disableState: 'cursor-not-allowed bg-primary-300 border-primary-300',
+      enableState: 'hover:bg-primary-800 cursor-pointer bg-primary-900 active:bg-primary-950',
+    },
+    discardDark: {
+      base: `
+      active:bg-transparent
+      bg-transparent
+      border
+      flex
+      font-medium
+      items-center
+      justify-center
+      py-2
+      md:py-2
+      px-3
+      rounded-xl
+      text-primary-900
+      transition
+      w-full
+      outline-none
+      border-1
+      border-primary-900
+      `,
+      disableState: 'cursor-not-allowed text-slate-500 border-slate-300',
+      enableState: 'hover:bg-primary-100 cursor-pointer',
+    },
     discard: {
       base: `
       active:bg-transparent
