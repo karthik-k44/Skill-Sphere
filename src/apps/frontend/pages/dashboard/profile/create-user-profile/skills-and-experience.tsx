@@ -1,20 +1,27 @@
-import { Briefcase, ChevronDown, Code, Plus, Sparkles, Trash2 } from "lucide-react";
+import {
+  Briefcase,
+  ChevronDown,
+  Code,
+  Plus,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
 import {
   Button,
   FormControl,
   Input,
-  ProfileDeleteIconButton,
-  ProfileIconButton,
-  ProfileItemCard,
-  ProfileItemHeader,
-  ProfileSection,
-  ProfileSectionHeader,
-  ProfileSectionHint,
-  ProfileStepLayout,
-  Text,
 } from "../../../../components";
 import { ButtonType } from "../../../../types/button";
-import type { Skills, UserExperience, UserProjects } from "../../../../types/user-profile";
+import type {
+  Skills,
+  UserExperience,
+  UserProjects,
+} from "../../../../types/user-profile";
+import ProfileCreatorCards from "../../../../components/profile-builder-ui";
+import { ProfileDeleteIconButton, ProfileIconButton, ProfileItemCard, ProfileItemHeader } from "../../../../components/profile-builder-ui/extra-profile-cards";
+import { ExpandableCard } from "../../../../components/profile-builder-ui/expandable-card";
+import Select from "../../../../components/select";
+import { UserSkillLevelData, userSkillRatingData, UserSkillsData } from "../../../../constants";
 
 interface SkillsAndExperienceProps {
   skills: Skills[];
@@ -63,120 +70,99 @@ const SkillsAndExperience: React.FC<SkillsAndExperienceProps> = ({
   handleDeleteProject,
   toggleProject,
   expandedProjectIndices,
-  projects
+  projects,
 }) => {
   const getCommaSeparatedDraftValues = (value: string) =>
-    value
-      .split(",")
-      .map((item) => item.trimStart());
+    value.split(",").map((item) => item.trimStart());
 
   const getNormalizedCommaSeparatedValues = (values: string[]) =>
-    values
-      .map((item) => item.trim())
-      .filter(Boolean);
+    values.map((item) => item.trim()).filter(Boolean);
 
   return (
-    <ProfileStepLayout>
-      <ProfileSection>
-        <ProfileSectionHeader
-          badge={
-            <>
-              <Code size={14} />
-              Capability Stack
-            </>
-          }
-          title={<Text font="ParagraphLarge">Skills</Text>}
-          description="Highlight your strongest technologies and rate them clearly so the profile instantly communicates your strengths."
-          stat={
-            <>
-              <Sparkles size={16} />
-              {skills.length} Added
-            </>
-          }
-          action={
-            <Button type={ButtonType.BUTTON} onClick={handleAddNewSkills}>
-              <Plus size={16} className="mr-1" /> Add Skill
-            </Button>
-          }
-        />
-        <ProfileSectionHint>
-          Use a simple level like Beginner, Intermediate, Advanced, or Expert and
-          keep ratings between 1 and 5 for a cleaner profile summary.
-        </ProfileSectionHint>
+    <div className="flex flex-col gap-5">
+      <ProfileCreatorCards
+        badge={
+          <>
+            <Code size={14} />
+            Capability Stack
+          </>
+        }
+        title="Skills"
+        description="Highlight your strongest technologies and rate them clearly so the profile instantly communicates your strengths."
+        stat={
+          <>
+            <Sparkles size={16} />
+            {skills.length} Added
+          </>
+        }
+        action={
+          <Button type={ButtonType.BUTTON} onClick={handleAddNewSkills}>
+            <Plus size={16} className="mr-1" /> Add Skill
+          </Button>
+        }
+      >
         {skills.map((skill, index) => (
-          <ProfileItemCard key={`skill-${index}`}>
-            <ProfileItemHeader
-              title={`Skill ${index + 1}`}
-              actions={
-                <ProfileDeleteIconButton
-                  onClick={() => handleDeleteSkill(index)}
-                  aria-label={`Delete skill ${index + 1}`}
-                >
-                  <Trash2 size={20} />
-                </ProfileDeleteIconButton>
-              }
-            />
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <FormControl label="Skill Name" error="">
-                <Input
-                  placeholder="React"
+          <div
+            key={`skill-${index}`}
+            className="flex flex-col gap-2 rounded-xl sm:flex-row sm:items-center"
+          >
+            <div className="grid w-full flex-1 grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-12">
+              <div className="lg:col-span-5">
+                <Select
                   value={skill.name}
-                  onChange={(e) =>
-                    handleUpdateSkill(index, "name", e.target.value)
-                  }
+                  options={UserSkillsData}
+                  handleChange={(e) => handleUpdateSkill(index, "name", e.target.value)}
+                  isLoading={false}
                 />
-              </FormControl>
-              <FormControl label="Level" error="">
-                <Input
-                  placeholder="Expert"
+              </div>
+              <div className="lg:col-span-4">
+                <Select
                   value={skill.level}
-                  onChange={(e) =>
-                    handleUpdateSkill(index, "level", e.target.value)
-                  }
+                  options={UserSkillLevelData}
+                  handleChange={(e) => handleUpdateSkill(index, "level", e.target.value)}
+                  isLoading={false}
                 />
-              </FormControl>
-              <FormControl label="Rating (1-5)" error="">
-                <Input
-                  type="number"
-                  min={1}
-                  max={5}
-                  placeholder="5"
+              </div>
+              <div className="sm:max-w-32 lg:col-span-3 lg:max-w-none">
+                <Select
                   value={skill.rating}
-                  onChange={(e) =>
-                    handleUpdateSkill(index, "rating", e.target.value)
-                  }
+                  options={userSkillRatingData}
+                  handleChange={(e) => handleUpdateSkill(index, "rating", e.target.value)}
+                  isLoading={false}
                 />
-              </FormControl>
+              </div>
             </div>
-          </ProfileItemCard>
+            <ProfileDeleteIconButton
+              className="h-9 w-9 shrink-0 self-end sm:self-center"
+              onClick={() => handleDeleteSkill(index)}
+              aria-label={`Delete skill ${index + 1}`}
+            >
+              <Trash2 size={18} />
+            </ProfileDeleteIconButton>
+          </div>
         ))}
-      </ProfileSection>
-      <ProfileSection>
-        <ProfileSectionHeader
-          badge={
-            <>
-              <Briefcase size={14} />
-              Work History
-            </>
-          }
-          title={<Text font="ParagraphLarge">Experience</Text>}
-          description="Keep your experience cards concise on top, then expand them to add dates, achieved skills, and domains worked."
-          stat={
-            <>
-              <Sparkles size={16} />
-              {experiences.length} Added
-            </>
-          }
-          action={
-            <Button type={ButtonType.BUTTON} onClick={handleAddNewExperience}>
-              <Plus size={16} className="mr-1" /> Add Experience
-            </Button>
-          }
-        />
-        <ProfileSectionHint>
-          Expand each experience card to fill in dates, skills achieved, and domain
-          keywords that make the profile more searchable and informative.
-        </ProfileSectionHint>
+      </ProfileCreatorCards>
+      <ProfileCreatorCards
+        badge={
+          <>
+            <Briefcase size={14} />
+            Work History
+          </>
+        }
+        title="Experience"
+        description="Keep your experience cards concise on top, then expand them to add dates, achieved skills, and domains worked."
+        stat={
+          <>
+            <Sparkles size={16} />
+            {experiences.length} Added
+          </>
+        }
+        action={
+          <Button type={ButtonType.BUTTON} onClick={handleAddNewExperience}>
+            <Plus size={16} className="mr-1" /> Add Experience
+          </Button>
+        }
+      >
         {experiences.map((experience, index) => (
           <ProfileItemCard key={`experience-${index}`}>
             <ProfileItemHeader
@@ -225,13 +211,7 @@ const SkillsAndExperience: React.FC<SkillsAndExperienceProps> = ({
                 />
               </FormControl>
             </div>
-            <div
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                expandedExperienceIndices.includes(index)
-                  ? "max-h-[900px] border-t border-primary-100 pt-5"
-                  : "max-h-0"
-              }`}
-            >
+            <ExpandableCard isExpanded={expandedExperienceIndices.includes(index)}>
               <div className="space-y-4">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <FormControl label="Start Date" error="">
@@ -322,37 +302,31 @@ const SkillsAndExperience: React.FC<SkillsAndExperienceProps> = ({
                   </FormControl>
                 </div>
               </div>
-            </div>
+            </ExpandableCard>
           </ProfileItemCard>
         ))}
-      </ProfileSection>
-
-      <ProfileSection>
-        <ProfileSectionHeader
-          badge={
-            <>
-              <Sparkles size={14} />
-              Showcase Work
-            </>
-          }
-          title={<Text font="ParagraphLarge">Projects</Text>}
-          description="Add project titles, a short explanation, and a clean public link so your work is easy to review."
-          stat={
-            <>
-              <Sparkles size={16} />
-              {projects.length} Added
-            </>
-          }
-          action={
-            <Button type={ButtonType.BUTTON} onClick={handleAddNewProject}>
-              <Plus size={16} className="mr-1" /> Add Project
-            </Button>
-          }
-        />
-        <ProfileSectionHint>
-          Strong project cards usually have a clear title, outcome-focused
-          description, and a working link.
-        </ProfileSectionHint>
+      </ProfileCreatorCards>
+      <ProfileCreatorCards
+        badge={
+          <>
+            <Sparkles size={14} />
+            Showcase Work
+          </>
+        }
+        title="Projects"
+        description="Add project titles, a short explanation, and a clean public link so your work is easy to review."
+        stat={
+          <>
+            <Sparkles size={16} />
+            {projects.length} Added
+          </>
+        }
+        action={
+          <Button type={ButtonType.BUTTON} onClick={handleAddNewProject}>
+            <Plus size={16} className="mr-1" /> Add Project
+          </Button>
+        }
+      >
         {projects.map((project, index) => (
           <ProfileItemCard key={`project-${index}`}>
             <ProfileItemHeader
@@ -366,7 +340,9 @@ const SkillsAndExperience: React.FC<SkillsAndExperienceProps> = ({
                     <ChevronDown
                       size={20}
                       className={`transition-transform duration-300 ${
-                        expandedProjectIndices.includes(index) ? "rotate-180" : ""
+                        expandedProjectIndices.includes(index)
+                          ? "rotate-180"
+                          : ""
                       }`}
                     />
                   </ProfileIconButton>
@@ -388,12 +364,8 @@ const SkillsAndExperience: React.FC<SkillsAndExperienceProps> = ({
                 }
               />
             </FormControl>
-            <div
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                expandedProjectIndices.includes(index)
-                  ? "max-h-[700px] border-t border-primary-100 pt-5"
-                  : "max-h-0"
-              }`}
+            <ExpandableCard
+              isExpanded={expandedProjectIndices.includes(index)}
             >
               <div className="space-y-4">
                 <FormControl label="Description" error="">
@@ -415,11 +387,11 @@ const SkillsAndExperience: React.FC<SkillsAndExperienceProps> = ({
                   />
                 </FormControl>
               </div>
-            </div>
+            </ExpandableCard>
           </ProfileItemCard>
         ))}
-      </ProfileSection>
-    </ProfileStepLayout>
+      </ProfileCreatorCards>
+    </div>
   );
 };
 

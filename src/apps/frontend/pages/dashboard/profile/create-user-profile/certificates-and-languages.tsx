@@ -3,14 +3,7 @@ import {
   Button,
   FormControl,
   Input,
-  ProfileDeleteIconButton,
-  ProfileItemCard,
-  ProfileItemHeader,
-  ProfileSection,
-  ProfileSectionHeader,
-  ProfileSectionHint,
-  ProfileStepLayout,
-  Text,
+  ProfileCreatorCards,
 } from "../../../../components";
 import { ButtonType } from "../../../../types/button";
 import type {
@@ -18,6 +11,9 @@ import type {
   UserInterests,
   UserLanguages,
 } from "../../../../types";
+import { ProfileDeleteIconButton, ProfileItemCard, ProfileItemHeader } from "../../../../components/profile-builder-ui/extra-profile-cards";
+import Select from "../../../../components/select";
+import { UserLanguageProficiencyData } from "../../../../constants";
 
 interface CertificatesAndLanguagesProps {
   handleAddNewCertification: () => void;
@@ -61,33 +57,28 @@ const CertificatesAndLanguages: React.FC<CertificatesAndLanguagesProps> = ({
   interests,
 }) => {
   return (
-    <ProfileStepLayout>
-      <ProfileSection>
-        <ProfileSectionHeader
-          badge={
-            <>
-              <Award size={14} />
-              Trust Signals
-            </>
-          }
-          title={<Text font="ParagraphLarge">Certifications</Text>}
-          description="Add certifications with verification links so your profile feels stronger and easier to validate."
-          stat={
-            <>
-              <Sparkles size={16} />
-              {certifications.length} Added
-            </>
-          }
-          action={
-            <Button type={ButtonType.BUTTON} onClick={handleAddNewCertification}>
-              <Plus size={16} className="mr-1" /> Add Certification
-            </Button>
-          }
-        />
-        <ProfileSectionHint>
-          A certification becomes much more useful when the name is clear and the
-          verification link works.
-        </ProfileSectionHint>
+    <div className="flex flex-col gap-5">
+      <ProfileCreatorCards
+        badge={
+          <>
+            <Award size={14} />
+            Trust Signals
+          </>
+        }
+        title="Certifications"
+        description="Add certifications with verification links so your profile feels stronger and easier to validate."
+        stat={
+          <>
+            <Sparkles size={16} />
+            {certifications.length} Added
+          </>
+        }
+        action={
+          <Button type={ButtonType.BUTTON} onClick={handleAddNewCertification}>
+            <Plus size={16} className="mr-1" /> Add Certification
+          </Button>
+        }
+      >
         {certifications.map((certification, index) => (
           <ProfileItemCard key={`certification-${index}`}>
             <ProfileItemHeader
@@ -118,40 +109,35 @@ const CertificatesAndLanguages: React.FC<CertificatesAndLanguagesProps> = ({
                   onChange={(e) =>
                     handleUpdateCertification(index, "link", e.target.value)
                   }
-                  />
-                </FormControl>
-              </div>
+                />
+              </FormControl>
+            </div>
           </ProfileItemCard>
         ))}
-      </ProfileSection>
+      </ProfileCreatorCards>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <ProfileSection>
-          <ProfileSectionHeader
-            badge={
-              <>
-                <Globe size={14} />
-                Communication
-              </>
-            }
-            title={<Text font="ParagraphLarge">Languages</Text>}
-            description="Add the languages you use and the level you feel comfortable with so the profile reads naturally."
-            stat={
-              <>
-                <Sparkles size={16} />
-                {languages.length} Added
-              </>
-            }
-            action={
-              <Button type={ButtonType.BUTTON} onClick={handleAddNewLanguage}>
-                <Plus size={16} className="mr-1" /> Add Language
-              </Button>
-            }
-          />
-          <ProfileSectionHint>
-            Examples like Native, Fluent, Advanced, or Conversational keep this
-            section clean and easy to understand.
-          </ProfileSectionHint>
+        <ProfileCreatorCards
+          badge={
+            <>
+              <Globe size={14} />
+              Communication
+            </>
+          }
+          title="Languages"
+          description="Add the languages you use and the level you feel comfortable with so the profile reads naturally."
+          stat={
+            <>
+              <Sparkles size={16} />
+              {languages.length} Added
+            </>
+          }
+          action={
+            <Button type={ButtonType.BUTTON} onClick={handleAddNewLanguage}>
+              <Plus size={16} className="mr-1" /> Add Language
+            </Button>
+          }
+        >
           {languages.map((language, index) => (
             <ProfileItemCard key={`language-${index}`}>
               <ProfileItemHeader
@@ -176,45 +162,39 @@ const CertificatesAndLanguages: React.FC<CertificatesAndLanguagesProps> = ({
                   />
                 </FormControl>
                 <FormControl label="Proficiency" error="">
-                  <Input
-                    placeholder="Native"
+                  <Select
                     value={language.proficiency}
-                    onChange={(e) =>
-                      handleUpdateLanguage(index, "proficiency", e.target.value)
-                    }
+                    options={UserLanguageProficiencyData}
+                    handleChange={(e) => handleUpdateLanguage(index, "proficiency", e.target.value)}
+                    isLoading={false}
                   />
                 </FormControl>
               </div>
             </ProfileItemCard>
           ))}
-        </ProfileSection>
+        </ProfileCreatorCards>
 
-        <ProfileSection>
-          <ProfileSectionHeader
-            badge={
-              <>
-                <Heart size={14} />
-                Personal Edge
-              </>
-            }
-            title={<Text font="ParagraphLarge">Interests</Text>}
-            description="Use this section to make your profile feel more complete and a little more human."
-            stat={
-              <>
-                <Sparkles size={16} />
-                {interests.length} Added
-              </>
-            }
-            action={
-              <Button type={ButtonType.BUTTON} onClick={handleAddNewInterest}>
-                <Plus size={16} className="mr-1" /> Add Interest
-              </Button>
-            }
-          />
-          <ProfileSectionHint>
-            Short, relevant interests like Open Source, Machine Learning, or UI
-            Design work best here.
-          </ProfileSectionHint>
+        <ProfileCreatorCards
+          badge={
+            <>
+              <Heart size={14} />
+              Personal Edge
+            </>
+          }
+          title="Interests"
+          description="Use this section to make your profile feel more complete and a little more human."
+          stat={
+            <>
+              <Sparkles size={16} />
+              {interests.length} Added
+            </>
+          }
+          action={
+            <Button type={ButtonType.BUTTON} onClick={handleAddNewInterest}>
+              <Plus size={16} className="mr-1" /> Add Interest
+            </Button>
+          }
+        >
           {interests.map((interest, index) => (
             <ProfileItemCard key={`interest-${index}`}>
               <ProfileItemHeader
@@ -241,9 +221,9 @@ const CertificatesAndLanguages: React.FC<CertificatesAndLanguagesProps> = ({
               </FormControl>
             </ProfileItemCard>
           ))}
-        </ProfileSection>
+        </ProfileCreatorCards>
       </div>
-    </ProfileStepLayout>
+    </div>
   );
 };
 

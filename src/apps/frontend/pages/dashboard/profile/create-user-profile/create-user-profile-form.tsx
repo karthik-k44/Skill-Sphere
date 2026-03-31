@@ -7,11 +7,6 @@ import {
   FormControl,
   Input,
   Button,
-  ProfileSection,
-  ProfileSectionHeader,
-  ProfileSectionHint,
-  ProfileStepLayout,
-  Text,
 } from "../../../../components";
 import { ButtonKind, ButtonType } from "../../../../types/button";
 import CreateUserFormHook from "./create-user-form-hook";
@@ -38,6 +33,7 @@ import Education from "./education";
 import CertificatesAndLanguages from "./certificates-and-languages";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../../routes/types";
+import ProfileCreatorCards from "../../../../components/profile-builder-ui";
 
 interface CreateUserProfileFormProps {
   formType: UserProfileFormType;
@@ -626,132 +622,121 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
       className="mx-auto flex w-full flex-col gap-8 overflow-y-auto"
       onSubmit={formik.handleSubmit}
     >
-      <div className="rounded-[2rem] border border-primary-100 bg-white/80 p-4 shadow-[0_22px_60px_-36px_rgba(37,99,235,0.32)] backdrop-blur sm:p-6">
+      <div className="rounded-[2rem] border border-primary-100 bg-white/80 p-2 md:p-4  backdrop-blur sm:p-6">
         <Stepper
           steps={SETUP_UI_STEPS}
           currentStep={currentStep}
           handleChangeStep={handleNavigation}
         >
           {currentStep.value === SetupUiStepsType.CONTACT_ADDRESS && (
-            <ProfileStepLayout>
-              <ProfileSection>
-                <ProfileSectionHeader
-                  badge={
-                    <>
-                      <Phone size={14} />
-                      Essential Details
-                    </>
-                  }
-                  title={<Text font="ParagraphLarge">Contact & Address</Text>}
-                  description="Add the profile details that power your dashboard, resume, and future analysis features."
-                  stat={
-                    <>
-                      <MapPin size={16} />
-                      Required Step
-                    </>
-                  }
-                />
-
-                <ProfileSectionHint>
-                  A valid phone number and accurate address make the profile feel
-                  complete and help keep future profile exports consistent.
-                </ProfileSectionHint>
-
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-6">
-                  <div className="xl:col-span-2">
-                    <FormControl
-                      label="Phone Number"
-                      error={showFieldError("phoneNumber")}
-                    >
-                      <Input
-                        name="phoneNumber"
-                        placeholder="9875213456"
-                        type="tel"
-                        inputMode="numeric"
-                        value={formik.values.phoneNumber}
-                        onChange={(e) => {
-                          const value = e.target.value.replace(/\D/g, "").slice(0, 10);
-                          formik.setFieldValue("phoneNumber", value).catch(() => {});
-                        }}
-                        onBlur={formik.handleBlur}
-                        onKeyDown={(e) => {
-                          if (["e", "E", "+", "-"].includes(e.key)) {
-                            e.preventDefault();
-                          }
-                        }}
-                      />
-                    </FormControl>
-                  </div>
-                  <div className="xl:col-span-4">
-                    <FormControl
-                      label="Street Address"
-                      error={showFieldError("streetAddress")}
-                    >
-                      <Input
-                        name="streetAddress"
-                        placeholder="123 Main St"
-                        value={formik.values.streetAddress}
-                        onChange={formik.handleChange("streetAddress")}
-                        onBlur={formik.handleBlur}
-                      />
-                    </FormControl>
-                  </div>
-                  <div className="xl:col-span-2">
-                    <FormControl
-                      label="City"
-                      error={showFieldError("city")}
-                    >
-                      <Input
-                        name="city"
-                        placeholder="San Francisco"
-                        value={formik.values.city}
-                        onChange={formik.handleChange("city")}
-                        onBlur={formik.handleBlur}
-                      />
-                    </FormControl>
-                  </div>
-                  <div className="xl:col-span-1">
-                    <FormControl
-                      label="State"
-                      error={showFieldError("state")}
-                    >
-                      <Input
-                        name="state"
-                        placeholder="CA"
-                        value={formik.values.state}
-                        onChange={formik.handleChange("state")}
-                        onBlur={formik.handleBlur}
-                      />
-                    </FormControl>
-                  </div>
-                  <div className="xl:col-span-2">
-                    <FormControl
-                      label="Country"
-                      error={showFieldError("country")}
-                    >
-                      <Input
-                        name="country"
-                        placeholder="India"
-                        value={formik.values.country}
-                        onChange={formik.handleChange("country")}
-                        onBlur={formik.handleBlur}
-                      />
-                    </FormControl>
-                  </div>
-                  <div className="xl:col-span-1">
-                    <FormControl label="Zip Code" error="">
-                      <Input
-                        name="zipCode"
-                        placeholder="94105"
-                        value={formik.values.zipCode}
-                        onChange={formik.handleChange("zipCode")}
-                        onBlur={formik.handleBlur}
-                      />
-                    </FormControl>
-                  </div>
+            <ProfileCreatorCards
+              title="Contact & Address Information"
+              description="Let’s start with the basics. Please provide your contact and address information."
+              badge={
+                <>
+                  <Phone size={14} />
+                  Essential Details
+                </>
+              }
+              stat={
+                <>
+                  <MapPin size={16} />
+                  Required Step
+                </>
+              }
+            >
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-6">
+                <div className="xl:col-span-2">
+                  <FormControl
+                    label="Phone Number"
+                    error={showFieldError("phoneNumber")}
+                  >
+                    <Input
+                      name="phoneNumber"
+                      placeholder="9875213456"
+                      type="tel"
+                      inputMode="numeric"
+                      value={formik.values.phoneNumber}
+                      onChange={(e) => {
+                        const value = e.target.value
+                          .replace(/\D/g, "")
+                          .slice(0, 10);
+                        formik
+                          .setFieldValue("phoneNumber", value)
+                          .catch(() => {});
+                      }}
+                      onBlur={formik.handleBlur}
+                      onKeyDown={(e) => {
+                        if (["e", "E", "+", "-"].includes(e.key)) {
+                          e.preventDefault();
+                        }
+                      }}
+                    />
+                  </FormControl>
                 </div>
-              </ProfileSection>
-            </ProfileStepLayout>
+                <div className="xl:col-span-4">
+                  <FormControl
+                    label="Street Address"
+                    error={showFieldError("streetAddress")}
+                  >
+                    <Input
+                      name="streetAddress"
+                      placeholder="123 Main St"
+                      value={formik.values.streetAddress}
+                      onChange={formik.handleChange("streetAddress")}
+                      onBlur={formik.handleBlur}
+                    />
+                  </FormControl>
+                </div>
+                <div className="xl:col-span-2">
+                  <FormControl label="City" error={showFieldError("city")}>
+                    <Input
+                      name="city"
+                      placeholder="San Francisco"
+                      value={formik.values.city}
+                      onChange={formik.handleChange("city")}
+                      onBlur={formik.handleBlur}
+                    />
+                  </FormControl>
+                </div>
+                <div className="xl:col-span-1">
+                  <FormControl label="State" error={showFieldError("state")}>
+                    <Input
+                      name="state"
+                      placeholder="CA"
+                      value={formik.values.state}
+                      onChange={formik.handleChange("state")}
+                      onBlur={formik.handleBlur}
+                    />
+                  </FormControl>
+                </div>
+                <div className="xl:col-span-2">
+                  <FormControl
+                    label="Country"
+                    error={showFieldError("country")}
+                  >
+                    <Input
+                      name="country"
+                      placeholder="India"
+                      value={formik.values.country}
+                      onChange={formik.handleChange("country")}
+                      onBlur={formik.handleBlur}
+                    />
+                  </FormControl>
+                </div>
+                <div className="xl:col-span-1">
+                  <FormControl label="Zip Code" error="">
+                    <Input
+                      name="zipCode"
+                      placeholder="94105"
+                      value={formik.values.zipCode}
+                      onChange={formik.handleChange("zipCode")}
+                      onBlur={formik.handleBlur}
+                    />
+                  </FormControl>
+                </div>
+              </div>
+            </ProfileCreatorCards>
           )}
 
           {currentStep.value === SetupUiStepsType.SKILLS_EXPERIENCE && (
@@ -818,12 +803,11 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
                 <div className="w-fit">
                   <Button
                     kind={ButtonKind.DISCARD}
-                    onClick={() =>{ 
-                      if(formType === UserProfileFormType.CREATE)
-                      {
+                    onClick={() => {
+                      if (formType === UserProfileFormType.CREATE) {
                         formik.resetForm();
-                      } 
-                      navigate(ROUTES.DASHBOARD); 
+                      }
+                      navigate(ROUTES.DASHBOARD);
                     }}
                   >
                     Cancel
@@ -836,7 +820,9 @@ const CreateUserProfileForm: React.FC<CreateUserProfileFormProps> = ({
                       handleFinalSubmit().catch(() => {});
                     }}
                   >
-                    {formType === UserProfileFormType.CREATE ? "Create Profile" : "Update Profile"}
+                    {formType === UserProfileFormType.CREATE
+                      ? "Create Profile"
+                      : "Update Profile"}
                   </Button>
                 </div>
               </div>
