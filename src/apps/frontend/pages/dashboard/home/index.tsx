@@ -12,6 +12,8 @@ const Home = () => {
   const userId = localStorage.getItem('userId') as string
   const { getUserProfileData, getUserProfileLoading } = useAppSelector(state => state.userProfile)
 
+  console.log(getUserProfileLoading)
+
   useEffect(()=>{
     dispatch(GetUserProfile(userId)).catch(()=> {})
   }, [])
@@ -20,7 +22,26 @@ const Home = () => {
   const isUserProfileEmpty = !getUserProfileData?.userProfile || Object.keys(getUserProfileData?.userProfile || {}).length === 0;
 
   if (getUserProfileLoading) {
-    return <Skeleton />
+    return (
+      <div className="py-20 px-4 min-h-screen sm:px-6 lg:px-20 bg-primary-50 dark:bg-black">
+        <Skeleton className="h-64 rounded-xl w-full" />
+        <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+          <Skeleton className="h-72 rounded-xl" />
+          <Skeleton className="h-72 rounded-xl" />
+        </div>
+        <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+          <div className="space-y-6">
+            <Skeleton className="h-64 rounded-xl" />
+            <Skeleton className="h-48 rounded-xl" />
+          </div>
+          <div className="space-y-6">s
+            <Skeleton className="h-52 rounded-xl" />
+            <Skeleton className="h-48 rounded-xl" />
+            <Skeleton className="h-40 rounded-xl" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
 
