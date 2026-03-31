@@ -45,3 +45,5 @@ export type {
 } from "./resume-builder";
 
 export type { AiAnalyzerResponse } from "./ai-analyzer";
+
+export type { DropDownOption } from "./select";
