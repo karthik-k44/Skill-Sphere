@@ -1,11 +1,12 @@
 import { useEffect } from "react"
-import { Skeleton } from "../../../components/skeleton"
+import { SkeletonCard, SkeletonCareerProfile } from "../../../components/skeleton"
 import { useAppDispatch, useAppSelector } from "../../../redux/hook"
 import { GetUserProfile } from "../../../redux/action"
 import { Text } from "../../../components"
 import UserHead from "./userHead"
 import NoUserProfileCard from "./no-user-profile-card"
 import HomePage from "./home"
+import { SkeletonUserHead } from "../../../components/skeleton/SkeletonUserHead"
 
 const Home = () => {
   const dispatch = useAppDispatch()
@@ -23,21 +24,19 @@ const Home = () => {
 
   if (getUserProfileLoading) {
     return (
-      <div className="py-20 px-4 min-h-screen sm:px-6 lg:px-20 bg-primary-50 dark:bg-black">
-        <Skeleton className="h-64 rounded-xl w-full" />
-        <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-          <Skeleton className="h-72 rounded-xl" />
-          <Skeleton className="h-72 rounded-xl" />
-        </div>
+      <div className="py-20 px-4 min-h-screen sm:px-6 flex flex-col  gap-5 lg:px-20 bg-primary-50 dark:bg-black">
+        <SkeletonUserHead />
+        <SkeletonCareerProfile />
         <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
           <div className="space-y-6">
-            <Skeleton className="h-64 rounded-xl" />
-            <Skeleton className="h-48 rounded-xl" />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
           </div>
-          <div className="space-y-6">s
-            <Skeleton className="h-52 rounded-xl" />
-            <Skeleton className="h-48 rounded-xl" />
-            <Skeleton className="h-40 rounded-xl" />
+          <div className="space-y-6">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
           </div>
         </div>
       </div>
