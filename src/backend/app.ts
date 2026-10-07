@@ -31,7 +31,7 @@ const ContentSecurityPolicy = {
 const BuildApiRouter = () => {
   const api = Router();
   api.get("/health", (_req, res) => {
-    res.json({ status: "ok" });
+    res.json({ status: "ok", commit: env.RENDER_GIT_COMMIT ?? null });
   });
   api.use("/auth", authRoutes);
   api.use("/profile", profileRoutes);

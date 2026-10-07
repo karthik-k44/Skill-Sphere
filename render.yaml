@@ -8,6 +8,8 @@ services:
     buildCommand: npm ci --include=dev && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
+    # GitHub Actions deploys main after CI passes (deploy hook), so Render must not deploy on its own.
+    autoDeployTrigger: "off"
     envVars:
       - key: NODE_VERSION
         value: "24"

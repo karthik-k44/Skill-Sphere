@@ -18,6 +18,8 @@ const EnvSchema = z.object({
   GITHUB_TOKEN: z.string().optional(),
   DEMO_EMAIL: z.string().email().default("demo@skillsphere.dev"),
   DEMO_PASSWORD: z.string().min(8).default("demo-account-2026"),
+  /** Set automatically by Render; /api/health reports it so the deploy pipeline can confirm the release. */
+  RENDER_GIT_COMMIT: z.string().optional(),
 });
 
 const parsed = EnvSchema.safeParse(process.env);

@@ -64,6 +64,11 @@ describe("resume import", () => {
 });
 
 describe("api", () => {
+  it("reports health and the running commit (used by the deploy pipeline)", async () => {
+    const response = await request(app).get("/api/health").expect(200);
+    expect(response.body).toEqual({ status: "ok", commit: null });
+  });
+
   it("returns JSON 404s for unknown routes", async () => {
     const response = await request(app).get("/api/does-not-exist").expect(404);
     expect(response.body.code).toBe("NOT_FOUND");
