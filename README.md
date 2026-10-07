@@ -93,5 +93,15 @@ All routes are under `/api`. Errors have the shape `{ message, code, details? }`
 
 ## Deploy
 
-`render.yaml` deploys the whole app as one Render web service: set `DBURL` and `AI_ANALYZER_API_KEY`,
-and the JWT secrets are generated for you. Any Node host works the same way: `npm ci && npm run build`, then `npm start`.
+**Option A: one service (simplest).** `render.yaml` deploys the whole app as one Render web service. Set `DBURL`
+and `AI_ANALYZER_API_KEY`, and the JWT secrets are generated for you. Any Node host works the same way:
+`npm ci && npm run build`, then `npm start`.
+
+**Option B: frontend on Vercel, API on Render.** `vercel.json` proxies `/api/*` to the Render service, so the
+browser only ever talks to the Vercel domain. That means no CORS, and the login cookie stays first-party.
+- Vercel: leave `VITE_API_BASE_URL` **unset** (requests must go to `/api` on the same domain). Update the
+  Render URL in `vercel.json` if yours differs.
+- Render: set `TRUST_PROXY_HOPS=2` so rate limits see each visitor's real IP instead of Vercel's.
+
+Calling the Render URL directly from the browser (setting `VITE_API_BASE_URL` plus `CLIENT_ORIGIN`) also
+works, but the refresh cookie then becomes third-party, and browsers that block those log users out on every reload.

@@ -43,18 +43,24 @@ const VerifyRefreshToken = (token: string): RefreshPayload => {
   }
 };
 
+// Same-origin (one server, or a frontend host that proxies /api) keeps the cookie first-party: Lax.
+// With CLIENT_ORIGIN set the frontend calls the API cross-site, which only works with None + Secure,
+// and even then some browsers block it as a third-party cookie - prefer proxying /api (see README).
+const IS_CROSS_SITE = Boolean(env.CLIENT_ORIGIN);
+
+const CookieOptions = {
+  httpOnly: true,
+  secure: env.IS_PROD || IS_CROSS_SITE,
+  sameSite: IS_CROSS_SITE ? "none" : "lax",
+  path: "/api/auth",
+} as const;
+
 const SetRefreshCookie = (res: Response, token: string) => {
-  res.cookie(REFRESH_COOKIE_NAME, token, {
-    httpOnly: true,
-    secure: env.IS_PROD,
-    sameSite: "lax",
-    path: "/api/auth",
-    maxAge: REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000,
-  });
+  res.cookie(REFRESH_COOKIE_NAME, token, { ...CookieOptions, maxAge: REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000 });
 };
 
 const ClearRefreshCookie = (res: Response) => {
-  res.clearCookie(REFRESH_COOKIE_NAME, { path: "/api/auth" });
+  res.clearCookie(REFRESH_COOKIE_NAME, CookieOptions);
 };
 
 export const sessionService = {
