@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
-import { Loader2, Target } from "lucide-react";
+import { AlertTriangle, Loader2, Target } from "lucide-react";
 import { FormField } from "@/frontend/components/form/FormField";
+import { Alert, AlertDescription, AlertTitle } from "@/frontend/components/ui/alert";
 import { Button } from "@/frontend/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/frontend/components/ui/card";
 import { Input } from "@/frontend/components/ui/input";
@@ -33,6 +34,13 @@ export const JobMatchForm = ({ onCreated }: { onCreated: (id: string) => void })
       </CardHeader>
       <CardContent>
         <form onSubmit={formik.handleSubmit} className="grid gap-4" noValidate>
+          {create.error && !create.isPending && (
+            <Alert variant="destructive">
+              <AlertTriangle />
+              <AlertTitle>The comparison didn't finish</AlertTitle>
+              <AlertDescription>{create.error.message}</AlertDescription>
+            </Alert>
+          )}
           <div className="grid gap-4 sm:grid-cols-2">
             <FormField label="Job title" htmlFor="jobTitle" error={ErrorOf("jobTitle")}>
               <Input id="jobTitle" placeholder="Frontend Engineer" {...formik.getFieldProps("jobTitle")} />

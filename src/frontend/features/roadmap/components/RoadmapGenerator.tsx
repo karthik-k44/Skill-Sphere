@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Loader2, Wand2 } from "lucide-react";
+import { AlertTriangle, Loader2, Wand2 } from "lucide-react";
 import { ConfirmDialog } from "@/frontend/components/feedback/ConfirmDialog";
+import { Alert, AlertDescription, AlertTitle } from "@/frontend/components/ui/alert";
 import { Button } from "@/frontend/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/frontend/components/ui/card";
 import { Input } from "@/frontend/components/ui/input";
@@ -48,6 +49,13 @@ export const RoadmapGenerator = ({ defaultRole, hasRoadmap }: RoadmapGeneratorPr
           </Label>
           <Switch id="roadmap-analysis" checked={useLatestAnalysis} onCheckedChange={setUseLatestAnalysis} />
         </div>
+        {generate.error && !generate.isPending && (
+          <Alert variant="destructive">
+            <AlertTriangle />
+            <AlertTitle>The roadmap didn't finish</AlertTitle>
+            <AlertDescription>{generate.error.message}</AlertDescription>
+          </Alert>
+        )}
         {hasRoadmap ? (
           <ConfirmDialog
             trigger={button}

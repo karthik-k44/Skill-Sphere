@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Loader2, Sparkles, Timer } from "lucide-react";
+import { AlertTriangle, Loader2, Sparkles, Timer } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/frontend/components/ui/alert";
 import { Button } from "@/frontend/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/frontend/components/ui/card";
 import { Input } from "@/frontend/components/ui/input";
@@ -68,6 +69,13 @@ export const GenerateAnalysisCard = ({ defaultRole, nextAllowedAt, onGenerated }
           <p className="mt-3 text-sm text-muted-foreground" role="status">
             This usually takes 10–20 seconds.
           </p>
+        )}
+        {generate.error && !generate.isPending && (
+          <Alert variant="destructive" className="mt-4">
+            <AlertTriangle />
+            <AlertTitle>The analysis didn't finish</AlertTitle>
+            <AlertDescription>{generate.error.message}</AlertDescription>
+          </Alert>
         )}
       </CardContent>
     </Card>
