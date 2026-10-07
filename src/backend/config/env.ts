@@ -9,6 +9,8 @@ const EnvSchema = z.object({
   JWT_REFRESH_SECRET: z.string().min(1).optional(),
   /** Comma-separated origins allowed to call the API cross-origin. Unset = same-origin only. */
   CLIENT_ORIGIN: z.string().optional(),
+  /** Reverse proxies between the browser and this server: 1 behind Render, 2 when Vercel also proxies /api. */
+  TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(5).default(1),
   AI_ANALYZER_API_KEY: z.string().optional(),
   AI_ANALYZER_API_URL: z.string().optional(),
   AI_ANALYZER_MODEL: z.string().default("gpt-4o-mini"),
@@ -16,6 +18,8 @@ const EnvSchema = z.object({
   GITHUB_TOKEN: z.string().optional(),
   DEMO_EMAIL: z.string().email().default("demo@skillsphere.dev"),
   DEMO_PASSWORD: z.string().min(8).default("demo-account-2026"),
+  /** Set automatically by Render; /api/health reports it so the deploy pipeline can confirm the release. */
+  RENDER_GIT_COMMIT: z.string().optional(),
 });
 
 const parsed = EnvSchema.safeParse(process.env);

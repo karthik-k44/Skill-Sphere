@@ -1,9 +1,12 @@
-name: CI
+name: CI/CD
 
+# Every pull request is checked. Every push to main (i.e. every merge) is checked and, only if the
+# checks pass, deployed: API to Render first, then the frontend to Vercel, then a live smoke test.
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch: # "Run workflow" button for a manual redeploy of main
 
 jobs:
   check:
@@ -23,3 +26,81 @@ jobs:
         run: npx vitest run
       - name: Build
         run: npm run build
+
+  deploy:
+    needs: check
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ vars.PRODUCTION_URL }}
+    # Never run two deploys at once; a newer merge waits for the current deploy to finish.
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Check deploy configuration
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          missing=""
+          for name in RENDER_DEPLOY_HOOK_URL VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            [ -n "${!name}" ] || missing="$missing $name"
+          done
+          [ -n "${{ vars.RENDER_URL }}" ] || missing="$missing RENDER_URL(variable)"
+          [ -n "${{ vars.PRODUCTION_URL }}" ] || missing="$missing PRODUCTION_URL(variable)"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing deploy settings:$missing. See docs/deployment.md."
+            exit 1
+          fi
+
+      - name: Deploy API to Render
+        run: curl --fail --silent --show-error -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" > /dev/null
+
+      - name: Wait for Render to serve this commit
+        run: |
+          # Free instances build slowly and sleep when idle, so allow up to 20 minutes.
+          for attempt in $(seq 1 80); do
+            live=$(curl --silent --max-time 60 "${{ vars.RENDER_URL }}/api/health" | jq -r '.commit // empty' || true)
+            if [ "$live" = "$GITHUB_SHA" ]; then
+              echo "Render is serving $GITHUB_SHA"
+              exit 0
+            fi
+            echo "Attempt $attempt: Render is on '${live:-unreachable}', waiting for $GITHUB_SHA"
+            sleep 15
+          done
+          echo "::error::Render did not go live with $GITHUB_SHA within 20 minutes. Check the deploy logs on Render."
+          exit 1
+
+      - name: Deploy frontend to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          npx --yes vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
+          npx --yes vercel@latest build --prod --token="$VERCEL_TOKEN"
+          npx --yes vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+
+      - name: Smoke test the live site (through the Vercel /api proxy)
+        run: |
+          for attempt in $(seq 1 10); do
+            body=$(curl --silent --max-time 60 "${{ vars.PRODUCTION_URL }}/api/health" || true)
+            if [ "$(echo "$body" | jq -r '.commit // empty' 2>/dev/null)" = "$GITHUB_SHA" ]; then
+              echo "Live site is healthy on $GITHUB_SHA"
+              curl --fail --silent --show-error --max-time 30 "${{ vars.PRODUCTION_URL }}/" > /dev/null
+              exit 0
+            fi
+            echo "Attempt $attempt: got '$body'"
+            sleep 10
+          done
+          echo "::error::The live site did not report $GITHUB_SHA through the Vercel proxy."
+          exit 1

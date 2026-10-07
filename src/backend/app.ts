@@ -31,7 +31,7 @@ const ContentSecurityPolicy = {
 const BuildApiRouter = () => {
   const api = Router();
   api.get("/health", (_req, res) => {
-    res.json({ status: "ok" });
+    res.json({ status: "ok", commit: env.RENDER_GIT_COMMIT ?? null });
   });
   api.use("/auth", authRoutes);
   api.use("/profile", profileRoutes);
@@ -51,7 +51,8 @@ export const CreateApp = () => {
   const app = express();
   const allowedOrigins = env.CLIENT_ORIGIN?.split(",").map((origin) => origin.trim()).filter(Boolean) ?? [];
 
-  app.set("trust proxy", 1);
+  // Proxies in front of the app (Render = 1; Vercel rewrite -> Render = 2). Must be right, or rate limits key on the proxy's IP.
+  app.set("trust proxy", env.TRUST_PROXY_HOPS);
   app.use(helmet({ contentSecurityPolicy: env.IS_PROD ? ContentSecurityPolicy : false }));
   if (allowedOrigins.length > 0) app.use(cors({ origin: allowedOrigins, credentials: true }));
   app.use(cookieParser());
