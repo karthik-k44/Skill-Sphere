@@ -1,113 +1,97 @@
 # SkillSphere
 
-SkillSphere is a full-stack TypeScript project focused on helping users understand their skills, improve with targeted guidance, and prepare strong resume content.
+**An AI career toolkit for developers.** Build one profile, then get an honest readiness score, see how
+you match a real job posting, follow a personal learning roadmap, and export a clean PDF resume.
 
-The current codebase includes a React + Vite frontend, an Express + MongoDB backend, authentication, and a protected dashboard. The product vision extends this into AI-powered skill advice and resume assistance.
+![Landing page](docs/screenshots/landing.png)
 
-## Core Idea
+> **Try it without signing up:** click **“Try the live demo”** on the landing page. It opens a pre-filled
+> account so every feature works straight away.
 
-SkillSphere is built to answer:
+## Features
 
-- What skills does a user already have?
-- What should they improve next?
-- How can they present those skills clearly in a resume?
+| | |
+| --- | --- |
+| **AI profile analysis** | Recruiter-style review returning structured JSON: overall score, five area scores (radar chart), strengths, prioritised improvements and learning resources. History is kept, and a 5-minute cooldown is enforced server-side. |
+| **Job description matching** | Paste a posting to get a match score, matched vs. missing skills, resume bullets rewritten for that role, and next steps. |
+| **Learning roadmap** | 5–8 project-driven steps generated from your profile and latest analysis. Ticking a step off updates instantly and rolls back if the save fails. |
+| **PDF resume builder** | Two templates (Classic / Modern), five accent colours and section toggles, with a live preview and one-click download. Rendered with `@react-pdf/renderer`. |
+| **Resume import** | Upload a PDF resume; the text is extracted (`unpdf`) and the AI turns it into a profile draft to merge or replace — nothing is saved until you review it. |
+| **GitHub import** | Pull your best non-fork repositories in as projects, and their languages in as skills. |
+| **Public profile** | Publish a portfolio page at `/u/your-name`. Phone number and street address are never exposed. |
+| **Guided profile editor** | Six-step editor with autosaved drafts, a strength checklist, skill suggestions, star ratings and “I currently work here”. |
 
-## Current Features
+<p>
+  <img src="docs/screenshots/dashboard.png" width="49%" alt="Dashboard" />
+  <img src="docs/screenshots/dashboard-dark.png" width="49%" alt="Dashboard in dark mode" />
+  <img src="docs/screenshots/profile.png" width="49%" alt="Profile editor" />
+  <img src="docs/screenshots/resume.png" width="49%" alt="Resume builder" />
+</p>
 
-- Public landing page with `Home`, `Features`, `About`, and `Contact` sections
-- Authentication APIs (`signup`, `login`, `current-user`, `refresh-token`)
-- JWT-based protected routes
-- Role-aware dashboard APIs (user/admin checks)
-- Protected frontend dashboard route
-- Dark/light theme support
+## Tech stack
 
-## Tech Stack
+- **Frontend:** React 19, TypeScript, Vite, TanStack Query, React Router 7, shadcn/ui (Radix) + Tailwind CSS 4, Formik + Zod, Recharts, `@react-pdf/renderer`
+- **Backend:** Express, TypeScript, MongoDB/Mongoose, Zod validation, JWT (in-memory access token + httpOnly refresh cookie), Helmet, rate limiting, Multer
+- **AI:** any OpenAI-compatible chat-completions API, with structured JSON output validated by Zod
+- **Quality:** Vitest + Supertest integration tests on an in-memory MongoDB, ESLint (import cycles, frontend/backend boundary), GitHub Actions CI
 
-- Frontend: React 19, TypeScript, Vite, Tailwind CSS, Redux Toolkit, React Router
-- Backend: Express, TypeScript, Mongoose, JWT, bcrypt
-- Tooling: ESLint, tsx, dotenv
+## Architecture
 
-## Project Structure
-
-```text
-src/
-  apps/
-    frontend/
-      components/
-      constants/
-      contexts/
-      pages/
-      redux/
-      routes/
-      services/
-      types/
-    backend/
-      database/
-      middlewares/
-      modules/
-      utils/
+```
+Browser (React SPA)                      Express (one origin)                     MongoDB
+features/<x>/services  ──Get/Post──►  /api/<module>  →  Validate (zod)  →  <module>.service  ──►  collections
+  TanStack Query cache                 RequireAuth (JWT)    rate limits         │
+  in-memory access token               error handler → { message, code }        └──► AI provider (JSON, zod-checked)
 ```
 
-## Getting Started
+- One profile powers every AI feature; `profile.mapper.ts` turns it into a compact, PII-free prompt payload.
+- Every profile route is scoped to `/me` — there is no way to address another user's data.
+- In development Express runs Vite as middleware; in production it serves `dist/`. Either way the API and the app share an origin, so there's no CORS setup.
 
-### 1. Install dependencies
+Folder layout and coding rules are in [docs/conventions.md](docs/conventions.md).
+
+## Getting started
+
+Requirements: Node 20+ (CI uses 24) and a MongoDB connection string ([Atlas free tier](https://www.mongodb.com/atlas) works).
 
 ```bash
 npm install
+cp .env.example .env      # then fill in DBURL and JWT_SECRET (AI key optional)
+npm run dev               # http://localhost:3000
 ```
 
-### 2. Configure environment variables
+Without `AI_ANALYZER_API_KEY` the app still runs. The AI features return a clear “not configured” message.
 
-Create a `.env` file in the project root:
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | API + Vite dev server on one port, with hot reload |
+| `npm run build` | Type-check everything and build the frontend into `dist/` |
+| `npm start` | Production server (serves `dist/` and the API) |
+| `npm test` | Integration tests (in-memory MongoDB, AI mocked — no keys needed) |
+| `npm run lint` / `npm run typecheck` | ESLint / `tsc -b` |
+| `npm run db:seed` | Create or reset the demo account |
 
-```env
-PORT=3000
-NODE_ENV=development
-DBURL=add your db connection string 
-JWT_SECRET=replace-with-a-strong-secret
-VITE_API_BASE_URL=http://localhost:3000
-VITE_APP_VERSION=dev
-```
+## API
 
-Notes:
+All routes are under `/api`. Errors have the shape `{ message, code, details? }`.
 
-- `DBURL` is required for authentication and user-backed features.
-- If `DBURL` is missing, the server still starts, but DB-dependent endpoints will not work.
-- `VITE_API_BASE_URL` is optional for same-origin usage; defaults to `window.location.origin`.
+| Method | Route | Auth | Purpose |
+| --- | --- | --- | --- |
+| POST | `/auth/signup`, `/auth/login`, `/auth/demo` | – | Start a session (access token + refresh cookie) |
+| POST | `/auth/refresh`, `/auth/logout` | cookie | Rotate / revoke the session |
+| GET | `/auth/me` | ✓ | Current user |
+| GET / PUT | `/profile/me` | ✓ | Read / save your profile |
+| PATCH | `/profile/me/public` | ✓ | Publish your profile at a slug |
+| GET | `/public/profiles/:slug` | – | Public profile (no phone/address) |
+| GET / POST | `/analyses`, GET `/analyses/:id` | ✓ | AI analysis history / generate |
+| GET / POST | `/job-matches`, GET / DELETE `/job-matches/:id` | ✓ | Job matching |
+| GET | `/roadmap`, POST `/roadmap/generate`, PATCH `/roadmap/items/:id` | ✓ | Learning roadmap |
+| POST | `/resume-import` (multipart `file`) | ✓ | PDF resume → profile draft |
+| GET | `/github/users/:username/repos` | ✓ | GitHub repositories for import |
+| POST | `/contact` | – | Contact form |
+| GET | `/health` | – | Health check |
 
-### 3. Run development server
+## Deploy
 
-```bash
-npm run dev
-```
-
-This starts the Express server with Vite middleware on `http://localhost:3000`.
-
-## Scripts
-
-- `npm run dev` - Start backend server (with Vite middleware in development)
-- `npm run dev:backend` - Alias for backend dev server
-- `npm run dev:frontend` - Start Vite frontend only on port `3000`
-- `npm run build` - Type-check and build production frontend bundle
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-
-## API Overview
-
-Base URL: `/api`
-
-
-## Product Roadmap
-
-Planned SkillSphere modules:
-
-- Skill assessment and profiling engine
-- AI-driven personalized learning/advice
-- Resume AI assistant for role-targeted resume generation
-- Skill-gap insights and progress analytics
-
-## Troubleshooting
-
-- `JWT_SECRET is not configured`: add `JWT_SECRET` in `.env`.
-- `DBURL is not set`: add `DBURL` to connect MongoDB.
-- If build/typecheck fails due missing optional UI libs in legacy files, install missing packages or remove unused imports/components before running `npm run build`.
+`render.yaml` deploys the whole app as one Render web service: set `DBURL` and `AI_ANALYZER_API_KEY`,
+and the JWT secrets are generated for you. Any Node host works the same way: `npm ci && npm run build`, then `npm start`.

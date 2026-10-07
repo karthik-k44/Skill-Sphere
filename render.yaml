@@ -1,0 +1,25 @@
+# One-click deploy on Render (https://render.com/docs/blueprint-spec).
+# A single web service serves both the API (/api) and the built React app.
+services:
+  - type: web
+    name: skill-sphere
+    runtime: node
+    plan: free
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: DBURL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: AI_ANALYZER_API_KEY
+        sync: false
+      - key: AI_ANALYZER_API_URL
+        sync: false
+      - key: AI_ANALYZER_MODEL
+        value: gpt-4o-mini

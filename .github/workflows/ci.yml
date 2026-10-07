@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Type-check
+        run: npx tsc -b --noEmit
+      - name: Lint
+        run: npx eslint .
+      - name: Test (in-memory MongoDB, AI mocked)
+        run: npx vitest run
+      - name: Build
+        run: npm run build
