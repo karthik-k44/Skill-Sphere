@@ -103,9 +103,8 @@ browser only ever talks to the Vercel domain. That means no CORS, and the login 
   Render URL in `vercel.json` if yours differs.
 - Render: set `TRUST_PROXY_HOPS=2` so rate limits see each visitor's real IP instead of Vercel's.
 
-**Continuous deployment:** every merge to `main` is checked and then deployed automatically, API to Render
-first and then the frontend to Vercel, with a live smoke test at the end. One-time setup is in
-[docs/deployment.md](docs/deployment.md).
+**Automatic deploys:** GitHub Actions runs the checks on every pull request and every push to `main`. Render
+and Vercel each auto-deploy `main` when it changes, so merging a pull request is all it takes.
 
 Calling the Render URL directly from the browser (setting `VITE_API_BASE_URL` plus `CLIENT_ORIGIN`) also
 works, but the refresh cookie then becomes third-party, and browsers that block those log users out on every reload.
