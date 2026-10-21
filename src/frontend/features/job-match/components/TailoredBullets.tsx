@@ -22,7 +22,7 @@ export const TailoredBullets = ({ bullets }: { bullets: string[] }) => (
     </div>
     <ul className="space-y-2">
       {bullets.map((bullet) => (
-        <li key={bullet} className="group flex items-start gap-2 rounded-lg border bg-muted/30 p-3 text-sm leading-6">
+        <li key={bullet} className="group flex items-start gap-2 rounded-[20px] bg-muted p-4 text-sm leading-6">
           <span className="flex-1">{bullet}</span>
           <Button
             size="icon"

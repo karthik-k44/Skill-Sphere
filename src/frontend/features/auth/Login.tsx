@@ -20,7 +20,7 @@ const Login = () => {
       footer={
         <>
           New to SkillSphere?{" "}
-          <Link to={paths.signup} className="font-medium text-primary underline-offset-4 hover:underline">
+          <Link to={paths.signup} className="text-link underline-offset-4 hover:underline">
             Create an account
           </Link>
         </>

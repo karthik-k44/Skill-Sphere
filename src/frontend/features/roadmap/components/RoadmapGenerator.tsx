@@ -42,7 +42,7 @@ export const RoadmapGenerator = ({ defaultRole, hasRoadmap }: RoadmapGeneratorPr
             maxLength={100}
           />
         </div>
-        <div className="flex items-center justify-between gap-3 rounded-lg border p-3">
+        <div className="flex items-center justify-between gap-3 rounded-[20px] bg-muted p-4">
           <Label htmlFor="roadmap-analysis" className="flex flex-col items-start gap-0.5 font-normal">
             <span className="font-medium">Use my latest analysis</span>
             <span className="text-xs text-muted-foreground">Focus the plan on the gaps the analyzer found.</span>

@@ -22,10 +22,10 @@ export const GenerateAnalysisCard = ({ defaultRole, nextAllowedAt, onGenerated }
   const isCoolingDown = remaining > 0;
 
   return (
-    <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/10 via-card to-card">
+    <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Sparkles className="size-5 text-primary" /> Run a new analysis
+          <Sparkles className="size-5" /> Run a new analysis
         </CardTitle>
         <CardDescription>
           The AI reviews your saved profile like a recruiter would: scores, strengths, gaps and where to learn.

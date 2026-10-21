@@ -20,7 +20,7 @@ const PublicProfile = () => {
   useDocumentTitle(profile?.name ?? "Profile");
 
   return (
-    <div className="flex min-h-svh flex-col">
+    <div className="flex min-h-svh flex-col bg-canvas">
       <PublicHeader />
       <main className="mx-auto w-full max-w-5xl flex-1 space-y-6 px-4 py-10 sm:px-6">
         {isPending ? (

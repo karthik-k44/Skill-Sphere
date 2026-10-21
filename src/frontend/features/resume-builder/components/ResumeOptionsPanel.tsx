@@ -26,7 +26,7 @@ export const ResumeOptionsPanel = ({ options, onChange }: ResumeOptionsPanelProp
             aria-pressed={options.template === template.value}
             onClick={() => onChange({ ...options, template: template.value })}
             className={Cn(
-              "w-full rounded-lg border p-3 text-left transition-colors hover:bg-accent",
+              "w-full rounded-[20px] border p-4 text-left transition-colors hover:bg-muted",
               options.template === template.value && "border-primary bg-primary/5 ring-1 ring-primary",
             )}
           >

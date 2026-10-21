@@ -27,7 +27,7 @@ const Summary = ({ draft }: { draft: ProfileFormValues }) => {
     ["certifications", draft.certifications.length],
   ] as const;
   return (
-    <div className="rounded-lg border bg-muted/40 p-4 text-sm">
+    <div className="rounded-[20px] bg-muted p-5 text-sm">
       <p className="font-medium">{draft.headline || "We read your resume"}</p>
       <p className="mt-1 text-muted-foreground">
         Found {counts.map(([label, count]) => `${count} ${label}`).join(", ")}.
@@ -73,7 +73,7 @@ export const ImportResumeDialog = () => {
 
         {parse.isPending ? (
           <div role="status" className="flex flex-col items-center gap-3 py-10 text-muted-foreground">
-            <Loader2 className="size-6 animate-spin text-primary" />
+            <Loader2 className="size-6 animate-spin text-muted-foreground" />
             Reading your resume… this usually takes 10–30 seconds.
           </div>
         ) : draft ? (

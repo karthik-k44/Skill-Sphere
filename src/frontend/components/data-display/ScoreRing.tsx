@@ -38,7 +38,7 @@ export const ScoreRing = ({ value, size = 128, strokeWidth = 10, label = "Score"
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold tabular-nums">{clamped}</span>
+        <span className="text-3xl font-semibold tabular-nums">{clamped}</span>
         <span className="text-[10px] font-medium tracking-widest text-muted-foreground uppercase">{label}</span>
       </div>
     </div>

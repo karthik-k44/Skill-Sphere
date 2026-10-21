@@ -9,7 +9,7 @@ export const AppProviders = ({ children }: { children: ReactNode }) => (
     <ThemeProvider>
       <TooltipProvider delayDuration={200}>
         {children}
-        <Toaster position="top-center" richColors closeButton />
+        <Toaster position="top-center" closeButton />
       </TooltipProvider>
     </ThemeProvider>
   </QueryProvider>

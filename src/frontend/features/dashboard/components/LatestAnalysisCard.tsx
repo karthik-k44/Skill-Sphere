@@ -16,7 +16,7 @@ export const LatestAnalysisCard = ({ analysisId }: { analysisId: string | undefi
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Sparkles className="size-4 text-primary" /> Latest AI review
+          <Sparkles className="size-4" /> Latest AI review
         </CardTitle>
         {analysis && <CardDescription>{FormatRelative(analysis.createdAt)}</CardDescription>}
       </CardHeader>

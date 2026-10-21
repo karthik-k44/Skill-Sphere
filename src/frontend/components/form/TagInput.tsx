@@ -34,7 +34,7 @@ export const TagInput = ({ id, value, onChange, placeholder, suggestions = [], m
   };
 
   return (
-    <div className="flex min-h-9 flex-wrap items-center gap-1.5 rounded-md border bg-transparent px-2 py-1.5 shadow-xs focus-within:ring-[3px] focus-within:ring-ring/50 dark:bg-input/30">
+    <div className="flex min-h-9 flex-wrap items-center gap-1.5 rounded-[20px] border border-input bg-background px-3 py-1.5 focus-within:ring-[3px] focus-within:ring-ring/50 dark:bg-input/30">
       {value.map((tag) => (
         <Badge key={tag} variant="secondary" className="gap-1 pr-1">
           {tag}

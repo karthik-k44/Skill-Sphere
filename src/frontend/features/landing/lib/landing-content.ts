@@ -45,6 +45,9 @@ export const FEATURES: LandingFeature[] = [
   },
 ];
 
+/** Square tag chips under the hero statement. */
+export const HERO_TAGS = ["AI analysis", "Job match", "Roadmap", "Resume PDF", "GitHub import", "Public profile"];
+
 export const STEPS = [
   { title: "Build your profile", description: "Import your resume or GitHub, or fill in the guided editor." },
   { title: "Get honest feedback", description: "Run the AI analyzer and match yourself against real job posts." },

@@ -26,7 +26,7 @@ type ProfileStepsProps = {
 
 export const ProfileSteps = ({ step, onStepChange, stepsWithErrors }: ProfileStepsProps) => (
   <Tabs value={step} onValueChange={(value) => onStepChange(value as ProfileStepTypeEnum)} className="gap-4">
-    <TabsList className="h-auto w-full flex-wrap justify-start gap-1 sm:flex-nowrap">
+    <TabsList className="h-auto w-full flex-wrap justify-start gap-1 rounded-[20px] sm:flex-nowrap sm:rounded-full">
       {PROFILE_STEPS.map(({ value, label, icon: Icon }) => (
         <TabsTrigger key={value} value={value} className="relative flex-none sm:flex-1">
           <Icon /> {label}

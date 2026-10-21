@@ -1,5 +1,4 @@
 import type { LucideIcon } from "lucide-react";
-import { Card, CardContent } from "@/frontend/components/ui/card";
 
 type StatCardProps = {
   label: string;
@@ -8,17 +7,16 @@ type StatCardProps = {
   hint?: string;
 };
 
+/** White 28px tile on the canvas: small Slate label, large Ink figure, monochrome icon. */
 export const StatCard = ({ label, value, icon: Icon, hint }: StatCardProps) => (
-  <Card className="gap-0 py-0">
-    <CardContent className="flex items-center gap-4 p-5">
-      <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-        <Icon className="size-5" />
-      </div>
-      <div className="min-w-0">
-        <p className="text-sm text-muted-foreground">{label}</p>
-        <p className="truncate text-2xl font-semibold tabular-nums">{value}</p>
-        {hint && <p className="truncate text-xs text-muted-foreground">{hint}</p>}
-      </div>
-    </CardContent>
-  </Card>
+  <div className="flex flex-col gap-4 rounded-card bg-card p-6">
+    <div className="flex items-center justify-between text-sm text-muted-foreground">
+      {label}
+      <Icon className="size-4" strokeWidth={1.75} aria-hidden />
+    </div>
+    <div className="min-w-0">
+      <p className="truncate font-display text-headline font-semibold tabular-nums">{value}</p>
+      {hint && <p className="truncate text-xs text-muted-foreground">{hint}</p>}
+    </div>
+  </div>
 );

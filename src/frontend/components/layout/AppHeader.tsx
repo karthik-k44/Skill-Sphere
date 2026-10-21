@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Badge } from "@/frontend/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -23,7 +22,7 @@ export const AppHeader = () => {
   const crumbs = current && current.path !== paths.app.dashboard ? [current] : [];
 
   return (
-    <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-2 border-b bg-background/80 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-2 border-b bg-background/75 px-4 backdrop-blur-xl">
       <SidebarTrigger className="-ml-1" />
       <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
       <Breadcrumb>
@@ -49,9 +48,7 @@ export const AppHeader = () => {
       </Breadcrumb>
       <div className="ml-auto flex items-center gap-2">
         {user?.isDemo && (
-          <Badge variant="outline" className="hidden border-warning/50 text-warning sm:inline-flex">
-            Demo account
-          </Badge>
+          <span className="hidden text-xs font-semibold text-warning sm:inline">Demo account</span>
         )}
         <ThemeToggle />
       </div>

@@ -9,12 +9,12 @@ const NotFound = () => {
 
   return (
     <main className="flex min-h-svh flex-col items-center justify-center gap-6 px-4 text-center">
-      <div className="flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+      <div className="flex size-16 items-center justify-center rounded-full bg-muted text-foreground">
         <Compass className="size-8" />
       </div>
       <div className="space-y-2">
-        <p className="text-sm font-medium text-primary">404</p>
-        <h1 className="text-3xl font-bold tracking-tight">This page wandered off</h1>
+        <p className="text-sm font-medium text-muted-foreground">404</p>
+        <h1 className="text-3xl font-semibold tracking-tight">This page wandered off</h1>
         <p className="text-muted-foreground">The link may be broken, or the page may have moved.</p>
       </div>
       <div className="flex gap-2">

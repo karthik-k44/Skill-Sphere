@@ -40,12 +40,12 @@ export const ResumeDropzone = ({ onFile, onReject, disabled }: ResumeDropzonePro
       onDragLeave={() => setIsDragging(false)}
       onDrop={OnDrop}
       className={Cn(
-        "flex w-full flex-col items-center gap-3 rounded-xl border-2 border-dashed px-6 py-10 text-center transition-colors",
+        "flex w-full flex-col items-center gap-3 rounded-[20px] border-2 border-dashed px-6 py-10 text-center transition-colors",
         "outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:opacity-60",
         isDragging ? "border-primary bg-primary/5" : "hover:border-primary/50 hover:bg-accent/40",
       )}
     >
-      <div className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+      <div className="flex size-12 items-center justify-center rounded-full bg-muted text-foreground">
         <FileUp className="size-6" />
       </div>
       <div>

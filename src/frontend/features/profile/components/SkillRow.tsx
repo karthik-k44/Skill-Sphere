@@ -19,7 +19,7 @@ export const SkillRow = ({ index, suggestionsId, onRemove }: SkillRowProps) => {
   if (!skill) return null;
 
   return (
-    <div className="grid gap-3 rounded-lg border p-3 sm:grid-cols-[1fr_160px_auto_auto] sm:items-center">
+    <div className="grid gap-3 rounded-[20px] bg-muted p-3 sm:grid-cols-[1fr_160px_auto_auto] sm:items-center">
       <div className="space-y-1">
         <Input
           aria-label="Skill name"

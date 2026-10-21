@@ -13,7 +13,7 @@ export const RoadmapProgressCard = ({ roadmap }: { roadmap: RoadmapResponseType 
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Map className="size-4 text-primary" /> Learning roadmap
+          <Map className="size-4" /> Learning roadmap
         </CardTitle>
         {roadmap && <CardDescription>{roadmap.targetRole || "Your plan"}</CardDescription>}
       </CardHeader>

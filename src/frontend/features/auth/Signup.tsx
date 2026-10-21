@@ -16,7 +16,7 @@ const Signup = () => {
       footer={
         <>
           Already have an account?{" "}
-          <Link to={paths.login} className="font-medium text-primary underline-offset-4 hover:underline">
+          <Link to={paths.login} className="text-link underline-offset-4 hover:underline">
             Log in
           </Link>
         </>

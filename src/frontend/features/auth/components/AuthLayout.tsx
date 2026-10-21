@@ -17,21 +17,20 @@ type AuthLayoutProps = {
   footer: ReactNode;
 };
 
+/** Studio Mist story panel (desktop) beside a white form column. No colour blocks, no gradients. */
 export const AuthLayout = ({ title, description, children, footer }: AuthLayoutProps) => (
   <div className="grid min-h-svh lg:grid-cols-2">
-    <aside className="relative hidden overflow-hidden bg-primary p-10 text-primary-foreground lg:flex lg:flex-col">
-      <div className="absolute -top-24 -right-24 size-96 rounded-full bg-white/10 blur-3xl" />
-      <div className="absolute -bottom-32 -left-16 size-96 rounded-full bg-black/10 blur-3xl" />
-      <Logo className="relative text-primary-foreground [&>span:first-child]:bg-white [&>span:first-child]:text-primary [&_.text-primary]:text-white/80" />
-      <div className="relative mt-auto max-w-md space-y-8">
-        <h2 className="text-3xl leading-tight font-bold">Turn what you know into a career-ready story.</h2>
-        <ul className="space-y-4">
+    <aside className="hidden flex-col bg-canvas p-12 lg:flex dark:bg-card">
+      <Logo />
+      <div className="mt-auto max-w-md space-y-10">
+        <h2 className="text-display font-semibold">Turn what you know into a career-ready story.</h2>
+        <ul className="space-y-5">
           {HIGHLIGHTS.map(({ icon: Icon, text }) => (
-            <li key={text} className="flex items-start gap-3 text-primary-foreground/90">
-              <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-md bg-white/15">
-                <Icon className="size-4" />
+            <li key={text} className="flex items-start gap-4">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-background">
+                <Icon className="size-4" strokeWidth={1.75} aria-hidden />
               </span>
-              {text}
+              <span className="pt-1.5 text-muted-foreground">{text}</span>
             </li>
           ))}
         </ul>
@@ -45,8 +44,8 @@ export const AuthLayout = ({ title, description, children, footer }: AuthLayoutP
       </div>
       <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 py-10">
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <h1 className="text-headline font-semibold">{title}</h1>
+          <p className="text-muted-foreground">{description}</p>
         </div>
         {children}
         <p className="text-center text-sm text-muted-foreground">{footer}</p>

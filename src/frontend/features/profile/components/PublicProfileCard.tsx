@@ -34,7 +34,7 @@ export const PublicProfileCard = ({ profile, userName }: PublicProfileCardProps)
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Globe className="size-4 text-primary" /> Public profile
+          <Globe className="size-4" /> Public profile
         </CardTitle>
         <CardDescription>
           {profile ? "Share a read-only page with recruiters. Phone and street address stay private." : "Save your profile first."}

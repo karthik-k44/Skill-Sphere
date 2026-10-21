@@ -8,7 +8,7 @@ export const PublicSkills = ({ skills }: { skills: SkillType[] }) =>
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Wrench className="size-4 text-primary" /> Skills
+          <Wrench className="size-4" /> Skills
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">

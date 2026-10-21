@@ -24,7 +24,7 @@ export const AnalysisReport = ({ id }: { id: string }) => {
         <ImprovementsCard improvements={analysis.improvements} />
       </div>
       {analysis.resources.length > 0 && <ResourcesCard resources={analysis.resources} />}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-card bg-card p-7">
         <p className="text-sm text-muted-foreground">Turn these improvement areas into a week-by-week plan.</p>
         <Button asChild>
           <Link to={paths.app.roadmap}>
