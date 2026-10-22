@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
-import { BarChart3, FileText, Sparkles, Target } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowLeft, BarChart3, FileText, Sparkles, Target } from "lucide-react";
 import { Logo } from "@/frontend/components/layout/Logo";
 import { ThemeToggle } from "@/frontend/components/layout/ThemeToggle";
+import { paths } from "@/frontend/config/paths";
 
 const HIGHLIGHTS = [
   { icon: Sparkles, text: "AI scores your profile and tells you exactly what to improve" },
@@ -17,14 +19,17 @@ type AuthLayoutProps = {
   footer: ReactNode;
 };
 
-/** Studio Mist story panel (desktop) beside a white form column. No colour blocks, no gradients. */
+/**
+ * Exactly one screen tall: the page never scrolls. On very short screens only the form column
+ * scrolls inside itself. Studio Mist story panel (desktop) beside a white form column.
+ */
 export const AuthLayout = ({ title, description, children, footer }: AuthLayoutProps) => (
-  <div className="grid min-h-svh lg:grid-cols-2">
-    <aside className="hidden flex-col bg-canvas p-12 lg:flex dark:bg-card">
+  <div className="grid h-svh overflow-hidden lg:grid-cols-2">
+    <aside className="hidden min-h-0 flex-col bg-canvas p-10 lg:flex xl:p-12 dark:bg-card">
       <Logo />
-      <div className="mt-auto max-w-md space-y-10">
-        <h2 className="text-display font-semibold">Turn what you know into a career-ready story.</h2>
-        <ul className="space-y-5">
+      <div className="mt-auto max-w-md space-y-8">
+        <h2 className="text-headline font-semibold xl:text-display">Turn what you know into a career-ready story.</h2>
+        <ul className="space-y-4">
           {HIGHLIGHTS.map(({ icon: Icon, text }) => (
             <li key={text} className="flex items-start gap-4">
               <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-background">
@@ -37,13 +42,19 @@ export const AuthLayout = ({ title, description, children, footer }: AuthLayoutP
       </div>
     </aside>
 
-    <main className="flex flex-col p-6 sm:p-10">
-      <div className="flex items-center justify-between">
-        <Logo className="lg:invisible" />
+    <main className="flex min-h-0 flex-col overflow-y-auto px-6 py-5 sm:px-10 sm:py-6">
+      <div className="flex items-center justify-between gap-3">
+        <Link
+          to={paths.home}
+          className="inline-flex items-center gap-1.5 rounded-full py-1 pr-3 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="size-4" aria-hidden /> Back to home
+        </Link>
         <ThemeToggle />
       </div>
-      <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 py-10">
-        <div className="space-y-2">
+      <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-5 py-6">
+        <Logo className="lg:hidden" />
+        <div className="space-y-1.5">
           <h1 className="text-headline font-semibold">{title}</h1>
           <p className="text-muted-foreground">{description}</p>
         </div>

@@ -1,4 +1,6 @@
 import { Check, Circle, Star } from "lucide-react";
+import { AnimatedNumber } from "@/frontend/components/data-display/AnimatedNumber";
+import { Reveal } from "@/frontend/components/motion/Reveal";
 
 // Scalloped edge where the gray hero stage meets the collage: 48 shallow bumps across a 1200-wide box.
 const SCALLOP_PATH = `M0 0H1200V6${Array.from({ length: 48 }, () => "q-12.5 12 -25 0").join(" ")}Z`;
@@ -28,28 +30,31 @@ export const ShowcaseCollage = () => (
       <path d={SCALLOP_PATH} />
     </svg>
     <div className="grid grid-flow-dense auto-rows-[170px] grid-cols-2 bg-background md:grid-cols-4 dark:bg-black" aria-hidden>
-      <div className={`${tile} row-span-2 bg-foreground text-background`}>
+      <Reveal className={`${tile} row-span-2 bg-foreground text-background`}>
         <p className="text-xs tracking-[0.06em] uppercase opacity-70">Readiness score</p>
-        <p className="font-display text-[96px] leading-none font-semibold tracking-[-0.03em]">78</p>
+        <AnimatedNumber value={78} className="font-display text-[96px] leading-none font-semibold tracking-[-0.03em]" />
         <p className="text-sm opacity-70">Up 12 since last month</p>
-      </div>
-      <div className={`${tile} bg-background`}>
+      </Reveal>
+      <Reveal delay={80} className={`${tile} bg-background`}>
         <p className="text-xs tracking-[0.06em] text-muted-foreground uppercase">Top skills</p>
         <div className="space-y-2">
           {SKILLS.map((skill) => (
             <div key={skill.name} className="flex items-center gap-3 text-xs">
               <span className="w-20 shrink-0">{skill.name}</span>
               <span className="h-1.5 flex-1 rounded-full bg-control">
-                <span className="block h-full rounded-full bg-foreground" style={{ width: `${skill.value}%` }} />
+                <span
+                  className="block h-full origin-left rounded-full bg-foreground group-data-[visible=true]/reveal:animate-grow-x"
+                  style={{ width: `${skill.value}%` }}
+                />
               </span>
             </div>
           ))}
         </div>
-      </div>
-      <div className={`${tile} col-span-2 bg-control md:flex-row md:items-end`}>
+      </Reveal>
+      <Reveal delay={160} className={`${tile} col-span-2 bg-control md:flex-row md:items-end`}>
         <div>
           <p className="text-xs tracking-[0.06em] text-muted-foreground uppercase">Job match</p>
-          <p className="mt-2 font-display text-display font-semibold">86%</p>
+          <AnimatedNumber value={86} suffix="%" className="mt-2 block font-display text-display font-semibold" />
           <p className="text-sm text-muted-foreground">Frontend Engineer · Acme</p>
         </div>
         <div className="flex flex-wrap gap-1.5 text-xs md:max-w-[55%] md:justify-end">
@@ -58,8 +63,8 @@ export const ShowcaseCollage = () => (
           ))}
           <span className="bg-background px-2 py-1 text-warning">Missing: GraphQL</span>
         </div>
-      </div>
-      <div className={`${tile} col-span-2 bg-background`}>
+      </Reveal>
+      <Reveal delay={120} className={`${tile} col-span-2 bg-background`}>
         <p className="text-xs tracking-[0.06em] text-muted-foreground uppercase">Learning roadmap · 66%</p>
         <ul className="space-y-2 text-sm">
           {STEPS.map((step) => (
@@ -69,8 +74,8 @@ export const ShowcaseCollage = () => (
             </li>
           ))}
         </ul>
-      </div>
-      <div className={`${tile} col-span-2 bg-foreground font-mono text-background md:col-span-1`}>
+      </Reveal>
+      <Reveal delay={200} className={`${tile} col-span-2 bg-foreground font-mono text-background md:col-span-1`}>
         <p className="font-sans text-xs tracking-[0.06em] uppercase opacity-70">From GitHub</p>
         <ul className="space-y-1.5 text-xs">
           {[["skill-sphere", 42], ["budget-buddy", 18], ["dotfiles", 7]].map(([repo, stars]) => (
@@ -80,7 +85,7 @@ export const ShowcaseCollage = () => (
             </li>
           ))}
         </ul>
-      </div>
+      </Reveal>
     </div>
   </div>
 );

@@ -11,7 +11,8 @@ vi.mock("@/backend/common/services/ai.service", () => ({
 let mongo: MongoMemoryServer;
 
 beforeAll(async () => {
-  mongo = await MongoMemoryServer.create();
+  // Generous launch timeout: on slow or busy machines mongod can take more than the 10s default to boot.
+  mongo = await MongoMemoryServer.create({ instance: { launchTimeout: 60_000 } });
   await ConnectDb(mongo.getUri());
   await Promise.all(Object.values(mongoose.models).map((model) => model.init()));
 });

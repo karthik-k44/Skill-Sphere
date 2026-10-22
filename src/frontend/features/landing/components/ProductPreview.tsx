@@ -13,7 +13,10 @@ const AREAS = [
  * stage, 28px corners, no shadow; decorative, so it is one labelled image for screen readers.
  */
 export const ProductPreview = () => (
-  <div className="relative mx-auto w-full max-w-md pb-10" role="img" aria-label="Example AI analysis: overall score 78">
+  <div
+    className="relative mx-auto w-full max-w-md animate-fade-up pb-10"
+    style={{ animationDelay: "300ms" }}
+    role="img" aria-label="Example AI analysis: overall score 78">
     <div className="space-y-6 rounded-card bg-background p-7 dark:bg-muted">
       <div className="flex items-center justify-between gap-3">
         <span className="text-sm font-medium">AI review · Full Stack Developer</span>
@@ -43,7 +46,7 @@ export const ProductPreview = () => (
         </p>
       </div>
     </div>
-    <div className="absolute right-0 bottom-0 flex items-center gap-4 rounded-card bg-background py-3 pr-3 pl-6 shadow-hairline sm:-right-6 dark:bg-muted">
+    <div className="absolute right-0 bottom-0 flex animate-float items-center gap-4 rounded-card bg-background py-3 pr-3 pl-6 shadow-hairline sm:-right-6 dark:bg-muted">
       <div>
         <p className="text-sm font-semibold">86% match</p>
         <p className="text-xs text-muted-foreground">Frontend Engineer</p>

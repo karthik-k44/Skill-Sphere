@@ -8,13 +8,13 @@ const ACCESS_TOKEN_TTL = "15m";
 const REFRESH_TOKEN_TTL_DAYS = 7;
 export const REFRESH_COOKIE_NAME = "ss_refresh";
 
-type AccessPayload = { sub: string; role: UserRoleTypeEnum; type: "access" };
+type AccessPayload = { sub: string; role: UserRoleTypeEnum; demo: boolean; type: "access" };
 type RefreshPayload = { sub: string; ver: number; type: "refresh" };
 
 const SESSION_EXPIRED = "Your session has expired. Please sign in again.";
 
-const SignAccessToken = (userId: string, role: UserRoleTypeEnum) =>
-  jwt.sign({ sub: userId, role, type: "access" } satisfies AccessPayload, env.JWT_SECRET, {
+const SignAccessToken = (userId: string, role: UserRoleTypeEnum, isDemo = false) =>
+  jwt.sign({ sub: userId, role, demo: isDemo, type: "access" } satisfies AccessPayload, env.JWT_SECRET, {
     expiresIn: ACCESS_TOKEN_TTL,
   });
 

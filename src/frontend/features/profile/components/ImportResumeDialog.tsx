@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/frontend/components/ui/dialog";
+import { authService } from "@/frontend/features/auth/services";
 import { ToastManager } from "@/frontend/lib/toast-manager";
 import { MergeIntoForm, ToFormValues } from "../lib/profile-form";
 import { resumeImportService } from "../services";
@@ -40,6 +41,7 @@ export const ImportResumeDialog = () => {
   const [open, setOpen] = useState(false);
   const formik = useFormikContext<ProfileFormValues>();
   const parse = resumeImportService.useParseResumeMutation();
+  const isDemo = Boolean(authService.useSession().data?.isDemo);
   const draft = parse.data ? ToFormValues(parse.data) : null;
 
   const Apply = (mode: "merge" | "replace") => {
@@ -59,8 +61,8 @@ export const ImportResumeDialog = () => {
       }}
     >
       <DialogTrigger asChild>
-        <Button type="button" variant="outline" className="w-full justify-start">
-          <FileText /> Import from resume (PDF)
+        <Button type="button" variant="outline" className="w-full justify-start" disabled={isDemo}>
+          <FileText /> {isDemo ? "Resume import (off in demo)" : "Import from resume (PDF)"}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">

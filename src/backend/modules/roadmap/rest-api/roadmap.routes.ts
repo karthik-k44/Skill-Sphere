@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { AsyncHandler } from "@/backend/common/utils/async-handler";
-import { RequireAuth } from "@/backend/middleware/auth";
+import { BlockDemoAccount, RequireAuth } from "@/backend/middleware/auth";
 import { aiLimiter } from "@/backend/middleware/rate-limit";
 import { Validate } from "@/backend/middleware/validate";
 import {
@@ -16,6 +16,7 @@ roadmapRoutes.use(RequireAuth);
 roadmapRoutes.get("/", AsyncHandler(roadmapController.GetMine));
 roadmapRoutes.post(
   "/generate",
+  BlockDemoAccount,
   aiLimiter,
   Validate({ body: GenerateRoadmapSchema }),
   AsyncHandler(roadmapController.Generate),

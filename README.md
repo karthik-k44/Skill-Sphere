@@ -6,7 +6,9 @@ you match a real job posting, follow a personal learning roadmap, and export a c
 ![Landing page](docs/screenshots/landing.png)
 
 > **Try it without signing up:** click **“Try the live demo”** on the landing page. It opens a pre-filled
-> account so every feature works straight away.
+> account with sample analyses, job matches and a roadmap. AI actions are turned off for the shared demo
+> (enforced on the server) so visitors can't spend the AI quota; sign up to run them on your own profile.
+> The demo resets every time someone opens it.
 
 ## Features
 
@@ -23,9 +25,11 @@ you match a real job posting, follow a personal learning roadmap, and export a c
 
 <p>
   <img src="docs/screenshots/dashboard.png" width="49%" alt="Dashboard" />
-  <img src="docs/screenshots/dashboard-dark.png" width="49%" alt="Dashboard in dark mode" />
+  <img src="docs/screenshots/analyzer.png" width="49%" alt="AI analyzer report" />
   <img src="docs/screenshots/profile.png" width="49%" alt="Profile editor" />
   <img src="docs/screenshots/resume.png" width="49%" alt="Resume builder" />
+  <img src="docs/screenshots/dashboard-dark.png" width="49%" alt="Dashboard in dark mode" />
+  <img src="docs/screenshots/landing-mobile.png" width="24%" alt="Landing page on mobile" />
 </p>
 
 ## Tech stack

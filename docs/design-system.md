@@ -70,6 +70,21 @@ Fonts: `font-sans` = SF Pro Text → Inter fallback; `font-display` (applied to 
 | `Progress` | 6px Control Gray track, Ink fill |
 | Dialogs / menus | 28px dialogs, 20px menus, hairline edge, no shadow |
 
+## Motion
+
+Quick, quiet, one easing (`ease-out-expo`, `cubic-bezier(0.16, 1, 0.3, 1)`). Everything is switched
+off under `prefers-reduced-motion` by a global rule in `index.css`.
+
+| Tool | Use |
+| --- | --- |
+| `animate-fade-up` + inline `animationDelay` | Page-load entrances (landing hero words, copy, tags, preview), staggered 50–120ms |
+| `<Reveal delay>` (`components/motion/Reveal.tsx`) | Fade-and-lift the first time a block scrolls into view; stagger siblings by ~90–120ms |
+| `group-data-[visible=true]/reveal:*` | Children reacting to a reveal (e.g. `animate-grow-x` bars) |
+| `<AnimatedNumber>` | Count-up figures in view (reads the final value to screen readers) |
+| `animate-float` | One gentle idle bob for a floating callout; never on content people read |
+| Tabs | One white pill slides between triggers; panels fade up on switch (built into `components/ui/tabs.tsx`) |
+| `ScoreRing` | Arc draws from empty on mount |
+
 ## Page patterns
 
 - **Public navbar** (`components/layout/PublicHeader.tsx`): glass bar; logo, "Features ▾" mega-menu

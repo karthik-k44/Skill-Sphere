@@ -13,6 +13,8 @@ import { MobileNav } from "@/frontend/components/layout/MobileNav";
 import { ThemeToggle } from "@/frontend/components/layout/ThemeToggle";
 import { paths } from "@/frontend/config/paths";
 import { authService } from "@/frontend/features/auth/services";
+import { useScrolled } from "@/frontend/hooks/use-scrolled";
+import { Cn } from "@/frontend/lib/utils";
 
 const LINKS = [
   { label: "How it works", href: "/#how-it-works" },
@@ -42,9 +44,15 @@ const AuthActions = ({ isSignedIn }: { isSignedIn: boolean }) =>
 export const PublicHeader = () => {
   const { data: user } = authService.useSession();
   const isSignedIn = Boolean(user);
+  const isScrolled = useScrolled();
 
   return (
-    <header className="sticky top-0 z-40 bg-background/75 backdrop-blur-xl">
+    <header
+      className={Cn(
+        "sticky top-0 z-40 border-b bg-background/75 backdrop-blur-xl transition-colors duration-300",
+        isScrolled ? "border-border" : "border-transparent",
+      )}
+    >
       <NavigationMenu className="mx-auto h-14 w-full max-w-7xl justify-between gap-6 px-4 sm:px-6">
         <div className="flex items-center gap-6">
           <Logo />

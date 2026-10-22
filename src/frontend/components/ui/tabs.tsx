@@ -39,19 +39,64 @@ const tabsListVariants = cva(
   }
 )
 
+type IndicatorBox = { x: number; y: number; width: number; height: number }
+
+// Design system: a single white pill slides behind the active trigger instead of each trigger
+// painting its own background, so switching tabs animates (docs/design-system.md → Motion).
 function TabsList({
   className,
   variant = "default",
+  children,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.List> &
   VariantProps<typeof tabsListVariants>) {
+  const listRef = React.useRef<HTMLDivElement>(null)
+  const [indicator, setIndicator] = React.useState<IndicatorBox | null>(null)
+
+  React.useLayoutEffect(() => {
+    const list = listRef.current
+    if (!list || variant !== "default") return
+    const measure = () => {
+      const active = list.querySelector<HTMLElement>('[data-slot="tabs-trigger"][data-state="active"]')
+      setIndicator(
+        active
+          ? { x: active.offsetLeft, y: active.offsetTop, width: active.offsetWidth, height: active.offsetHeight }
+          : null
+      )
+    }
+    measure()
+    const stateChanges = new MutationObserver(measure)
+    stateChanges.observe(list, { subtree: true, attributes: true, attributeFilter: ["data-state"] })
+    const resizes = new ResizeObserver(measure)
+    resizes.observe(list)
+    return () => {
+      stateChanges.disconnect()
+      resizes.disconnect()
+    }
+  }, [variant])
+
   return (
     <TabsPrimitive.List
+      ref={listRef}
       data-slot="tabs-list"
       data-variant={variant}
-      className={cn(tabsListVariants({ variant }), className)}
+      className={cn(tabsListVariants({ variant }), "relative", className)}
       {...props}
-    />
+    >
+      {indicator && (
+        <span
+          aria-hidden
+          data-slot="tabs-indicator"
+          className="pointer-events-none absolute top-0 left-0 rounded-full bg-background shadow-hairline transition-[transform,width,height] duration-300 ease-out-expo dark:bg-card"
+          style={{
+            width: indicator.width,
+            height: indicator.height,
+            transform: `translate(${indicator.x}px, ${indicator.y}px)`,
+          }}
+        />
+      )}
+      {children}
+    </TabsPrimitive.List>
   )
 }
 
@@ -63,9 +108,9 @@ function TabsTrigger({
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       className={cn(
-        "relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-full border border-transparent px-3 py-1 text-sm font-medium whitespace-nowrap text-foreground/60 transition-all group-data-[orientation=vertical]/tabs:w-full group-data-[orientation=vertical]/tabs:justify-start hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 group-data-[variant=default]/tabs-list:data-[state=active]:shadow-hairline group-data-[variant=line]/tabs-list:data-[state=active]:shadow-none dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-full border border-transparent px-3 py-1 text-sm font-medium whitespace-nowrap text-foreground/60 transition-all group-data-[orientation=vertical]/tabs:w-full group-data-[orientation=vertical]/tabs:justify-start hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 group-data-[variant=line]/tabs-list:data-[state=active]:shadow-none dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         "group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-[state=active]:bg-transparent dark:group-data-[variant=line]/tabs-list:data-[state=active]:border-transparent dark:group-data-[variant=line]/tabs-list:data-[state=active]:bg-transparent",
-        "data-[state=active]:bg-background data-[state=active]:text-foreground dark:data-[state=active]:bg-card dark:data-[state=active]:text-foreground",
+        "data-[state=active]:text-foreground dark:data-[state=active]:text-foreground",
         "after:absolute after:bg-foreground after:opacity-0 after:transition-opacity group-data-[orientation=horizontal]/tabs:after:inset-x-0 group-data-[orientation=horizontal]/tabs:after:bottom-[-5px] group-data-[orientation=horizontal]/tabs:after:h-0.5 group-data-[orientation=vertical]/tabs:after:inset-y-0 group-data-[orientation=vertical]/tabs:after:-right-1 group-data-[orientation=vertical]/tabs:after:w-0.5 group-data-[variant=line]/tabs-list:data-[state=active]:after:opacity-100",
         className
       )}
@@ -81,7 +126,7 @@ function TabsContent({
   return (
     <TabsPrimitive.Content
       data-slot="tabs-content"
-      className={cn("flex-1 outline-none", className)}
+      className={cn("flex-1 outline-none data-[state=active]:animate-in data-[state=active]:duration-300 data-[state=active]:fade-in-0 data-[state=active]:slide-in-from-bottom-2", className)}
       {...props}
     />
   )

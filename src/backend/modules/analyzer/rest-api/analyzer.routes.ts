@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AsyncHandler } from "@/backend/common/utils/async-handler";
 import { IdParamsSchema } from "@/backend/common/utils/object-id";
-import { RequireAuth } from "@/backend/middleware/auth";
+import { BlockDemoAccount, RequireAuth } from "@/backend/middleware/auth";
 import { aiLimiter } from "@/backend/middleware/rate-limit";
 import { Validate } from "@/backend/middleware/validate";
 import { GenerateAnalysisSchema } from "@/backend/modules/analyzer/analyzer.validators";
@@ -14,6 +14,7 @@ analyzerRoutes.get("/", AsyncHandler(analyzerController.List));
 analyzerRoutes.get("/:id", Validate({ params: IdParamsSchema }), AsyncHandler(analyzerController.Get));
 analyzerRoutes.post(
   "/",
+  BlockDemoAccount,
   aiLimiter,
   Validate({ body: GenerateAnalysisSchema }),
   AsyncHandler(analyzerController.Generate),

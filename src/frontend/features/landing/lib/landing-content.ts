@@ -45,6 +45,9 @@ export const FEATURES: LandingFeature[] = [
   },
 ];
 
+/** The stacked hero statement, one word per line (each animates in on its own). */
+export const HERO_WORDS = ["Assess.", "Match.", "Grow."];
+
 /** Square tag chips under the hero statement. */
 export const HERO_TAGS = ["AI analysis", "Job match", "Roadmap", "Resume PDF", "GitHub import", "Public profile"];
 

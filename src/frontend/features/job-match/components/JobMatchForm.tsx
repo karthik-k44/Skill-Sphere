@@ -1,17 +1,20 @@
 import { useFormik } from "formik";
 import { AlertTriangle, Loader2, Target } from "lucide-react";
 import { FormField } from "@/frontend/components/form/FormField";
+import { DemoLockNotice } from "@/frontend/components/feedback/DemoLockNotice";
 import { Alert, AlertDescription, AlertTitle } from "@/frontend/components/ui/alert";
 import { Button } from "@/frontend/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/frontend/components/ui/card";
 import { Input } from "@/frontend/components/ui/input";
 import { Textarea } from "@/frontend/components/ui/textarea";
+import { authService } from "@/frontend/features/auth/services";
 import { ZodFormikValidate } from "@/frontend/lib/zod-formik-validate";
 import { jobMatchService } from "../services";
 import { CreateJobMatchSchema, type CreateJobMatchInput } from "../types";
 
 export const JobMatchForm = ({ onCreated }: { onCreated: (id: string) => void }) => {
   const create = jobMatchService.useCreateJobMatchMutation();
+  const isDemo = Boolean(authService.useSession().data?.isDemo);
   const formik = useFormik<CreateJobMatchInput>({
     initialValues: { jobTitle: "", company: "", jobDescription: "" },
     validate: ZodFormikValidate<CreateJobMatchInput>(CreateJobMatchSchema),
@@ -34,6 +37,7 @@ export const JobMatchForm = ({ onCreated }: { onCreated: (id: string) => void })
       </CardHeader>
       <CardContent>
         <form onSubmit={formik.handleSubmit} className="grid gap-4" noValidate>
+          {isDemo && <DemoLockNotice feature="Job matching" />}
           {create.error && !create.isPending && (
             <Alert variant="destructive">
               <AlertTriangle />
@@ -63,7 +67,7 @@ export const JobMatchForm = ({ onCreated }: { onCreated: (id: string) => void })
               {...formik.getFieldProps("jobDescription")}
             />
           </FormField>
-          <Button type="submit" disabled={create.isPending} className="justify-self-end">
+          <Button type="submit" disabled={create.isPending || isDemo} className="justify-self-end">
             {create.isPending ? <Loader2 className="animate-spin" /> : <Target />}
             {create.isPending ? "Comparing…" : "Check my match"}
           </Button>
