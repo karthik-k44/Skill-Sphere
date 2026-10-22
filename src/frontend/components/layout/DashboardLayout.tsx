@@ -11,7 +11,7 @@ export const DashboardLayout = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="bg-canvas">
         <AppHeader />
         <main className="flex flex-1 flex-col">
           <Suspense fallback={<PageLoader />}>

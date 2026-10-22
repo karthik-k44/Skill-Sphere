@@ -13,7 +13,7 @@ export const ExperienceTimelineCard = ({ experience }: { experience: ExperienceT
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Briefcase className="size-4 text-primary" /> Experience
+          <Briefcase className="size-4" /> Experience
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -22,8 +22,8 @@ export const ExperienceTimelineCard = ({ experience }: { experience: ExperienceT
         ) : (
           <ol className="space-y-5">
             {sorted.map((item, index) => (
-              <li key={`${item.company}-${index}`} className="relative border-l-2 border-primary/30 pl-4">
-                <span className="absolute top-1.5 -left-[5px] size-2 rounded-full bg-primary" aria-hidden />
+              <li key={`${item.company}-${index}`} className="relative border-l border-border pl-4">
+                <span className="absolute top-1.5 -left-[5px] size-2 rounded-full bg-foreground" aria-hidden />
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <p className="font-medium">{item.role}</p>
                   {item.isCurrent && <Badge variant="secondary">Current</Badge>}

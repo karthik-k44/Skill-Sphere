@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { AlertTriangle, Loader2, Wand2 } from "lucide-react";
 import { ConfirmDialog } from "@/frontend/components/feedback/ConfirmDialog";
+import { DemoLockNotice } from "@/frontend/components/feedback/DemoLockNotice";
 import { Alert, AlertDescription, AlertTitle } from "@/frontend/components/ui/alert";
 import { Button } from "@/frontend/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/frontend/components/ui/card";
 import { Input } from "@/frontend/components/ui/input";
 import { Label } from "@/frontend/components/ui/label";
 import { Switch } from "@/frontend/components/ui/switch";
+import { authService } from "@/frontend/features/auth/services";
 import { roadmapService } from "../services";
 
 type RoadmapGeneratorProps = { defaultRole: string; hasRoadmap: boolean };
@@ -15,11 +17,12 @@ export const RoadmapGenerator = ({ defaultRole, hasRoadmap }: RoadmapGeneratorPr
   const [targetRole, setTargetRole] = useState(defaultRole);
   const [useLatestAnalysis, setUseLatestAnalysis] = useState(true);
   const generate = roadmapService.useGenerateRoadmapMutation();
+  const isDemo = Boolean(authService.useSession().data?.isDemo);
 
   const OnGenerate = () => generate.mutate({ targetRole, useLatestAnalysis });
 
   const button = (
-    <Button className="w-full" onClick={hasRoadmap ? undefined : OnGenerate} disabled={generate.isPending}>
+    <Button className="w-full" onClick={hasRoadmap ? undefined : OnGenerate} disabled={generate.isPending || isDemo}>
       {generate.isPending ? <Loader2 className="animate-spin" /> : <Wand2 />}
       {generate.isPending ? "Planning…" : hasRoadmap ? "Regenerate roadmap" : "Generate roadmap"}
     </Button>
@@ -42,13 +45,14 @@ export const RoadmapGenerator = ({ defaultRole, hasRoadmap }: RoadmapGeneratorPr
             maxLength={100}
           />
         </div>
-        <div className="flex items-center justify-between gap-3 rounded-lg border p-3">
+        <div className="flex items-center justify-between gap-3 rounded-[20px] bg-muted p-4">
           <Label htmlFor="roadmap-analysis" className="flex flex-col items-start gap-0.5 font-normal">
             <span className="font-medium">Use my latest analysis</span>
             <span className="text-xs text-muted-foreground">Focus the plan on the gaps the analyzer found.</span>
           </Label>
           <Switch id="roadmap-analysis" checked={useLatestAnalysis} onCheckedChange={setUseLatestAnalysis} />
         </div>
+        {isDemo && <DemoLockNotice feature="Roadmap generation" />}
         {generate.error && !generate.isPending && (
           <Alert variant="destructive">
             <AlertTriangle />

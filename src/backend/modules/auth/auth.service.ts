@@ -22,7 +22,7 @@ const IssueSession = (user: UserDocType) => {
   const authUser = ToAuthUser(user);
   return {
     user: authUser,
-    accessToken: sessionService.SignAccessToken(authUser.id, authUser.role),
+    accessToken: sessionService.SignAccessToken(authUser.id, authUser.role, authUser.isDemo),
     refreshToken: sessionService.SignRefreshToken(authUser.id, user.tokenVersion ?? 0),
   };
 };

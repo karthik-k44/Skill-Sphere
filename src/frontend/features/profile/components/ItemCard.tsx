@@ -12,8 +12,8 @@ type ItemCardProps = {
 };
 
 export const ItemCard = ({ title, subtitle, onRemove, removeLabel, children }: ItemCardProps) => (
-  <Card className="gap-4 py-4 shadow-none">
-    <div className="flex items-start justify-between gap-3 px-4">
+  <Card className="gap-4 rounded-[20px] bg-muted py-5">
+    <div className="flex items-start justify-between gap-3 px-5">
       <div className="min-w-0">
         <p className="truncate font-medium">{title}</p>
         {subtitle && <p className="truncate text-sm text-muted-foreground">{subtitle}</p>}
@@ -29,6 +29,6 @@ export const ItemCard = ({ title, subtitle, onRemove, removeLabel, children }: I
         <Trash2 />
       </Button>
     </div>
-    <CardContent className="grid gap-4 px-4 sm:grid-cols-2">{children}</CardContent>
+    <CardContent className="grid gap-4 px-5 sm:grid-cols-2">{children}</CardContent>
   </Card>
 );

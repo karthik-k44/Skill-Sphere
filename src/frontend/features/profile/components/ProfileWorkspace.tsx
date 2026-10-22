@@ -42,34 +42,38 @@ export const ProfileWorkspace = ({ profile, userId, userName, step, onStepChange
     dismissDraft();
   };
 
+  // The dock is a sibling of the grid (not inside the form column) so it stays pinned while either
+  // column scrolls, including the side cards on mobile, and rests below everything at the end.
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
-      <div className="min-w-0 space-y-4">
-        {pendingDraft && <DraftBanner savedAt={pendingDraft.savedAt} onRestore={RestoreDraft} onDiscard={clearDraft} />}
-        <ProfileSteps step={step} onStepChange={onStepChange} stepsWithErrors={stepsWithErrors} />
-        <ProfileActionsBar
-          isDirty={dirty}
-          isSaving={isSaving}
-          canGoBack={index > 0}
-          canGoNext={index < PROFILE_STEPS.length - 1}
-          onBack={() => onStepChange(PROFILE_STEPS[index - 1]?.value ?? step)}
-          onNext={() => onStepChange(PROFILE_STEPS[index + 1]?.value ?? step)}
-        />
+    <div className="space-y-6">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="min-w-0 space-y-4">
+          {pendingDraft && <DraftBanner savedAt={pendingDraft.savedAt} onRestore={RestoreDraft} onDiscard={clearDraft} />}
+          <ProfileSteps step={step} onStepChange={onStepChange} stepsWithErrors={stepsWithErrors} />
+        </div>
+        <aside className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Skip the typing</CardTitle>
+              <CardDescription>Fill the form from your resume or GitHub, then review.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <ImportResumeDialog />
+              <GithubImportDialog />
+            </CardContent>
+          </Card>
+          <CompletionCard values={values} onJump={onStepChange} />
+          <PublicProfileCard profile={profile} userName={userName} />
+        </aside>
       </div>
-      <aside className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Skip the typing</CardTitle>
-            <CardDescription>Fill the form from your resume or GitHub, then review.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <ImportResumeDialog />
-            <GithubImportDialog />
-          </CardContent>
-        </Card>
-        <CompletionCard values={values} onJump={onStepChange} />
-        <PublicProfileCard profile={profile} userName={userName} />
-      </aside>
+      <ProfileActionsBar
+        isDirty={dirty}
+        isSaving={isSaving}
+        canGoBack={index > 0}
+        canGoNext={index < PROFILE_STEPS.length - 1}
+        onBack={() => onStepChange(PROFILE_STEPS[index - 1]?.value ?? step)}
+        onNext={() => onStepChange(PROFILE_STEPS[index + 1]?.value ?? step)}
+      />
     </div>
   );
 };

@@ -30,8 +30,8 @@ export const UserMenu = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent">
-              <Avatar className="size-8 rounded-lg">
-                <AvatarFallback className="rounded-lg bg-primary/15 text-primary">{Initials(user?.name)}</AvatarFallback>
+              <Avatar className="size-8">
+                <AvatarFallback className="bg-muted text-foreground">{Initials(user?.name)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user?.name}</span>

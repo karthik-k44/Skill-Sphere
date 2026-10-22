@@ -1,30 +1,26 @@
 import { Lightbulb } from "lucide-react";
-import { Card, CardContent } from "@/frontend/components/ui/card";
+import { Reveal } from "@/frontend/components/motion/Reveal";
 import { ContactForm } from "./ContactForm";
 
+/** White section; the form sits on a #f5f5f7 28px stage so its white fields read clearly. */
 export const ContactSection = () => (
-  <section id="contact" className="scroll-mt-20 border-t bg-muted/30 py-24">
-    <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-5">
-      <div className="space-y-6 lg:col-span-2">
-        <div className="space-y-3">
-          <h2 className="text-3xl font-bold tracking-tight">Questions or feedback?</h2>
-          <p className="text-lg text-muted-foreground">
-            Tell us what you're working towards or which part of SkillSphere you'd like help with.
-          </p>
-        </div>
-        <div className="flex gap-3 rounded-xl border bg-card p-4">
-          <Lightbulb className="mt-0.5 size-5 shrink-0 text-warning" />
-          <p className="text-sm text-muted-foreground">
-            Tip: complete your skills, projects and experience before running the analyzer — the more it knows, the
-            more specific the advice.
-          </p>
-        </div>
-      </div>
-      <Card className="lg:col-span-3">
-        <CardContent>
-          <ContactForm />
-        </CardContent>
-      </Card>
+  <section id="contact" className="scroll-mt-14 py-section">
+    <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-5">
+      <Reveal className="space-y-6 lg:col-span-2">
+        <p className="font-display text-kicker font-semibold">Contact</p>
+        <h2 className="text-headline font-semibold sm:text-feature">Questions or feedback?</h2>
+        <p className="text-muted-foreground">
+          Tell us what you're working towards, or which part of SkillSphere you'd like help with.
+        </p>
+        <p className="flex gap-3 text-sm text-muted-foreground">
+          <Lightbulb className="mt-0.5 size-4 shrink-0" aria-hidden />
+          Complete your skills, projects and experience before running the analyzer. The more it knows, the more
+          specific the advice.
+        </p>
+      </Reveal>
+      <Reveal delay={120} className="rounded-card bg-canvas p-7 sm:p-10 lg:col-span-3 dark:bg-card">
+        <ContactForm />
+      </Reveal>
     </div>
   </section>
 );

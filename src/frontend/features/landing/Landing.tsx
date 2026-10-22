@@ -6,6 +6,7 @@ import { FeaturesSection } from "./components/FeaturesSection";
 import { HeroSection } from "./components/HeroSection";
 import { HowItWorksSection } from "./components/HowItWorksSection";
 
+/** White and #f5f5f7 sections alternate: hero stage, editorial steps, highlights band, contact, footer. */
 const Landing = () => {
   useDocumentTitle("");
 
@@ -14,8 +15,8 @@ const Landing = () => {
       <PublicHeader />
       <main className="flex-1">
         <HeroSection />
-        <FeaturesSection />
         <HowItWorksSection />
+        <FeaturesSection />
         <ContactSection />
       </main>
       <PublicFooter />

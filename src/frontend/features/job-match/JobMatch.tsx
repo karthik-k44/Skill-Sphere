@@ -2,6 +2,7 @@ import { useState } from "react";
 import { PageHeader } from "@/frontend/components/layout/PageHeader";
 import { ErrorState } from "@/frontend/components/feedback/ErrorState";
 import { Skeleton } from "@/frontend/components/ui/skeleton";
+import { authService } from "@/frontend/features/auth/services";
 import { useDocumentTitle } from "@/frontend/hooks/use-document-title";
 import { JobMatchForm } from "./components/JobMatchForm";
 import { JobMatchHistory } from "./components/JobMatchHistory";
@@ -10,8 +11,11 @@ import { jobMatchService } from "./services";
 
 const JobMatch = () => {
   useDocumentTitle("Job Match");
-  const [selectedId, setSelectedId] = useState<string>();
+  // undefined = default view, null = the "new match" form chosen explicitly.
+  const [selectedId, setSelectedId] = useState<string | null>();
   const matches = jobMatchService.useJobMatches();
+  const isDemo = Boolean(authService.useSession().data?.isDemo);
+  const activeId = selectedId === undefined ? (isDemo ? matches.data?.[0]?.id : undefined) : (selectedId ?? undefined);
 
   return (
     <div className="space-y-6">
@@ -21,8 +25,8 @@ const JobMatch = () => {
       />
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_300px]">
         <div className="min-w-0">
-          {selectedId ? (
-            <JobMatchResult id={selectedId} onDeleted={() => setSelectedId(undefined)} />
+          {activeId ? (
+            <JobMatchResult id={activeId} onDeleted={() => setSelectedId(null)} />
           ) : (
             <JobMatchForm onCreated={setSelectedId} />
           )}
@@ -32,7 +36,7 @@ const JobMatch = () => {
         ) : matches.error ? (
           <ErrorState error={matches.error} onRetry={() => matches.refetch()} />
         ) : (
-          <JobMatchHistory items={matches.data} selectedId={selectedId} onSelect={setSelectedId} />
+          <JobMatchHistory items={matches.data} selectedId={activeId} onSelect={(id) => setSelectedId(id ?? null)} />
         )}
       </div>
     </div>

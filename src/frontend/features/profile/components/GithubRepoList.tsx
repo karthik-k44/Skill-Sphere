@@ -11,7 +11,7 @@ type GithubRepoListProps = {
 };
 
 export const GithubRepoList = ({ repos, selected, onToggle }: GithubRepoListProps) => (
-  <ScrollArea className="h-72 rounded-lg border">
+  <ScrollArea className="h-72 rounded-[20px] border">
     <ul className="divide-y">
       {repos.map((repo) => {
         const id = `repo-${repo.name}`;

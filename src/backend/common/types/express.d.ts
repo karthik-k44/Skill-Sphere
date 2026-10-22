@@ -4,7 +4,7 @@ declare global {
   namespace Express {
     interface Request {
       /** Set by `RequireAuth` from a verified access token. */
-      auth?: { userId: string; role: UserRoleTypeEnum };
+      auth?: { userId: string; role: UserRoleTypeEnum; isDemo: boolean };
     }
   }
 }

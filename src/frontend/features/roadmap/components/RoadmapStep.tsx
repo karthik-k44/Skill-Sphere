@@ -14,12 +14,12 @@ export const RoadmapStep = ({ item, index, isLast, onToggle }: RoadmapStepProps)
     <span
       className={Cn(
         "z-10 flex size-8 shrink-0 items-center justify-center rounded-full border-2 text-sm font-semibold",
-        item.done ? "border-success bg-success text-white" : "border-primary/40 bg-background text-primary",
+        item.done ? "border-success bg-success text-white" : "border-border bg-background text-foreground",
       )}
     >
       {index + 1}
     </span>
-    <div className={Cn("flex-1 space-y-2 rounded-xl border p-4 transition-opacity", item.done && "opacity-70")}>
+    <div className={Cn("flex-1 space-y-2 rounded-[20px] bg-muted p-5 transition-opacity", item.done && "opacity-70")}>
       <div className="flex items-start gap-3">
         <Checkbox
           id={`step-${item.id}`}
@@ -45,7 +45,7 @@ export const RoadmapStep = ({ item, index, isLast, onToggle }: RoadmapStepProps)
               href={resource.url}
               target="_blank"
               rel="noreferrer noopener"
-              className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+              className="inline-flex items-center gap-1 text-xs text-link hover:underline"
             >
               {resource.title || "Resource"} <ExternalLink className="size-3" />
             </a>

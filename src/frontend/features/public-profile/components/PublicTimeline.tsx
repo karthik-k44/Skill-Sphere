@@ -20,13 +20,13 @@ export const PublicTimeline = ({ title, icon: Icon, entries }: PublicTimelinePro
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Icon className="size-4 text-primary" /> {title}
+          <Icon className="size-4" /> {title}
         </CardTitle>
       </CardHeader>
       <CardContent>
         <ul className="space-y-6">
           {entries.map((entry) => (
-            <li key={entry.key} className="space-y-1.5 border-l-2 border-primary/30 pl-4">
+            <li key={entry.key} className="space-y-1.5 border-l border-border pl-4">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 {entry.href ? (
                   <a href={entry.href} target="_blank" rel="noreferrer noopener" className="font-semibold hover:underline">
@@ -37,7 +37,7 @@ export const PublicTimeline = ({ title, icon: Icon, entries }: PublicTimelinePro
                 )}
                 {entry.period && <span className="text-xs text-muted-foreground">{entry.period}</span>}
               </div>
-              {entry.subtitle && <p className="text-sm text-primary">{entry.subtitle}</p>}
+              {entry.subtitle && <p className="text-sm text-foreground">{entry.subtitle}</p>}
               {entry.description && <p className="text-sm leading-6 text-muted-foreground">{entry.description}</p>}
               {entry.tags.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 pt-1">

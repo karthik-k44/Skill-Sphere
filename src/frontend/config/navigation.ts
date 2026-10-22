@@ -1,4 +1,14 @@
-import { FileText, LayoutDashboard, Map, Sparkles, Target, UserRound, type LucideIcon } from "lucide-react";
+import {
+  FileText,
+  FileUp,
+  Globe,
+  LayoutDashboard,
+  Map,
+  Sparkles,
+  Target,
+  UserRound,
+  type LucideIcon,
+} from "lucide-react";
 import { paths } from "@/frontend/config/paths";
 
 export type NavigationItem = {
@@ -31,6 +41,48 @@ export const navigation: NavigationGroup[] = [
     items: [
       { title: "Resume Builder", path: paths.app.resume, icon: FileText, description: "Download a PDF resume" },
     ],
+  },
+];
+
+/** Feature cards in the public "Features" mega-menu. Guests go to signup; signed-in users open the tool. */
+export type PublicFeatureLink = { title: string; description: string; icon: LucideIcon; appPath: string };
+
+export const publicFeatureLinks: PublicFeatureLink[] = [
+  {
+    title: "AI Analyzer",
+    description: "A readiness score, area scores and the gaps holding you back.",
+    icon: Sparkles,
+    appPath: paths.app.analyzer,
+  },
+  {
+    title: "Job Match",
+    description: "Paste a posting, see your fit and the skills you're missing.",
+    icon: Target,
+    appPath: paths.app.jobMatch,
+  },
+  {
+    title: "Learning Roadmap",
+    description: "Your gaps, turned into project-driven steps you tick off.",
+    icon: Map,
+    appPath: paths.app.roadmap,
+  },
+  {
+    title: "Resume Builder",
+    description: "Two clean templates, generated from your profile as a PDF.",
+    icon: FileText,
+    appPath: paths.app.resume,
+  },
+  {
+    title: "Resume & GitHub import",
+    description: "Fill your profile from an old resume or your best repos.",
+    icon: FileUp,
+    appPath: paths.app.profile,
+  },
+  {
+    title: "Public profile",
+    description: "A portfolio page at your own link, contact details kept private.",
+    icon: Globe,
+    appPath: paths.app.profile,
   },
 ];
 

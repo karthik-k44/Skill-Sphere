@@ -24,8 +24,8 @@ export const ResourcesCard = ({ resources }: { resources: LearningResourceType[]
         const Icon = ICONS[resource.type] ?? BookOpen;
         const href = SafeUrl(resource.url);
         return (
-          <div key={resource.title} className="flex gap-3 rounded-lg border p-3">
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+          <div key={resource.title} className="flex gap-3 rounded-[20px] bg-muted p-4">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-foreground">
               <Icon className="size-4" />
             </div>
             <div className="min-w-0 space-y-1">

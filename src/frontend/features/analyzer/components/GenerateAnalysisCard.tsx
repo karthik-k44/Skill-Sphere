@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { AlertTriangle, Loader2, Sparkles, Timer } from "lucide-react";
+import { DemoLockNotice } from "@/frontend/components/feedback/DemoLockNotice";
 import { Alert, AlertDescription, AlertTitle } from "@/frontend/components/ui/alert";
 import { Button } from "@/frontend/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/frontend/components/ui/card";
 import { Input } from "@/frontend/components/ui/input";
 import { Label } from "@/frontend/components/ui/label";
+import { authService } from "@/frontend/features/auth/services";
 import { FormatCountdown } from "@/frontend/utils/format";
 import { useCountdown } from "../lib/use-countdown";
 import { analyzerService } from "../services";
@@ -20,12 +22,13 @@ export const GenerateAnalysisCard = ({ defaultRole, nextAllowedAt, onGenerated }
   const generate = analyzerService.useGenerateAnalysisMutation();
   const remaining = useCountdown(nextAllowedAt);
   const isCoolingDown = remaining > 0;
+  const isDemo = Boolean(authService.useSession().data?.isDemo);
 
   return (
-    <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/10 via-card to-card">
+    <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Sparkles className="size-5 text-primary" /> Run a new analysis
+          <Sparkles className="size-5" /> Run a new analysis
         </CardTitle>
         <CardDescription>
           The AI reviews your saved profile like a recruiter would: scores, strengths, gaps and where to learn.
@@ -49,7 +52,7 @@ export const GenerateAnalysisCard = ({ defaultRole, nextAllowedAt, onGenerated }
               maxLength={100}
             />
           </div>
-          <Button type="submit" size="lg" disabled={generate.isPending || isCoolingDown} className="sm:w-56">
+          <Button type="submit" size="lg" disabled={generate.isPending || isCoolingDown || isDemo} className="sm:w-56">
             {generate.isPending ? (
               <>
                 <Loader2 className="animate-spin" /> Analysing…
@@ -65,6 +68,7 @@ export const GenerateAnalysisCard = ({ defaultRole, nextAllowedAt, onGenerated }
             )}
           </Button>
         </form>
+        {isDemo && <DemoLockNotice feature="The AI analyzer" className="mt-4" />}
         {generate.isPending && (
           <p className="mt-3 text-sm text-muted-foreground" role="status">
             This usually takes 10–20 seconds.

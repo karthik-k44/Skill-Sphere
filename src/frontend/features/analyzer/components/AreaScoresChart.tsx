@@ -21,7 +21,7 @@ export const AreaScoresChart = ({ scores }: { scores: AnalysisScoresType }) => {
   return (
     <figure className="space-y-2">
       <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-72">
-        <RadarChart data={data} outerRadius="72%">
+        <RadarChart data={data} outerRadius="56%" margin={{ top: 8, right: 40, bottom: 8, left: 40 }}>
           <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
           <PolarGrid />
           <PolarAngleAxis dataKey="area" tick={{ fontSize: 12 }} />
@@ -31,7 +31,7 @@ export const AreaScoresChart = ({ scores }: { scores: AnalysisScoresType }) => {
       </ChartContainer>
       {/* Text equivalent of the chart for screen readers and quick scanning. */}
       <figcaption>
-        <ul className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm sm:grid-cols-3">
+        <ul className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm">
           {data.map((item) => (
             <li key={item.area} className="flex justify-between gap-2">
               <span className="text-muted-foreground">{item.area}</span>

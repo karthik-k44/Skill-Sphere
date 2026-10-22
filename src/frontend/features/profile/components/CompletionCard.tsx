@@ -16,7 +16,7 @@ export const CompletionCard = ({ values, onJump }: CompletionCardProps) => {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          Profile strength <span className="text-primary tabular-nums">{percent}%</span>
+          Profile strength <span className="tabular-nums">{percent}%</span>
         </CardTitle>
         <CardDescription>Complete profiles get sharper AI feedback.</CardDescription>
       </CardHeader>

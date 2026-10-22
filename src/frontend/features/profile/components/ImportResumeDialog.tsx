@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/frontend/components/ui/dialog";
+import { authService } from "@/frontend/features/auth/services";
 import { ToastManager } from "@/frontend/lib/toast-manager";
 import { MergeIntoForm, ToFormValues } from "../lib/profile-form";
 import { resumeImportService } from "../services";
@@ -27,7 +28,7 @@ const Summary = ({ draft }: { draft: ProfileFormValues }) => {
     ["certifications", draft.certifications.length],
   ] as const;
   return (
-    <div className="rounded-lg border bg-muted/40 p-4 text-sm">
+    <div className="rounded-[20px] bg-muted p-5 text-sm">
       <p className="font-medium">{draft.headline || "We read your resume"}</p>
       <p className="mt-1 text-muted-foreground">
         Found {counts.map(([label, count]) => `${count} ${label}`).join(", ")}.
@@ -40,6 +41,7 @@ export const ImportResumeDialog = () => {
   const [open, setOpen] = useState(false);
   const formik = useFormikContext<ProfileFormValues>();
   const parse = resumeImportService.useParseResumeMutation();
+  const isDemo = Boolean(authService.useSession().data?.isDemo);
   const draft = parse.data ? ToFormValues(parse.data) : null;
 
   const Apply = (mode: "merge" | "replace") => {
@@ -59,8 +61,8 @@ export const ImportResumeDialog = () => {
       }}
     >
       <DialogTrigger asChild>
-        <Button type="button" variant="outline" className="w-full justify-start">
-          <FileText /> Import from resume (PDF)
+        <Button type="button" variant="outline" className="w-full justify-start" disabled={isDemo}>
+          <FileText /> {isDemo ? "Resume import (off in demo)" : "Import from resume (PDF)"}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
@@ -73,7 +75,7 @@ export const ImportResumeDialog = () => {
 
         {parse.isPending ? (
           <div role="status" className="flex flex-col items-center gap-3 py-10 text-muted-foreground">
-            <Loader2 className="size-6 animate-spin text-primary" />
+            <Loader2 className="size-6 animate-spin text-muted-foreground" />
             Reading your resume… this usually takes 10–30 seconds.
           </div>
         ) : draft ? (

@@ -14,15 +14,15 @@ export const PublicProfileHero = ({ profile }: { profile: PublicProfileResponseT
   ].filter((link) => link.href);
 
   return (
-    <section className="relative overflow-hidden rounded-2xl border bg-gradient-to-br from-primary/15 via-card to-card p-6 sm:p-10">
+    <section className="rounded-card bg-card p-7 sm:p-10">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
         <Avatar className="size-20 text-2xl">
-          <AvatarFallback className="bg-primary text-primary-foreground">{Initials(profile.name)}</AvatarFallback>
+          <AvatarFallback className="bg-foreground text-background">{Initials(profile.name)}</AvatarFallback>
         </Avatar>
         <div className="flex-1 space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">{profile.name}</h1>
+          <h1 className="text-headline font-semibold sm:text-display">{profile.name}</h1>
           {(profile.headline || profile.targetRole) && (
-            <p className="text-lg text-muted-foreground">{profile.headline || profile.targetRole}</p>
+            <p className="text-kicker text-muted-foreground">{profile.headline || profile.targetRole}</p>
           )}
           {profile.location && (
             <p className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -42,7 +42,7 @@ export const PublicProfileHero = ({ profile }: { profile: PublicProfileResponseT
           </div>
         )}
       </div>
-      {profile.summary && <p className="mt-6 max-w-3xl leading-7">{profile.summary}</p>}
+      {profile.summary && <p className="mt-8 max-w-3xl">{profile.summary}</p>}
     </section>
   );
 };

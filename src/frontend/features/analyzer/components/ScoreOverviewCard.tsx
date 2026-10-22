@@ -1,5 +1,4 @@
 import { ScoreRing } from "@/frontend/components/data-display/ScoreRing";
-import { Badge } from "@/frontend/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/frontend/components/ui/card";
 import { FormatDateTime, ScoreTone } from "@/frontend/utils/format";
 import type { AnalysisResponseType } from "../types";
@@ -17,9 +16,7 @@ export const ScoreOverviewCard = ({ analysis }: { analysis: AnalysisResponseType
       <CardContent className="grid gap-8 md:grid-cols-[auto_1fr] md:items-center">
         <div className="flex flex-col items-center gap-3 md:border-r md:pr-8">
           <ScoreRing value={analysis.overallScore} size={148} label="Overall" />
-          <Badge variant="outline" className={tone.className}>
-            {tone.label}
-          </Badge>
+          <span className={`text-xs font-semibold ${tone.className}`}>{tone.label}</span>
         </div>
         <div className="grid gap-6 lg:grid-cols-2 lg:items-center">
           <div className="space-y-2">

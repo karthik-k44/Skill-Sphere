@@ -13,11 +13,11 @@ type EmptyStateProps = {
 export const EmptyState = ({ icon: Icon, title, description, action, className }: EmptyStateProps) => (
   <div
     className={Cn(
-      "flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed px-6 py-12 text-center",
+      "flex flex-col items-center justify-center gap-3 rounded-card border border-dashed px-6 py-12 text-center",
       className,
     )}
   >
-    <div className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+    <div className="flex size-12 items-center justify-center rounded-full bg-muted text-foreground">
       <Icon className="size-6" />
     </div>
     <div className="max-w-sm space-y-1">
